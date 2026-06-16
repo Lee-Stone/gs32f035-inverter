@@ -1,19 +1,4 @@
-﻿/* DSP2803x_usDelay.asm -> RISC-V stub (Phase 1)
- * TI: C2000 cycle-accurate delay. GS32: simple loop.
- * Original TI C2000 assembly preserved in #if 0 block below.
- */
-    .global _DSP28x_usDelay
-    .global __DSP28x_usDelay
-    .section .text
-_DSP28x_usDelay:
-__DSP28x_usDelay:
-    li      t0, 0
-1:  addi    t0, t0, 1
-    bltu    t0, a0, 1b
-    ret
-    .end
-
-#if 0 // ====== ORIGINAL TI C2000 ASSEMBLY BELOW ======;// TI File $Revision: /main/1 $
+;// TI File $Revision: /main/1 $
 ;// Checkin $Date: December 5, 2008   18:01:17 $
 ;//###########################################################################
 ;//
@@ -88,5 +73,3 @@ _DSP28x_usDelay:
 ;//===========================================================================
 ;// End of file.
 ;//===========================================================================
-
-#endif

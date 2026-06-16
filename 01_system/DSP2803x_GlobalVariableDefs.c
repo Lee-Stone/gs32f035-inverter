@@ -1,14 +1,3 @@
-﻿/*
- * DSP2803x_GlobalVariableDefs.c -> GS32F035P Port (Phase 1)
- * GS32 V30: driverlib uses HWREG() for direct register access.
- * Original TI register definitions preserved in #if 0 block below.
- */
-
-#include "device.h"
-
-static const uint32_t gs32_port_phase1_marker = 0x47353332;
-
-#if 0 // ====== ORIGINAL TI GlobalVariableDefs.c BELOW =====
 // TI File $Revision: /main/2 $
 // Checkin $Date: November 10, 2009   14:05:44 $
 //###########################################################################
@@ -400,4 +389,3 @@ void (*Flash_CallbackPtr) (void);
 // End of file.
 //===========================================================================
 
-#endif // ====== END ORIGINAL TI CODE ======
