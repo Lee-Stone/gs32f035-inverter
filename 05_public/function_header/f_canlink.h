@@ -14,6 +14,9 @@
 #ifndef	__f_canlink__
 #define	__f_canlink__
 
+#define DEBUG_F_CANLINK		0
+
+#if DEBUG_F_CANLINK
 
 // CANlink执行周期
 #define     CANlink_DEAL_PERIOD     2                       // CANlink处理周期 ms单位
@@ -268,4 +271,5 @@ extern Uint16 P2bFilte(Uint32 msgid);
 
 #endif
 
+#endif
 

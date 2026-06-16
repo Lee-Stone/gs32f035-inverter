@@ -33,7 +33,7 @@
 #include "f_osc.h"										// 包含头文件
 #include "f_comm.h"		
 #include "f_ui.h"
-#define     DEBUG_F_OSC         1
+#define     DEBUG_F_OSC         0
 
 /************************液晶键盘使用****************************/
 #if FC_KEY_CONTROL_EN
