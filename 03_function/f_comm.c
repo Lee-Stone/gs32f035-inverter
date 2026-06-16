@@ -255,7 +255,11 @@ __interrupt void SCI_RXD_isr(void)
     }
     
     commTicker = 0;                     // 有接收数据，重新计时
+
+#ifdef TARGET_GS32
+#else
     PieCtrlRegs.PIEACK.bit.ACK9 = 1;    // Issue PIE ACK
+#endif
 }
 
 
@@ -274,8 +278,12 @@ __interrupt void SCI_TXD_isr(void)
 {
 	// 通讯发送数据
     CommDataSend();   
-    commTicker = 0;                     // 发送一个字符完成，重新计时                        
+    commTicker = 0;                     // 发送一个字符完成，重新计时  
+    
+#ifdef TARGET_GS32
+#else
     PieCtrlRegs.PIEACK.bit.ACK9 = 1;    // Issue PIE ACK
+#endif
 }
 
 
@@ -300,14 +308,20 @@ __interrupt void Lina_Level0_ISR(void)
     // other
     else
     {
+#ifdef TARGET_GS32
+#else
         PieCtrlRegs.PIEACK.bit.ACK9 = 1;
+#endif
     }
 }
 
 //Low priority BLIN ISR.  Just a placeholder.
 __interrupt void Lina_Level1_ISR(void)
 {
+#ifdef TARGET_GS32
+#else
 	PieCtrlRegs.PIEACK.bit.ACK9 = 1; 
+#endif
 }
 #endif
 

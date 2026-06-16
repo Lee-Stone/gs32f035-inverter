@@ -1095,7 +1095,11 @@ __interrupt void ShortGnd_ADC_Over_isr(void)
 	DINT;
 	EALLOW;
 	ADC_RESET_SEQUENCE;
+	
+#ifdef TARGET_GS32
+#else
 	PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;	// Acknowledge this interrupt
+#endif
 	EDIS;
 
 #ifdef TARGET_GS32

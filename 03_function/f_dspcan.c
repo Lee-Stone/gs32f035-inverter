@@ -97,7 +97,10 @@ __interrupt void eCanRxIsr(void)
     ECANREGS.CANGIF0.all = 0xffffffff;                      // 清除所有中断标志
     ECANREGS.CANGIF1.all = 0xffffffff;    
 
+#ifdef TARGET_GS32
+#else
     PieCtrlRegs.PIEACK.bit.ACK9 = 1;                        // Issue PIE ACK
+#endif
 
 #ifdef TARGET_GS32
     RESTORE_IRQ_CSR_CONTEXT();

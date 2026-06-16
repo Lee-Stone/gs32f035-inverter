@@ -52,7 +52,11 @@ __interrupt void PG_Zero_isr(void)
         EALLOW;
         (*EQepRegs).QCLR.bit.IEL = 1;
 		(*EQepRegs).QCLR.bit.INT = 1;
+		
+#ifdef TARGET_GS32
+#else
       	PieCtrlRegs.PIEACK.all = PIEACK_GROUP5;	// Acknowledge this interrupt
+#endif
         EDIS;
 	    if((gIPMZero.zFilterCnt < 4)||(gIPMPos.ZIntFlag == 1))            // Z 信号的滤波处理，要求两个Z间隔超过8ms(7500rpm),或者如果主中断正在计算位置，不进入Z中断
 		{

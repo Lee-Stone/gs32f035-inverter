@@ -119,7 +119,12 @@ __interrupt void ADC_Over_isr(void)
 	DINT;
     EALLOW;
     ADC_RESET_SEQUENCE;
-   	PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;	// Acknowledge this interrupt
+
+#ifdef TARGET_GS32
+#else
+	PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;	// Acknowledge this interrupt
+#endif
+   	
     EDIS;
 
 #ifdef TARGET_GS32
@@ -138,7 +143,11 @@ __interrupt void EPWM1_TZ_isr(void)
 	DisableDrive();								//首先封锁输出
 	HardWareErrorDeal();					    //处理硬件故障－电机控制模块处理
                 // 
+
+#ifdef TARGET_GS32
+#else
    	PieCtrlRegs.PIEACK.all = PIEACK_GROUP2;	    // Acknowledge this interrupt
+#endif
 
 #ifdef TARGET_GS32
 	RESTORE_IRQ_CSR_CONTEXT();
@@ -156,7 +165,11 @@ __interrupt void EPWM2_TZ_isr(void)
 
 	DisableDrive();								//首先封锁输出,周期中断中开启
     gCBCProtect.CBCIntFlag = 1;  
+
+#ifdef TARGET_GS32
+#else
    	PieCtrlRegs.PIEACK.all = PIEACK_GROUP2;	    // Acknowledge this interrupt
+#endif
 
 #ifdef TARGET_GS32
 	RESTORE_IRQ_CSR_CONTEXT();

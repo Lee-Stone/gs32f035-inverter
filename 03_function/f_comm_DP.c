@@ -133,7 +133,11 @@ __interrupt void SCI_DP_RXD_isr(void)
            }
        }   
     } 
+
+#ifdef TARGET_GS32
+#else
     PieCtrlRegs.PIEACK.bit.ACK9 = 1;                // Issue PIE ACK
+#endif
 
 #ifdef TARGET_GS32
     RESTORE_IRQ_CSR_CONTEXT();
@@ -181,7 +185,11 @@ __interrupt void SCI_DP_TXD_isr(void)
         }
     }
 #endif
+
+#ifdef TARGET_GS32
+#else
     PieCtrlRegs.PIEACK.bit.ACK9 = 1;            // Issue PIE ACK
+#endif
 
 #ifdef TARGET_GS32
     RESTORE_IRQ_CSR_CONTEXT();

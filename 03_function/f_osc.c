@@ -521,7 +521,11 @@ __interrupt void sciaTxFifoIsr(void)
 	}
 #endif	
     SCI_OSC_REGS.SCIFFTX.bit.TXFFINTCLR = 1;  				// Clear SCI Interrupt flag	
-    PieCtrlRegs.PIEACK.all |= PIEACK_GROUP9;      			// Issue PIE ACK
+   
+#ifdef TARGET_GS32
+#else
+	PieCtrlRegs.PIEACK.all |= PIEACK_GROUP9;      			// Issue PIE ACK
+#endif
 
 #ifdef TARGET_GS32
     RESTORE_IRQ_CSR_CONTEXT();
@@ -673,7 +677,11 @@ __interrupt void sciaRxFifoIsr(void)
 		SCI_OSC_REGS.SCIFFRX.bit.RXFFINTCLR = 1;   			// Clear Interrupt flag
 	*/
 	}
+
+#ifdef TARGET_GS32
+#else
     PieCtrlRegs.PIEACK.all |= PIEACK_GROUP9;       			// Issue PIE ack
+#endif
 
 #ifdef TARGET_GS32
     RESTORE_IRQ_CSR_CONTEXT();
