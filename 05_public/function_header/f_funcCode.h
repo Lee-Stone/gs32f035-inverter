@@ -13,10 +13,13 @@
 #define __F_FUNCCODE_H__
 
 
-#if defined(DSP2803X)         // 2803x还是2808平台
+#if defined(DSP2803X)
 //#include "DSP28x_Project.h"
 #include "DSP2803x_Device.h"     // DSP2803x Headerfile Include File
 #include "DSP2803x_Examples.h"   // DSP2803x Examples Include File 
+#else
+#ifdef TARGET_GS32
+#include "DSP_GS32_Device.h"
 #else
 #include "DSP280x_Device.h"
 #include "DSP280x_Examples.h"
@@ -25,8 +28,6 @@
 #include "f_debug.h"
 #include "f_interface.h"
 #include "f_p2p.h"
-
-
 
 // 请不要随意修改这两个值，否则EEPROM中的值会全部(包括P0组、P1组、各种记录)恢复出厂值。
 
