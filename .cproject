@@ -84,6 +84,13 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${GS32_DRIVER_PATH}/mathlib&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/01_system}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/02_motor}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/02_motor/encoder}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/02_motor/main_public}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/02_motor/para_estimation}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/02_motor/pwm}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/02_motor/vc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/02_motor/vf}&quot;"/>
 								</option>
 								<inputType id="com.hpec.toolchains.riscv.tool.c.compiler.input.196012890" superClass="com.hpec.toolchains.riscv.tool.c.compiler.input"/>
 							</tool>
@@ -127,6 +134,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="01_system"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="02_motor"/>
 						<entry excluding="dualcore" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="gs32_driver"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="inc"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
