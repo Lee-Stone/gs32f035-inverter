@@ -153,7 +153,8 @@
 #endif
 
 
-#if TAGET_GS32
+#ifdef TARGET_GS32
+
 #else
 typedef unsigned char  uint8;                   /* defined for unsigned 8-bits integer variable 	无符号8位整型变量  */
 typedef signed   char  int8;                    /* defined for signed 8-bits integer variable		有符号8位整型变量  */

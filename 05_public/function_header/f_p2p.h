@@ -10,6 +10,8 @@
 #ifndef __F_P2P_H__
 #define __F_P2P_H__
 
+#if DEBUG_F_CANLINK
+
 #include "f_canlink.h"
 
 
@@ -78,5 +80,5 @@ void MasterSlaveDeal(void);
 #endif
 #endif
 
-
+#endif
 

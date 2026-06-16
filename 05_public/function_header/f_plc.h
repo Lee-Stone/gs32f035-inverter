@@ -12,6 +12,8 @@
 #ifndef __f_plc__
 #define	__f_plc__
 
+#if DEBUG_F_CANLINK
+
 #define		PLC_CARD_ID      			1					// PLC使用ID
 #define		INV_PLC_ID      			2					// 变频器PLC使用ID
 
@@ -43,6 +45,7 @@ extern Uint16 InvTranTabCfg(CANlinkDataBuf *dataPi);
 extern Uint16 InvRecTabCfg(CANlinkDataBuf *dataPi);
 extern void PlcDataFramDeal(CANlinkDataBuf *dataPi);
 
+#endif
 
 #endif
 

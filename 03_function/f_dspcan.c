@@ -18,7 +18,7 @@
 
 
 
-#define DEBUG_F_CAN              1
+#define DEBUG_F_CAN              0
 
 
 
