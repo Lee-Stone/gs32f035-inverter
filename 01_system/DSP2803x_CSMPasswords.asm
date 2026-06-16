@@ -1,4 +1,12 @@
-;// TI File $Revision: /main/1 $
+﻿/* DSP2803x_CSMPasswords.asm -> RISC-V stub (Phase 1)
+ * TI: Code Security Module passwords. GS32: No CSM, placeholder.
+ * Original TI C2000 assembly preserved as comments below.
+ */
+    .section .csmpasswds, "a"
+    .zero   8
+    .end
+
+#if 0 // ====== ORIGINAL TI C2000 ASSEMBLY BELOW ======;// TI File $Revision: /main/1 $
 ;// Checkin $Date: December 5, 2008   18:00:47 $
 ;//###########################################################################
 ;//
@@ -81,3 +89,5 @@
 ;//===========================================================================
 
       
+
+#endif // ====== END ORIGINAL TI CODE ======

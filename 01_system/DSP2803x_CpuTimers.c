@@ -1,104 +1,56 @@
-// TI File $Revision: /main/2 $
-// Checkin $Date: July 9, 2009   10:51:51 $
-//###########################################################################
-//
-// FILE:	DSP2803x_CpuTimers.c
-//
-// TITLE:	CPU 32-bit Timers Initialization & Support Functions.
-//
-// NOTES:
-//
-//###########################################################################
-// $TI Release: 2803x C/C++ Header Files V1.21 $
-// $Release Date: December 1, 2009 $
-//###########################################################################
+/*
+ * DSP2803x_CpuTimers.c ¡ú GS32F035P Port (Phase 1)
+ *
+ * TI CPU Timer API ¡ú GS32 V30 CPUTimer driverlib wrapper.
+ * Preserves TI-compatible function signatures for downstream code.
+ */
 
-#include "DSP2803x_Device.h"     // Headerfile Include File
+#include "device.h"
+#include "driverlib.h"
+#include "board_cfg.h"
 
-struct CPUTIMER_VARS CpuTimer0;
-// CpuTimer 1 and CpuTimer2 are reserved for DSP BIOS & other RTOS
-struct CPUTIMER_VARS CpuTimer1;
-//struct CPUTIMER_VARS CpuTimer2;
+/* ---- TI-compatible CPU Timer variables ---- */
+typedef struct {
+    uint32_t base;
+    uint32_t interruptCount;
+    float    cpuFreqInMHz;
+    float    periodInUSec;
+} CPUTIMER_VARS;
 
-//---------------------------------------------------------------------------
-// InitCpuTimers: 
-//---------------------------------------------------------------------------
-// This function initializes all three CPU timers to a known state.
-//
+CPUTIMER_VARS CpuTimer0;
+CPUTIMER_VARS CpuTimer1;
+
+/* ---- InitCpuTimers ---- */
 void InitCpuTimers(void)
 {
-    // CPU Timer 0
-	// Initialize address pointers to respective timer registers:
-	CpuTimer0.RegsAddr = &CpuTimer0Regs;
-	// Initialize timer period to maximum:	
-	CpuTimer0Regs.PRD.all  = 0xFFFFFFFF;
-	// Initialize pre-scale counter to divide by 1 (SYSCLKOUT):	
-	CpuTimer0Regs.TPR.all  = 0;
-	CpuTimer0Regs.TPRH.all = 0;
-	// Make sure timer is stopped:
-	CpuTimer0Regs.TCR.bit.TSS = 1;
-	// Reload all counter register with period value:
-	CpuTimer0Regs.TCR.bit.TRB = 1;
-	// Reset interrupt counters:
-	//CpuTimer0.InterruptCount = 0;	             	
-	
-// CpuTimer 1 and CpuTimer2 are reserved for DSP BIOS & other RTOS
-// Do not use these two timers if you ever plan on integrating 
-// DSP-BIOS or another realtime OS. 
-//
-// For this reason, the code to manipulate these two timers is
-// commented out and not used in these examples.
+    CpuTimer0.base = CPUTIMER0_BASE;
+    CpuTimer0.interruptCount = 0;
+    CpuTimer0.cpuFreqInMHz = (float)(DEVICE_SYSCLK_FREQ / 1000000U);
+    CpuTimer0.periodInUSec = 0.0f;
 
-    // Initialize address pointers to respective timer registers:
-	CpuTimer1.RegsAddr = &CpuTimer1Regs;
-//	CpuTimer2.RegsAddr = &CpuTimer2Regs;
-	// Initialize timer period to maximum:
-	CpuTimer1Regs.PRD.all  = 0xFFFFFFFF;
-//	CpuTimer2Regs.PRD.all  = 0xFFFFFFFF;
-	// Make sure timers are stopped:
-	CpuTimer1Regs.TCR.bit.TSS = 1;             
-//	CpuTimer2Regs.TCR.bit.TSS = 1;             
-	// Reload all counter register with period value:
-	CpuTimer1Regs.TCR.bit.TRB = 1;             
-//	CpuTimer2Regs.TCR.bit.TRB = 1;             
-	// Reset interrupt counters:
-	//CpuTimer1.InterruptCount = 0;
-//	CpuTimer2.InterruptCount = 0;
-}	
-	
-//---------------------------------------------------------------------------
-// ConfigCpuTimer: 
-//---------------------------------------------------------------------------
-// This function initializes the selected timer to the period specified
-// by the "Freq" and "Period" parameters. The "Freq" is entered as "MHz"
-// and the period in "uSeconds". The timer is held in the stopped state
-// after configuration.
-//
-void ConfigCpuTimer(struct CPUTIMER_VARS *Timer, float Freq, float Period)
-{
-	Uint32 	temp;
-	
-	// Initialize timer period:	
-	Timer->CPUFreqInMHz = Freq;
-	Timer->PeriodInUSec = Period;
-	temp = (long) (Freq * Period);
-	Timer->RegsAddr->PRD.all = temp;
-
-	// Set pre-scale counter to divide by 1 (SYSCLKOUT):	
-	Timer->RegsAddr->TPR.all  = 0;
-	Timer->RegsAddr->TPRH.all  = 0;
-	
-	// Initialize timer control register:
-	Timer->RegsAddr->TCR.bit.TSS = 1;      // 1 = Stop timer, 0 = Start/Restart Timer 
-	Timer->RegsAddr->TCR.bit.TRB = 1;      // 1 = reload timer
-	Timer->RegsAddr->TCR.bit.SOFT = 1;
-	Timer->RegsAddr->TCR.bit.FREE = 1;     // Timer Free Run
-	Timer->RegsAddr->TCR.bit.TIE = 1;      // 0 = Disable/ 1 = Enable Timer Interrupt
-	
-	// Reset interrupt counter:
-	Timer->InterruptCount = 0;
+    CpuTimer1.base = CPUTIMER1_BASE;
+    CpuTimer1.interruptCount = 0;
+    CpuTimer1.cpuFreqInMHz = (float)(DEVICE_SYSCLK_FREQ / 1000000U);
+    CpuTimer1.periodInUSec = 0.0f;
 }
 
-//===========================================================================
-// End of file.
-//===========================================================================
+/* ---- ConfigCpuTimer ----
+ * TI: period = Freq_MHz * Period_uSec (timer clock = SYSCLK)
+ * GS32: timer clock = SYSCLK / 4, so period = (SYSCLK/4e6) * Period_uSec
+ */
+void ConfigCpuTimer(CPUTIMER_VARS *Timer, float Freq_MHz, float Period_uSec)
+{
+    uint32_t period;
+
+    Timer->cpuFreqInMHz = Freq_MHz;
+    Timer->periodInUSec = Period_uSec;
+    period = (uint32_t)((float)(DEVICE_SYSCLK_FREQ / 4000000U) * Period_uSec);
+    CPUTimer_init(Timer->base, period);
+}
+
+void StartCpuTimer0(void) { CPUTimer_startTimer(CPUTIMER0_BASE); }
+void StartCpuTimer1(void) { CPUTimer_startTimer(CPUTIMER1_BASE); }
+void StopCpuTimer0(void)  { CPUTimer_stopTimer(CPUTIMER0_BASE); }
+void StopCpuTimer1(void)  { CPUTimer_stopTimer(CPUTIMER1_BASE); }
+void ReloadCpuTimer0(void) { CPUTimer_startTimer(CPUTIMER0_BASE); }
+void ReloadCpuTimer1(void) { CPUTimer_startTimer(CPUTIMER1_BASE); }
