@@ -287,7 +287,11 @@ Uint16 InitdspECan(Uint16 baud)		// Initialize eCAN-A module
     ECanaRegs.CANGIM.all = 1;                               // 使能中断0
 
 
+#ifdef TARGET_GS32
+    interrupt_register(INT_CANA0, &eCanRxIsr);                    // CANA 0接收中断入口
+#else
     PieVectTable.ECAN0INTA = &eCanRxIsr;                    // CANA 0接收中断入口
+#endif
     EDIS;
     PieCtrlRegs.PIEIER9.bit.INTx5 = 1;                      // 使能ECAN1中断
     IER |= M_INT9; 											// Enable CPU INT9

@@ -333,7 +333,20 @@ void InitSciOSC(uint8 baudRate)
 	
 // 中断向量初始化   
 	EALLOW;  												// This is needed to write to EALLOW protected registers
-#if 	(1 == OSC_SCI_SEL)
+#ifdef TARGET_GS32
+#if (1 == OSC_SCI_SEL)
+	interrupt_register(INT_SCIA_RX, &sciaRxFifoIsr);
+    #if OSC_TX_INT_EN == 1
+	    interrupt_register(INT_SCIA_TX, &sciaTxFifoIsr);
+    #endif
+#else
+	interrupt_register(INT_SCIB_RX, &sciaRxFifoIsr);
+    #if OSC_TX_INT_EN == 1
+	    interrupt_register(INT_SCIB_TX, &sciaTxFifoIsr);
+    #endif
+#endif
+#else
+#if (1 == OSC_SCI_SEL)
     PieVectTable.SCIRXINTA = &sciaRxFifoIsr;
     #if OSC_TX_INT_EN == 1
 	    PieVectTable.SCITXINTA = &sciaTxFifoIsr;
@@ -343,6 +356,7 @@ void InitSciOSC(uint8 baudRate)
     #if OSC_TX_INT_EN == 1
 	    PieVectTable.SCITXINTB = &sciaTxFifoIsr;
     #endif
+#endif
 #endif
 	EDIS;
 	

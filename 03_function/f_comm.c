@@ -1835,8 +1835,13 @@ void InitSciaGpio(void)
     EDIS;
 // 通讯控制使用中断，初始化
     EALLOW;
+#ifdef TARGET_GS32
+    interrupt_register(INT_LINA, &Lina_Level0_ISR);
+    interrupt_register(INT_LINB, &Lina_Level1_ISR);
+#else
     PieVectTable.LIN0INTA = &Lina_Level0_ISR;
     PieVectTable.LIN1INTA = &Lina_Level1_ISR;
+#endif
     EDIS;
 	IER |= M_INT9;   	                 // Enable interrupts:
 	PieCtrlRegs.PIEIER9.bit.INTx3=1;     // PIE Group 9, INT3
@@ -1855,8 +1860,13 @@ void InitSciaGpio(void)
     EDIS;
     // 通讯控制使用中断，初始化
     EALLOW;
+#ifdef TARGET_GS32
+    interrupt_register(INT_SCIA_RX, SCI_RXD_isr);
+	interrupt_register(INT_SCIA_TX, SCI_TXD_isr);
+#else
     PieVectTable.SCIRXINTA = SCI_RXD_isr;
 	PieVectTable.SCITXINTA = SCI_TXD_isr;
+#endif
     EDIS;
 	IER |= M_INT9;   	            //  Enable interrupts:
 	PieCtrlRegs.PIEIER9.bit.INTx1 = 1;

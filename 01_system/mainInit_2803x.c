@@ -75,19 +75,29 @@ void InitInterrupt()
 {
    DINT;							//Clear all interrupts and initialize PIE vector table:
    InitPieCtrl();  					//Disable PIE
-   IER = 0x0000;
-   IFR = 0x0000;
+//   IER = 0x0000;
+//   IFR = 0x0000;
 
    InitPieVectTable();				//Enable PIE
 
    EALLOW;  						//设置用户服务程序
-   //PieVectTable.TINT0 		= &cpu_timer0_isr;		//定时中断
+
+#ifdef TARGET_GS32
+    interrupt_register(INT_ADCA1, &ADC_Over_isr);
+    interrupt_register(INT_EPWM1_TZ, &EPWM1_TZ_isr);
+    interrupt_register(INT_EPWM2_TZ, &EPWM2_TZ_isr);
+    interrupt_register(INT_SCIA_RX, &SCI_RXD_isr);
+    interrupt_register(INT_SCIA_TX, &SCI_TXD_isr);
+#else
    PieVectTable.ADCINT1     = &ADC_Over_isr;		//ADC结束中断
+   //PieVectTable.TINT0 		= &cpu_timer0_isr;		//定时中断
    PieVectTable.EPWM1_TZINT = &EPWM1_TZ_isr;		//过流中断
    //PieVectTable.EPWM1_INT 	= &EPWM1_zero_isr;		//下溢中断
    PieVectTable.SCIRXINTA 	= &SCI_RXD_isr; 		//通讯接收中断
    PieVectTable.SCITXINTA 	= &SCI_TXD_isr; 		//通讯发送中断
    PieVectTable.EPWM2_TZINT = &EPWM2_TZ_isr;        //CBC中断
+#endif
+
    EDIS;    	
 }
 

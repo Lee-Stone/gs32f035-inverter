@@ -249,8 +249,13 @@ void EndOfParIdentify(void)
     	DisableDrive();
         
         EALLOW;  						                //设置用户服务程序
-        PIE_VECTTABLE_ADCINT = &ADC_Over_isr;		    //ADC结束中断--INT1
-        PieVectTable.EPWM1_TZINT = &EPWM1_TZ_isr;		//过流中断--INT2
+#ifdef TARGET_GS32
+        interrupt_register(INT_ADCA1, &ADC_Over_isr);       //ADC结束中断--INT1
+        interrupt_register(INT_EPWM1_TZ, &EPWM1_TZ_isr);    //过流中断--INT2
+#else
+        PIE_VECTTABLE_ADCINT = &ADC_Over_isr;               //ADC结束中断--INT1
+        PieVectTable.EPWM1_TZINT = &EPWM1_TZ_isr;           //过流中断--INT2
+#endif
         //PieVectTable.EPWM1_INT 	= &EPWM1_zero_isr;		//下溢中断--INT3
         PieCtrlRegs.PIEIER3.bit.INTx2 = 0;              //关闭EPWM2中断
         EDIS;

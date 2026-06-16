@@ -647,7 +647,11 @@ void SystemParChg05Ms()
         {
             EQepRegs = (struct EQEP_REGS *)&EQep1Regs;
             EALLOW;
+#ifdef TARGET_GS32
+            interrupt_register(INT_EQEP1, &PG_Zero_isr);
+#else
             PieVectTable.EQEP1_INT = &PG_Zero_isr;
+#endif
             PieCtrlRegs.PIEIER5.bit.INTx1 = 1;
             SysCtrlRegs.PCLKCR1.bit.EQEP1ENCLK = 1;
             EDIS;
@@ -657,7 +661,11 @@ void SystemParChg05Ms()
         {
             EQepRegs = (struct EQEP_REGS *)&EQep2Regs;
             EALLOW;
+#ifdef TARGET_GS32
+            interrupt_register(INT_EQEP2, &PG_Zero_isr);
+#else
             PieVectTable.EQEP2_INT = &PG_Zero_isr;
+#endif
             PieCtrlRegs.PIEIER5.bit.INTx2 = 1;
             SysCtrlRegs.PCLKCR1.bit.EQEP2ENCLK = 1;
             EDIS;

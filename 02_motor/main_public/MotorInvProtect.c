@@ -894,7 +894,11 @@ void OutputPhaseLoseAndShortGndDetect(void)
             gBforeRunPhaseLose.CurComperCoffLimit = (Data2 < 3277) ? Data2 : 3277;	// min(80%基值电流, 变频器额定电流)
 			//gBforeRunPhaseLose.CurComperCoff = (gBforeRunPhaseLose.CurComperCoff<Data2)?gBforeRunPhaseLose.CurComperCoff:Data2;
 			EALLOW;
-			PieVectTable.ADCINT1	= &ShortGnd_ADC_Over_isr; // 启动前对地短路和输出缺相检测AD中断  
+#ifdef TARGET_GS32
+			interrupt_register(INT_ADCA1, &ShortGnd_ADC_Over_isr); // 启动前对地短路和输出缺相检测AD中断
+#else
+			PieVectTable.ADCINT1	= &ShortGnd_ADC_Over_isr; // 启动前对地短路和输出缺相检测AD中断
+#endif  
 			EPwm1Regs.TBPRD = 600;	// AD中断周期为10us
 			EPwm2Regs.TBPRD = 600;
 			EPwm3Regs.TBPRD = 600;
@@ -976,7 +980,11 @@ void ResetPhaseLoseDetect(void)
 //	gMainStatus.PrgStatus.bit.PWMDisable = 0;	// 恢复下溢中断发波
 	gMainStatus.RunStep = STATUS_STOP;
 	EALLOW;
+#ifdef TARGET_GS32
+	interrupt_register(INT_ADCA1, &ADC_Over_isr);
+#else
 	PieVectTable.ADCINT1     = &ADC_Over_isr;
+#endif
 	EDIS;
 	InitSetPWM();                       //恢复修改的寄存器配置
 }
