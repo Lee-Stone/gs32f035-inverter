@@ -98,6 +98,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/05_public/motor_header}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/05_public/28034_header}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/03_function}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/04_subprogram}&quot;"/>
 								</option>
 								<inputType id="com.hpec.toolchains.riscv.tool.c.compiler.input.196012890" superClass="com.hpec.toolchains.riscv.tool.c.compiler.input"/>
 							</tool>
@@ -143,6 +144,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="01_system"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="02_motor"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="03_function"/>
+						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="04_subprogram"/>
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="05_public"/>
 						<entry excluding="dualcore" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="gs32_driver"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="inc"/>
