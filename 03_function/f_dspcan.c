@@ -292,7 +292,7 @@ Uint16 InitdspECan(Uint16 baud)		// Initialize eCAN-A module
 
 
 #ifdef TARGET_GS32
-    interrupt_register(INT_CANA0, &eCanRxIsr);                    // CANA 0接收中断入口
+    Interrupt_register(INT_CANA0, &eCanRxIsr);                    // CANA 0接收中断入口
 #else
     PieVectTable.ECAN0INTA = &eCanRxIsr;                    // CANA 0接收中断入口
 #endif

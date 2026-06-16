@@ -441,8 +441,8 @@ void InitSciaGpioDp(void)
     // 通讯控制使用中断，初始化
     EALLOW;
 #ifdef TARGET_GS32
-    interrupt_register(INT_SCIA_RX, SCI_DP_RXD_isr);
-	interrupt_register(INT_SCIA_TX, SCI_DP_TXD_isr);
+    Interrupt_register(INT_SCIA_RX, SCI_DP_RXD_isr);
+	Interrupt_register(INT_SCIA_TX, SCI_DP_TXD_isr);
 #else
     PieVectTable.SCIRXINTA = SCI_DP_RXD_isr;
 	PieVectTable.SCITXINTA = SCI_DP_TXD_isr;
@@ -474,8 +474,8 @@ void InitScibGpioDp(void)
     // 通讯控制使用中断，初始化
     EALLOW;
 #ifdef TARGET_GS32
-    interrupt_register(INT_SCIA_RX, SCI_DP_RXD_isr);
-	interrupt_register(INT_SCIA_TX, SCI_DP_TXD_isr);
+    Interrupt_register(INT_SCIA_RX, SCI_DP_RXD_isr);
+	Interrupt_register(INT_SCIA_TX, SCI_DP_TXD_isr);
 #else
     PieVectTable.SCIRXINTA = SCI_DP_RXD_isr;
 	PieVectTable.SCITXINTA = SCI_DP_TXD_isr;

@@ -191,9 +191,17 @@ void ReInitForPG(void)
         case PG_TYPE_RESOLVER:      // 区分2808和28035进行配置
             gPGData.PGMode = 1;
             EALLOW;
-            SysCtrlRegs.PCLKCR1.bit.EQEP1ENCLK = 0;//不需要QEP模块
+#ifdef TARGET_GS32
+            SysCtl_disablePeripheral(SYSCTL_PERIPH_CLK_EQEP1);
+#else
+            SysCtrlRegs.PCLKCR1.bit.EQEP1ENCLK = 0;
+#endif//不需要QEP模块
         #ifdef TMS320F2808
+#ifdef TARGET_GS32
+            SysCtl_disablePeripheral(SYSCTL_PERIPH_CLK_EQEP2);
+#else
             SysCtrlRegs.PCLKCR1.bit.EQEP2ENCLK = 0;
+#endif
         #endif
             EDIS;
             

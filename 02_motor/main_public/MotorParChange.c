@@ -648,16 +648,15 @@ void SystemParChg05Ms()
             EQepRegs = (struct EQEP_REGS *)&EQep1Regs;
             EALLOW;
 #ifdef TARGET_GS32
-            interrupt_register(INT_EQEP1, &PG_Zero_isr);
+            Interrupt_register(INT_EQEP1, &PG_Zero_isr);
+            Interrupt_enable(INT_EQEP1);
+            SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_EQEP1);
 #else
             PieVectTable.EQEP1_INT = &PG_Zero_isr;
-#endif
-#ifdef TARGET_GS32
-            Interrupt_enable(INT_EQEP1);
-#else
             PieCtrlRegs.PIEIER5.bit.INTx1 = 1;
-#endif
             SysCtrlRegs.PCLKCR1.bit.EQEP1ENCLK = 1;
+#endif
+         
             EDIS;
         }
         #ifdef TMS320F2808                      // 28035 只有一个QEP
@@ -666,16 +665,17 @@ void SystemParChg05Ms()
             EQepRegs = (struct EQEP_REGS *)&EQep2Regs;
             EALLOW;
 #ifdef TARGET_GS32
-            interrupt_register(INT_EQEP2, &PG_Zero_isr);
+            Interrupt_register(INT_EQEP2, &PG_Zero_isr);
 #else
             PieVectTable.EQEP2_INT = &PG_Zero_isr;
 #endif
 #ifdef TARGET_GS32
             Interrupt_enable(INT_EQEP2);
+            SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_EQEP2);
 #else
             PieCtrlRegs.PIEIER5.bit.INTx2 = 1;
-#endif
             SysCtrlRegs.PCLKCR1.bit.EQEP2ENCLK = 1;
+#endif
             EDIS;
         }
         #endif        

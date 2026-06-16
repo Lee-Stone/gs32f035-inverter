@@ -250,8 +250,8 @@ void EndOfParIdentify(void)
         
         EALLOW;  						                //设置用户服务程序
 #ifdef TARGET_GS32
-        interrupt_register(INT_ADCA1, &ADC_Over_isr);       //ADC结束中断--INT1
-        interrupt_register(INT_EPWM1_TZ, &EPWM1_TZ_isr);    //过流中断--INT2
+        Interrupt_register(INT_ADCA1, &ADC_Over_isr);       //ADC结束中断--INT1
+        Interrupt_register(INT_EPWM1_TZ, &EPWM1_TZ_isr);    //过流中断--INT2
 #else
         PIE_VECTTABLE_ADCINT = &ADC_Over_isr;               //ADC结束中断--INT1
         PieVectTable.EPWM1_TZINT = &EPWM1_TZ_isr;           //过流中断--INT2

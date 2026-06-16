@@ -345,14 +345,14 @@ void InitSciOSC(uint8 baudRate)
 	EALLOW;  												// This is needed to write to EALLOW protected registers
 #ifdef TARGET_GS32
 #if (1 == OSC_SCI_SEL)
-	interrupt_register(INT_SCIA_RX, &sciaRxFifoIsr);
+	Interrupt_register(INT_SCIA_RX, &sciaRxFifoIsr);
     #if OSC_TX_INT_EN == 1
-	    interrupt_register(INT_SCIA_TX, &sciaTxFifoIsr);
+	    Interrupt_register(INT_SCIA_TX, &sciaTxFifoIsr);
     #endif
 #else
-	interrupt_register(INT_SCIB_RX, &sciaRxFifoIsr);
+	Interrupt_register(INT_SCIB_RX, &sciaRxFifoIsr);
     #if OSC_TX_INT_EN == 1
-	    interrupt_register(INT_SCIB_TX, &sciaTxFifoIsr);
+	    Interrupt_register(INT_SCIB_TX, &sciaTxFifoIsr);
     #endif
 #endif
 #else
@@ -2701,8 +2701,12 @@ uint8  OscDataCk(uint8 *buf, uint8 len)
 void OscSciIoInit(void)
 {
 	EALLOW;
-    
-	SysCtrlRegs.PCLKCR0.bit.SCIAENCLK = 1;     				// SCI-A 时钟使能    
+
+#ifdef TARGET_GS32
+	SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_SCIA);      // SCI-A 时钟使能
+#else
+	SysCtrlRegs.PCLKCR0.bit.SCIAENCLK = 1;     				// SCI-A 时钟使能
+#endif    
 	GpioCtrlRegs.GPAPUD.bit.GPIO28 = 0;    					// Enable pull-up for GPIO28 (SCIRXDA)
 	GpioCtrlRegs.GPAPUD.bit.GPIO29 = 0;	   					// Enable pull-up for GPIO29 (SCITXDA)
 	GpioCtrlRegs.GPAQSEL2.bit.GPIO28 = 3;  					// Asynch input GPIO28 (SCIRXDA)

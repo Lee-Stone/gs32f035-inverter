@@ -83,11 +83,11 @@ void InitInterrupt()
    EALLOW;  						//设置用户服务程序
 
 #ifdef TARGET_GS32
-    interrupt_register(INT_ADCA1, &ADC_Over_isr);
-    interrupt_register(INT_EPWM1_TZ, &EPWM1_TZ_isr);
-    interrupt_register(INT_EPWM2_TZ, &EPWM2_TZ_isr);
-    interrupt_register(INT_SCIA_RX, &SCI_RXD_isr);
-    interrupt_register(INT_SCIA_TX, &SCI_TXD_isr);
+    Interrupt_register(INT_ADCA1, &ADC_Over_isr);
+    Interrupt_register(INT_EPWM1_TZ, &EPWM1_TZ_isr);
+    Interrupt_register(INT_EPWM2_TZ, &EPWM2_TZ_isr);
+    Interrupt_register(INT_SCIA_RX, &SCI_RXD_isr);
+    Interrupt_register(INT_SCIA_TX, &SCI_TXD_isr);
 #else
    PieVectTable.ADCINT1     = &ADC_Over_isr;		//ADC结束中断
    //PieVectTable.TINT0 		= &cpu_timer0_isr;		//定时中断

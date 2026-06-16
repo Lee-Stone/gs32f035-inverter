@@ -287,7 +287,7 @@ void InitForFunctionApp(void)
 #if DEBUG_F_CHK_FUNC_CODE
     extern void ValidateFuncCode(void);
 
-// 判断功能码的 个数、属性仁否一致?
+// 判断功能码的 个数、属性?等史褚恢??
 // 判断功能码的EEPROM地址，anybus地址是否有错误
 // 自动获取 eeprom2Fc[] , anybus2Fc[] 数组.
 // 仅调试时使用
@@ -317,12 +317,21 @@ void InitDspFunc(void)
 {
     EALLOW;
 #if DSP_2803X       // 2803x还是2808平台
+#ifdef TARGET_GS32
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_CANA);    // eCAN-A
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_EPWM4);   // ePWM4
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_EPWM5);   // ePWM5
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_EPWM6);   // ePWM6
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_ECAP1);   // eCAP1
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_LINA);    // LIN-A
+#else
     SysCtrlRegs.PCLKCR0.bit.ECANAENCLK = 1;    // eCAN-A
     SysCtrlRegs.PCLKCR1.bit.EPWM4ENCLK = 1;    // ePWM4
     SysCtrlRegs.PCLKCR1.bit.EPWM5ENCLK = 1;    // ePWM5
     SysCtrlRegs.PCLKCR1.bit.EPWM6ENCLK = 1;    // ePWM5
     SysCtrlRegs.PCLKCR1.bit.ECAP1ENCLK = 1;    // eCAP1
     SysCtrlRegs.PCLKCR0.bit.LINAENCLK = 1;     // LIN-A
+#endif
 #else
     SysCtrlRegs.PCLKCR1.bit.ECAP3ENCLK = 1;     // eCAP3
     SysCtrlRegs.PCLKCR1.bit.ECAP4ENCLK = 1;     // eCAP4
@@ -338,7 +347,7 @@ void InitDspFunc(void)
     InitSetSpiForFunc();
 
 // EEPROM，24LC08/24LC32
-    I2cDealBeforeInit();    // 若在操作EEPROM时DSP复位，I2C需要
+    I2cDealBeforeInit();    // 若在操作EEPROM时DSP复位，I2C需要??
     InitI2CGpio();
     InitSetI2ca();  
 
@@ -1118,7 +1127,7 @@ void Main05msFunctionD(void)
 
     UpdateDisplayBuffer();      // 更新数据显示缓冲  440
 
-    WinkDeal();                 // 了复?  110
+    WinkDeal();                 // 了复???  110
 
     ErrorReset();               // 故障处理    90
 

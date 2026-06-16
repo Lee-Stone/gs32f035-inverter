@@ -1836,8 +1836,8 @@ void InitSciaGpio(void)
 // 通讯控制使用中断，初始化
     EALLOW;
 #ifdef TARGET_GS32
-    interrupt_register(INT_LINA, &Lina_Level0_ISR);
-    interrupt_register(INT_LINB, &Lina_Level1_ISR);
+    Interrupt_register(INT_LINA, &Lina_Level0_ISR);
+    Interrupt_register(INT_LINB, &Lina_Level1_ISR);
 #else
     PieVectTable.LIN0INTA = &Lina_Level0_ISR;
     PieVectTable.LIN1INTA = &Lina_Level1_ISR;
@@ -1866,8 +1866,8 @@ void InitSciaGpio(void)
     // 通讯控制使用中断，初始化
     EALLOW;
 #ifdef TARGET_GS32
-    interrupt_register(INT_SCIA_RX, SCI_RXD_isr);
-	interrupt_register(INT_SCIA_TX, SCI_TXD_isr);
+    Interrupt_register(INT_SCIA_RX, SCI_RXD_isr);
+	Interrupt_register(INT_SCIA_TX, SCI_TXD_isr);
 #else
     PieVectTable.SCIRXINTA = SCI_RXD_isr;
 	PieVectTable.SCITXINTA = SCI_TXD_isr;

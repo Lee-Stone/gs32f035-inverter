@@ -895,7 +895,7 @@ void OutputPhaseLoseAndShortGndDetect(void)
 			//gBforeRunPhaseLose.CurComperCoff = (gBforeRunPhaseLose.CurComperCoff<Data2)?gBforeRunPhaseLose.CurComperCoff:Data2;
 			EALLOW;
 #ifdef TARGET_GS32
-			interrupt_register(INT_ADCA1, &ShortGnd_ADC_Over_isr); // 启动前对地短路和输出缺相检测AD中断
+			Interrupt_register(INT_ADCA1, &ShortGnd_ADC_Over_isr); // 启动前对地短路和输出缺相检测AD中断
 #else
 			PieVectTable.ADCINT1	= &ShortGnd_ADC_Over_isr; // 启动前对地短路和输出缺相检测AD中断
 #endif  
@@ -981,7 +981,7 @@ void ResetPhaseLoseDetect(void)
 	gMainStatus.RunStep = STATUS_STOP;
 	EALLOW;
 #ifdef TARGET_GS32
-	interrupt_register(INT_ADCA1, &ADC_Over_isr);
+	Interrupt_register(INT_ADCA1, &ADC_Over_isr);
 #else
 	PieVectTable.ADCINT1     = &ADC_Over_isr;
 #endif
