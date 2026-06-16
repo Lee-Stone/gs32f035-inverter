@@ -57,7 +57,7 @@ Uint32 eCanReEnFlag;// = 0;
 * 说明				: eCan中断方式接收数据到缓存
 ********************************************************************************/
 Uint32 recCanCout;
-interrupt void eCanRxIsr(void)
+__interrupt void eCanRxIsr(void)
 {
     Uint16 i, mbox, dataTy;
     Uint32 *pi;

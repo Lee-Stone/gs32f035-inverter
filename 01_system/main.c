@@ -102,7 +102,7 @@ void main(void)
 /***************************************************************
 	EPWM的周期中断，约30us
 ****************************************************************/
-interrupt void ADC_Over_isr(void)
+__interrupt void ADC_Over_isr(void)
 {
     EALLOW;             //28035改为EALLOW保护
     ADC_CLEAR_INT_FLAG;
@@ -121,7 +121,7 @@ interrupt void ADC_Over_isr(void)
 /***************************************************************
 	EPWM的过流中断，对硬件过流信号处理
 ****************************************************************/
-interrupt void EPWM1_TZ_isr(void)
+__interrupt void EPWM1_TZ_isr(void)
 {
 	DisableDrive();								//首先封锁输出
 	HardWareErrorDeal();					    //处理硬件故障－电机控制模块处理
@@ -132,7 +132,7 @@ interrupt void EPWM1_TZ_isr(void)
 /***************************************************************
 	CBC触发的TZ中断，中断中强制关闭驱动使能信号
 ****************************************************************/
-interrupt void EPWM2_TZ_isr(void)
+__interrupt void EPWM2_TZ_isr(void)
 {               
 	DisableDrive();								//首先封锁输出,周期中断中开启
     gCBCProtect.CBCIntFlag = 1;  

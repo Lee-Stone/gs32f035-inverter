@@ -528,7 +528,7 @@ void SetIPMRefPos(Uint Pos)
 /************************************************************
 	LAB、LBC、LCA轴电感计算函数
 	gIPMInitPos.Cur保存：IU+、IU-、IV+、IV-、IW+、IW-、
-	                     IU+、IU-V+、IV-、IW+、IW-
+	                     IU+、IU-?IV+、IV-、IW+、IW-
 ************************************************************/
 void SynCalLabAndLbc(void)
 {
@@ -575,7 +575,7 @@ void SynInitPosDetCal(void)
         gError.ErrorInfo[3].bit.Fault3 = 2;
     }*///等效于:三相电流偏差之和小于电机额定电流的1/40，认为无法识别磁极初始位置
 
-	gIPMPos.InitPos = (Uint)atan(m_X, m_Y) - 5461;   // 30deg
+	gIPMPos.InitPos = (Uint)user_atan(m_X, m_Y) - 5461;   // 30deg
 	gIPMPos.InitAngle_deg = (Ulong)gIPMPos.InitPos * 3600 >> 16;
 }
 
@@ -1501,7 +1501,7 @@ void SynTuneBemf()
 					m_ULong1 = ((Ulong)m_UData1 * (Ulong)(gUVCoff.ComperL - m_UData3));
 					m_UData1 = (gUVCoff.TotalVolt<<5)/m_UData2;
 					m_ULong1 = ((Ulong)m_UData1 * (Ulong)(gUVCoff.Comper  - m_UData3)) - m_ULong1;
-                    m_ULong1 =  m_ULong1 * 10;//电压变恳桓鲂∈悖缌?个小数点，所有要乘以10
+                    m_ULong1 =  m_ULong1 * 10;//电压变恳桓鲂∈?点，电??个小数点，所有要乘以10
 					//m_ULong1 = 电压差(V)×10×2^14 
 					m_UData2 = (gUVCoff.TotalI - gUVCoff.TotalIL)>>7;
 					m_ULong2 = ((Ulong)m_UData2 * (Ulong)gMotorInfo.Current)>>10;
@@ -1782,7 +1782,7 @@ void BeforeRunRsIdentifyICal(void)
 	}
 	else if(gRsIdentifyPID.Deta < - m_Data)						// 给定比反馈小500
 	{
-	    if(gUVCoff.Comper > (gDeadBand.DeadBand>>1) + 5)		// 奔浔人狼杏杏嗔
+	    if(gUVCoff.Comper > (gDeadBand.DeadBand>>1) + 5)		// 奔浔人狼?尚有余?
 		{
 	        if(gInvInfo.InvTypeApply > 16)						// 减小开关时间
 	        {         
@@ -1901,14 +1901,14 @@ void RsIdentify_ADC_Over_isr(void)
        HardWareOverUDCDeal();				
     }
 #endif    
-    GetUDCInfo();							//获取母线缪共裳?   
-	GetCurrentInfo();						//获取采缌? 以及温度、母线电压的采样	
+    GetUDCInfo();							//获取母线缪共裳?数??   
+	GetCurrentInfo();						//获取采?电?? 以及温度、母线电压的采样	
 	ChangeCurrent();						//计算各种场合下的电流量
 	BrakeResControl(); 
 }
 */
 /*******************************************************************************
-* Function Name  : 辨识初始位置角的时候ADC结束中断硖序
+* Function Name  : 辨识初始位置角的时候ADC结束中断?理绦?
 * Description    : IfPWMPeriodInt()是周期点
 * Input          : None
 * Output         : None

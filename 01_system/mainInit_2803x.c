@@ -30,8 +30,8 @@ void 	InitPieCtrl(void);
 void 	InitPieVectTable(void);
 
 void 	InitSetGpio(void);
-extern interrupt void SCI_RXD_isr(void);
-extern interrupt void SCI_TXD_isr(void);
+extern __interrupt void SCI_RXD_isr(void);
+extern __interrupt void SCI_TXD_isr(void);
 
 
 /************************************************************
@@ -342,7 +342,7 @@ void InitPieCtrl(void)
 所有误操作的中断处理
 ************************************************************/
 int gErrorIntCnt;
-interrupt void rsvd_ISR(void)      
+__interrupt void rsvd_ISR(void)      
 {
 	gErrorIntCnt++;				//监控是否有错误进入中断的情况
 }

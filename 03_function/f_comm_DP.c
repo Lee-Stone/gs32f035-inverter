@@ -33,8 +33,8 @@ Uint16 dataByteNum; // 不同模式下数据传输的字节个数,PPO1-12,PPO2-20,PPO3-4,PPO5-
 #define FIFO_NUM  16;
 
 void InitSciDpBaudRate(struct SCI_DATA_DP *p); 
-interrupt void SCI_DP_RXD_isr(void);
-interrupt void SCI_DP_TXD_isr(void);
+__interrupt void SCI_DP_RXD_isr(void);
+__interrupt void SCI_DP_TXD_isr(void);
 
 
 void DpDataDeal(void);
@@ -49,7 +49,7 @@ void GetDataByteNum(void);
 // 通讯接收中断函数
 //
 //=====================================================================
-interrupt void SCI_DP_RXD_isr(void)
+__interrupt void SCI_DP_RXD_isr(void)
 {
     Uint16 tmp;
     struct SCI_DATA_DP *p = &sciM380DpData;  
@@ -140,7 +140,7 @@ interrupt void SCI_DP_RXD_isr(void)
 // 发送一个字符完成，就进入该中断
 //
 //=====================================================================
-interrupt void SCI_DP_TXD_isr(void)
+__interrupt void SCI_DP_TXD_isr(void)
 {    
     struct SCI_DATA_DP *p = &sciM380DpData;
     

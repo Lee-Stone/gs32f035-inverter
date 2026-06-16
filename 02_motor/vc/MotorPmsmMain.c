@@ -41,7 +41,7 @@ extern void PrepareParForRun(void);
 /*************************************************************
 	同步机下编码器的基准中断到达的处理程序(调用程序)
 *************************************************************/
-interrupt void PG_Zero_isr(void)
+__interrupt void PG_Zero_isr(void)
 {
 	if((*EQepRegs).QFLG.bit.IEL == 1)
     {

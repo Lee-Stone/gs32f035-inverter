@@ -323,7 +323,7 @@ void OutputPhaseLoseAndShortGndDetect(void);
 void ShortGnd_PhaseLoseICal(void);
 void    BrakeResShortProtect(void);
 void  BrakeOverloadProtect(void);
-interrupt void ShortGnd_ADC_Over_isr(void);
+__interrupt void ShortGnd_ADC_Over_isr(void);
 /************************************************************
 	变频器保护处理
 ************************************************************/
@@ -1080,7 +1080,7 @@ void BeforeRunOutputPhaseLoseDetect(void)
 	}
 }
 
-interrupt void ShortGnd_ADC_Over_isr(void)
+__interrupt void ShortGnd_ADC_Over_isr(void)
 {
 	EALLOW;             //28035改为EALLOW保护
 	ADC_CLEAR_INT_FLAG;
@@ -1468,7 +1468,7 @@ void InputPhaseLoseDetect(void)
     }
 
 	if((gSubCommand.bit.InputLost == 1) &&              //F9-12-个位
-	   (gInLose.UpCnt > 5) && (gInLose.UpCnt < 485))    // 1sec内PL存在低电平，毕喾讲?
+	   (gInLose.UpCnt > 5) && (gInLose.UpCnt < 485))    // 1sec内PL存在低电平，?缺相方??
 	{
 		gInLose.ErrCnt++;
 		if(gInLose.ErrCnt >= 2)
@@ -1926,7 +1926,7 @@ void OverLoadProtect(void)
 			gError.ErrorCode.all |= ERROR_MOTOR_OVER_LOAD;
 		}		
 	}
-    //电机过载预报?  
+    //电机过载预报?处??  
 	//if(gOverLoad.MotorTotal.half.MSW > gBasePar.PerMotorOvLoad * 360)
 	if(gOverLoad.MotorTotal.half.MSW > gComPar.PerMotorOvLoad * 360)
 	{

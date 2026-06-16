@@ -90,11 +90,11 @@ extern void SaveDebugData32(unsigned long);
 extern void ResetDebugBuffer(void);
 
 /**********************以下是中断程序说明*********************/
-extern interrupt void ADC_Over_isr(void);
-extern interrupt void EPWM1_TZ_isr(void);
-extern interrupt void EPWM1_zero_isr(void);
-extern interrupt void PG_Zero_isr(void);
-extern interrupt void EPWM2_TZ_isr(void);
+extern __interrupt void ADC_Over_isr(void);
+extern __interrupt void EPWM1_TZ_isr(void);
+extern __interrupt void EPWM1_zero_isr(void);
+extern __interrupt void PG_Zero_isr(void);
+extern __interrupt void EPWM2_TZ_isr(void);
 
 /*********************系统初始化函数声明*********************/
 extern void InitSysCtrl(void);   

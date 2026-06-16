@@ -149,11 +149,11 @@ LOCALD void inline CommStartSend(void);
 #if DSP_2803X
 void SCI_RXD_isr(void);
 void SCI_TXD_isr(void);
-interrupt void Lina_Level0_ISR(void);    // LIN-SCI 中断
-interrupt void Lina_Level1_ISR(void);    // LIN-SCI 中断
+__interrupt void Lina_Level0_ISR(void);    // LIN-SCI 中断
+__interrupt void Lina_Level1_ISR(void);    // LIN-SCI 中断
 #else
-interrupt void SCI_RXD_isr(void);       // SCI中断
-interrupt void SCI_TXD_isr(void);       // SCI中断
+__interrupt void SCI_RXD_isr(void);       // SCI中断
+__interrupt void SCI_TXD_isr(void);       // SCI中断
 #endif
 
 extern Uint16 ValidateInvType(void);
@@ -232,7 +232,7 @@ void SciDeal(void)
 #if DSP_2803X
 void SCI_RXD_isr(void)
 #else
-interrupt void SCI_RXD_isr(void)
+__interrupt void SCI_RXD_isr(void)
 #endif
 {
     Uint16 tmp;
@@ -269,7 +269,7 @@ interrupt void SCI_RXD_isr(void)
 #if DSP_2803X
 void SCI_TXD_isr(void)
 #else
-interrupt void SCI_TXD_isr(void)
+__interrupt void SCI_TXD_isr(void)
 #endif
 {
 	// 通讯发送数据
@@ -281,7 +281,7 @@ interrupt void SCI_TXD_isr(void)
 
 #if DSP_2803X
 // 高优先级中断
-interrupt void Lina_Level0_ISR(void)
+__interrupt void Lina_Level0_ISR(void)
 {
 	Uint32 LinL0IntVect;  
 
@@ -305,7 +305,7 @@ interrupt void Lina_Level0_ISR(void)
 }
 
 //Low priority BLIN ISR.  Just a placeholder.
-interrupt void Lina_Level1_ISR(void)
+__interrupt void Lina_Level1_ISR(void)
 {
 	PieCtrlRegs.PIEACK.bit.ACK9 = 1; 
 }
@@ -798,7 +798,7 @@ LOCALD Uint16 CommRwFuncodeAtrrib(Uint16 addr, Uint16 data, Uint16 rwMode)
    {
     if ((COMM_NO_RW_FC_0 == index) ||       // 某些功能码，通讯不能进行RW
         //(COMM_NO_RW_FC_1 == index) ||
-        ((COMM_WRITE_FC == rwMode) &&       // 某些功苈耄ㄑ恫荒芙蠾
+        ((COMM_WRITE_FC == rwMode) &&       // 某些功苈耄?通讯不能进行W
          (//(COMM_NO_W_FC_0 == index) ||
           (COMM_NO_W_FC_1 == index) ||
           //(COMM_NO_W_FC_2 == index) ||
@@ -1857,8 +1857,8 @@ void InitSetScia(void){}
 void InitSciaGpio(void){}
 void SciDeal(void){}
 void UpdateSciFormat(void){}
-interrupt void SCI_RXD_isr(void){}
-interrupt void SCI_TXD_isr(void){}
+__interrupt void SCI_RXD_isr(void){}
+__interrupt void SCI_TXD_isr(void){}
 Uint16 CommWrite(Uint16 addr, Uint16 data){}
 Uint16 CommRead(Uint16 addr, Uint16 data){}
 #endif
