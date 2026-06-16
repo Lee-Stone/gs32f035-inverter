@@ -449,8 +449,13 @@ void InitSciaGpioDp(void)
 #endif
     EDIS;
 	IER |= M_INT9;   	            //  Enable interrupts:
+#ifdef TARGET_GS32
+    Interrupt_enable(INT_SCIA_RX);
+    Interrupt_enable(INT_SCIA_TX);
+#else
 	PieCtrlRegs.PIEIER9.bit.INTx1 = 1;
 	PieCtrlRegs.PIEIER9.bit.INTx2 = 1;
+#endif
 }
 
 
@@ -477,8 +482,13 @@ void InitScibGpioDp(void)
 #endif
     EDIS;
 	IER |= M_INT9;   	            //  Enable interrupts:
+#ifdef TARGET_GS32
+    Interrupt_enable(INT_SCIA_RX);
+    Interrupt_enable(INT_SCIA_TX);
+#else
 	PieCtrlRegs.PIEIER9.bit.INTx1 = 1;
 	PieCtrlRegs.PIEIER9.bit.INTx2 = 1;
+#endif
 }
 
 //=====================================================================

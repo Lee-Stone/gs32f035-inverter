@@ -257,7 +257,11 @@ void EndOfParIdentify(void)
         PieVectTable.EPWM1_TZINT = &EPWM1_TZ_isr;           //过流中断--INT2
 #endif
         //PieVectTable.EPWM1_INT 	= &EPWM1_zero_isr;		//下溢中断--INT3
+#ifdef TARGET_GS32
+        Interrupt_disable(INT_EPWM2);                   //关闭EPWM2中断
+#else
         PieCtrlRegs.PIEIER3.bit.INTx2 = 0;              //关闭EPWM2中断
+#endif
         EDIS;
         
     	InitSetPWM();

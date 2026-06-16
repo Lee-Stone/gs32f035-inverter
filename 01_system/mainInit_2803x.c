@@ -106,11 +106,18 @@ void InitInterrupt()
 ************************************************************/
 void SetInterruptEnable()
 {
+#ifdef TARGET_GS32
+    Interrupt_enable(INT_ADCA1);	//ADC结束中断
+    Interrupt_enable(INT_EPWM1);
+    Interrupt_enable(INT_EPWM1_TZ);	//过流中断
+    Interrupt_enable(INT_EPWM2_TZ);	//CBC中断
+#else
    IER |= (M_INT1 | M_INT2 | M_INT3 | M_INT5);	//  Enable interrupts:
    PieCtrlRegs.PIEIER1.bit.INTx1 = 1;           //  ADC1INT
    PieCtrlRegs.PIEIER2.bit.INTx1 = 1;           // 	EPWM1_TZ
    PieCtrlRegs.PIEIER3.bit.INTx1 = 1;           // 	EPWM1_INT
    PieCtrlRegs.PIEIER2.bit.INTx2 = 1;
+#endif
 }
 
 /************************************************************

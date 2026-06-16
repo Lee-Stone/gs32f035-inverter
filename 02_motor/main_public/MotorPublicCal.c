@@ -236,7 +236,11 @@ void HardWareErrorDeal()
 //......................................................  
     //软件立即触发AD采样，争取获得最准确的数据
     EALLOW;
+#ifdef TARGET_GS32
+    Interrupt_disable(INT_ADCA1);
+#else
     PieCtrlRegs.PIEIER1.bit.INTx1 = 0;           //  ADC1INT
+#endif
 	ADC_RESET_SEQUENCE;		    //复位AD的计数器
 	ADC_CLEAR_INT_FLAG;			//首先清除中断标志位
 	ADC_START_CONVERSION;		//软件启动AD
@@ -254,7 +258,11 @@ void HardWareErrorDeal()
     EALLOW;
     ADC_CLEAR_INT_FLAG;         // 清除AD中断
     ADC_RESET_SEQUENCE;
-    PieCtrlRegs.PIEIER1.bit.INTx1 = 1;           //  ADC1INT    
+#ifdef TARGET_GS32
+    Interrupt_enable(INT_ADCA1);
+#else
+    PieCtrlRegs.PIEIER1.bit.INTx1 = 1;           //  ADC1INT
+#endif
     EDIS;  
     
 //......................................................  

@@ -289,12 +289,22 @@ void InitSciOSC(uint8 baudRate)
     SciRxBufStr.busy = 0;
 //	SciRxBufStr.err  = 0;									// 清空串口出错标志							
 	SciRxBufStr.len = 0xff;
+#ifdef TARGET_GS32
+#if (1 == OSC_SCI_SEL)
+    Interrupt_disable(INT_SCIA_RX);
+    Interrupt_disable(INT_SCIA_TX);
+#else
+    Interrupt_disable(INT_SCIB_RX);
+    Interrupt_disable(INT_SCIB_TX);
+#endif
+#else
 #if 	(1 == OSC_SCI_SEL)	
     PieCtrlRegs.PIEIER9.bit.INTx1 = 0;     					// PIE Group 9, INT1	RX接收中断 禁止
 	PieCtrlRegs.PIEIER9.bit.INTx2 = 0;     					// PIE Group 9, INT2	TX发送中断
 #else
     PieCtrlRegs.PIEIER9.bit.INTx3 = 0;     					// PIE Group 9, INT3	RX接收中断 禁止
 	PieCtrlRegs.PIEIER9.bit.INTx4 = 0;     					// PIE Group 9, INT4	TX发送中断
+#endif
 #endif
 	
 	// 配置SCI-A使用管脚
@@ -360,6 +370,23 @@ void InitSciOSC(uint8 baudRate)
 #endif
 	EDIS;
 	
+#ifdef TARGET_GS32
+#if (1 == OSC_SCI_SEL)
+    Interrupt_enable(INT_SCIA_RX);
+    #if OSC_TX_INT_EN == 1
+        Interrupt_enable(INT_SCIA_TX);
+    #else
+        Interrupt_disable(INT_SCIA_TX);
+    #endif
+#else
+    Interrupt_enable(INT_SCIB_RX);
+    #if OSC_TX_INT_EN == 1
+        Interrupt_enable(INT_SCIB_TX);
+    #else
+        Interrupt_disable(INT_SCIB_TX);
+    #endif
+#endif
+#else
 #if 	(1 == OSC_SCI_SEL)	
 	PieCtrlRegs.PIEIER9.bit.INTx1 = 1;						// 使能中断，
 	#if OSC_TX_INT_EN == 1
@@ -374,6 +401,7 @@ void InitSciOSC(uint8 baudRate)
 	#else
 		PieCtrlRegs.PIEIER9.bit.INTx4 = 0;
 	#endif
+#endif
 #endif	
 
 //	OscConFrameBuf[9] = 

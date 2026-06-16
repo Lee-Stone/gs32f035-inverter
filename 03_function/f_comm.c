@@ -1844,8 +1844,13 @@ void InitSciaGpio(void)
 #endif
     EDIS;
 	IER |= M_INT9;   	                 // Enable interrupts:
+#ifdef TARGET_GS32
+    Interrupt_enable(INT_LINA);
+    Interrupt_enable(INT_LINB);
+#else
 	PieCtrlRegs.PIEIER9.bit.INTx3=1;     // PIE Group 9, INT3
-	PieCtrlRegs.PIEIER9.bit.INTx4=1;     // PIE Group 9, INT4	
+	PieCtrlRegs.PIEIER9.bit.INTx4=1;     // PIE Group 9, INT4
+#endif	
 #else
     EALLOW;    
     GpioCtrlRegs.GPAPUD.bit.GPIO28 = 0;    // Enable pull-up for GPIO28 (SCIRXDA)
@@ -1869,8 +1874,13 @@ void InitSciaGpio(void)
 #endif
     EDIS;
 	IER |= M_INT9;   	            //  Enable interrupts:
+#ifdef TARGET_GS32
+    Interrupt_enable(INT_SCIA_RX);
+    Interrupt_enable(INT_SCIA_TX);
+#else
 	PieCtrlRegs.PIEIER9.bit.INTx1 = 1;
 	PieCtrlRegs.PIEIER9.bit.INTx2 = 1;
+#endif
  #endif   
 	
 }

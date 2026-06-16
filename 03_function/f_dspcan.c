@@ -276,7 +276,11 @@ Uint16 InitdspECan(Uint16 baud)		// Initialize eCAN-A module
 
 // 接收中断初始化
     EALLOW;
+#ifdef TARGET_GS32
+    Interrupt_disable(INT_CANA0);
+#else
     PieCtrlRegs.PIEIER9.bit.INTx5 = 0;                      // 禁止中断
+#endif
     ECanaRegs.CANGIM.all = 0;
     ECanaRegs.CANMIM.all = 0;                               // 禁用所有邮箱中断
     
@@ -293,8 +297,12 @@ Uint16 InitdspECan(Uint16 baud)		// Initialize eCAN-A module
     PieVectTable.ECAN0INTA = &eCanRxIsr;                    // CANA 0接收中断入口
 #endif
     EDIS;
+#ifdef TARGET_GS32
+    Interrupt_enable(INT_CANA0);
+#else
     PieCtrlRegs.PIEIER9.bit.INTx5 = 1;                      // 使能ECAN1中断
     IER |= M_INT9; 											// Enable CPU INT9
+#endif
 	eCanTranEnFlag = 0;                                     // 清空邮箱初始化标志
 	eCanReEnFlag = 0;
 	return CAN_INIT_SUCC;									// 初始化成功 
