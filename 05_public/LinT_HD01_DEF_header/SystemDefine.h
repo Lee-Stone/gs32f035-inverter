@@ -20,6 +20,8 @@ extern "C" {
 #include "DSP2803x_Device.h"
 #include "DSP2803x_Examples.h"
 #endif
+#endif
+
 #include "MotorDefine.h"
 
 #define STLEN  1
