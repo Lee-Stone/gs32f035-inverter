@@ -60,7 +60,7 @@ void DQToAmpTheta(MT_STRUCT * MT,AMPTHETA_STRUCT * AmpTheta)
 	m_Input = (((long)MT->M * (long)MT->M) + ((long)MT->T * (long)MT->T));
 	AmpTheta->Amp = (Uint)qsqrt(m_Input);
 
-	AmpTheta->Theta = atan(MT->M,MT->T);
+	AmpTheta->Theta = user_atan(MT->M,MT->T);
 }
 
 /*************************************************************
@@ -92,7 +92,7 @@ void ChangeCurrent(void)
     //...................................數呾盄萇霜
 
     //gIAmpTheta.Theta = atan(gIMTSetQ12.M, gIMTSetQ12.T);	//數呾MT粣標褒
-    gIAmpTheta.Theta = atan(gIMTQ12.M, gIMTQ12.T);	//數呾MT粣標褒
+    gIAmpTheta.Theta = user_atan(gIMTQ12.M, gIMTQ12.T);	//數呾MT粣標褒
     gIAmpTheta.ThetaOld = gIAmpTheta.Theta + gPhase.IMPhaseOld;	// wg
    // temp = gOutVolt.VoltPhaseApply - gIAmpTheta.Theta;
 /*	temp1 = gOutVolt.VoltPhaseApply1 - gIAmpTheta.ThetaOld;		// wg

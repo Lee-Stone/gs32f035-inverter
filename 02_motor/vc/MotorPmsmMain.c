@@ -316,7 +316,7 @@ void SynCalLdAndLq(void)
 	gIPMInitPos.Ld = (u16)(m_L0 + m_DetaL);
 	gIPMInitPos.Lq = (u16)(m_L0 - m_DetaL);
 
-//	gIPMInitPos.InitPosSrc = atan(m_L2,m_L1) / 2;				// 初步计算磁极角度，若为凸极电机直接判断极性，表贴电机重新计算
+//	gIPMInitPos.InitPosSrc = user_atan(m_L2,m_L1) / 2;				// 初步计算磁极角度，若为凸极电机直接判断极性，表贴电机重新计算
 
     gMotorExtReg.LD = gIPMInitPos.Ld;
     gMotorExtReg.LQ = gIPMInitPos.Lq;
@@ -564,7 +564,7 @@ s16 PmsmFreqAdjMethod(void)
 }
 /*************************************************************
     对于凸极电机，最大转矩电流比控制程序，凸极率大于1.5时才进
-    行最笞氐缌鞅瓤刂?
+    行最笞?矩电流比控??
 *************************************************************/
 s16 PmsmMaxTorqCtrl(void)
 {

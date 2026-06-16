@@ -242,7 +242,7 @@ void CalTorqueUp(void)
 	m_ZeroUp = (((Ulong)gVFPar.VFTorqueUp)<<12)/1000; //0Hz时候的提升电压
 	m_MaxFreqUp = (((Ulong)gVFPar.VFTorqueUpLim)<<15)/gBasePar.FullFreq; //标么值表示的转矩提升截至频率   
 	m_DetaFreq = m_MaxFreqUp - abs(gMainCmd.FreqSyn);
-    if(( m_DetaFreq > 0 ) && ( 0 == gExtendCmd.bit.SpeedSearch )) //转速跟踪时不作远靥嵘?
+    if(( m_DetaFreq > 0 ) && ( 0 == gExtendCmd.bit.SpeedSearch )) //转速跟踪时不作远?转矩提??
     {
 	    if((gVFPar.VFTorqueUp == 0)&&(gVFPar.VFOvShock == 0))		//自动转矩提升,在震荡抑制作用时无效 2011.5.14 L1082
 	    {
@@ -300,9 +300,9 @@ void VFWsTorqueBoostComm(void)
         gVFAutoVar.VfRVCosFai = 0;
     }
 
-    m_iTempVar2 = atan(gVFAutoVar.VfRVCosFai,gVFAutoVar.VfRIsSinFai);    
+    m_iTempVar2 = atuser_atanan(gVFAutoVar.VfRVCosFai,gVFAutoVar.VfRIsSinFai);    
     gVFAutoVar.VfReverseAngle = Filter128(m_iTempVar2,gVFAutoVar.VfReverseAngle);//计算电压修正角
-    m_iTempVar2 = atan( abs(gIMTQ12.M), abs(gIMTQ12.T) );
+    m_iTempVar2 = user_atan( abs(gIMTQ12.M), abs(gIMTQ12.T) );
     if( gVFAutoVar.VfReverseAngle > m_iTempVar2 )
 	{
         gVFAutoVar.VfReverseAngle = m_iTempVar2;  //计算的修正角大于功率因数角的余角，就使用功率因数角余角代替
@@ -1130,7 +1130,7 @@ void HVfOscDampDeal()
     gHVfOscDamp.VoltSmSet = (long)tempVolt * (int)gVFPar.VFOvShock /10L;
 
     gHVfOscDamp.VoltAmp = gOutVolt.Volt; // 已加转矩提升 
-    gHVfOscDamp.VoltPhase = atan(gHVfOscDamp.VoltSmSet, gHVfOscDamp.VoltAmp);
+    gHVfOscDamp.VoltPhase = user_atan(gHVfOscDamp.VoltSmSet, gHVfOscDamp.VoltAmp);
 
 #if (SOFTSERIES == MD380SOFT)
 	if(((INV_VOLTAGE_690V == gInvInfo.InvVoltageType)&&(gInvInfo.InvTypeApply > 30)&&(gBasePar.FcSetApply <= 12))||
@@ -1138,7 +1138,7 @@ void HVfOscDampDeal()
 	{
 		VoltRs = (long)gMotorExtPer.R1 * gMotorExtPer.IoVsFreq >> 16 ;	
     	gHVfOscDamp.VoltSmSet +=  VoltRs;
-    	gHVfOscDamp.VoltPhase = atan(gHVfOscDamp.VoltSmSet, gHVfOscDamp.VoltAmp);		
+    	gHVfOscDamp.VoltPhase = user_atan(gHVfOscDamp.VoltSmSet, gHVfOscDamp.VoltAmp);		
 		
     	gHVfOscDamp.VoltPhaseFilter.taoVsTs = 100 ;//50
     	gHVfOscDamp.VoltPhaseFilt = Filter_1st(gHVfOscDamp.VoltPhase, gHVfOscDamp.VoltPhaseFilt, &gHVfOscDamp.VoltPhaseFilter) ;
@@ -1192,7 +1192,7 @@ void HVfCurReDecomp()
 
     temp1 = ((long)gOutVolt.VoltApply * m_CosPhi >> 15) - m_ResVolt;
     temp2 = (long)gOutVolt.VoltApply * m_SinPhi >> 15;
-    m_phi2 = atan((int)temp1, (int)temp2);
+    m_phi2 = user_atan((int)temp1, (int)temp2);
 
     // *generate results
     mDir = (gMainCmd.FreqSyn >= 0) ? 1 : -1;

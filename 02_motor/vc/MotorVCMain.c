@@ -473,7 +473,7 @@ void VcAsrControl1(void)
     DINT;
     m_DetaPos = gAsr.PosSet - gPGData.RefPos;
 	
-	if(gAsr.OutFlag * m_DetaPos > 0)                    /*积分分离处理:表示偏差和限幅同牛⑶也晃?*/
+	if(gAsr.OutFlag * m_DetaPos > 0)                    /*积分分离处理:表示偏差和限幅同?号，并且不??*/
 	{
 	    gAsr.PosSet = gPGData.RefPos + gAsr.DetaPos;
 		m_DetaPos = gAsr.DetaPos;
@@ -603,7 +603,7 @@ void VCCsrControl(void)
 		gItAcrQ24.Total = ((s32)m_UMT.T << 12);
 	}
 	gUAmpTheta.ThetaOld = gUAmpTheta.Theta;		// wg
-	gUAmpTheta.Theta = atan(m_UMT.M, m_UMT.T);
+	gUAmpTheta.Theta = user_atan(m_UMT.M, m_UMT.T);
 	gOutVolt.VoltPhaseApply = gUAmpTheta.Theta;
 	gOutVolt.VoltPhaseApply1 = gUAmpTheta.ThetaOld + gPhase.IMPhaseOld;				// wg
 	gOutVolt.VoltPhaseApply2 = gUAmpTheta.Theta + gPhase.IMPhase;		// wg

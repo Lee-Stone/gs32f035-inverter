@@ -404,7 +404,7 @@ void SynFlyingStartCalc(Ulong FullFreq01)
 	{
 		gFlyingStart.CurRemAlpha[i] = ((long)gFlyingStart.CurRemU[i] * 23170L)>>15;
 		gFlyingStart.CurRemBeta[i]  = (((long)(gFlyingStart.CurRemV[i] - gFlyingStart.CurRemW[i])) * 13377L) >> 15;
-		gFlyingStart.ThetaAB[i] = atan(gFlyingStart.CurRemAlpha[i],gFlyingStart.CurRemBeta[i]);
+		gFlyingStart.ThetaAB[i] = user_atan(gFlyingStart.CurRemAlpha[i],gFlyingStart.CurRemBeta[i]);
 	}
 	
 	m_DetaTheta = gFlyingStart.ThetaAB[0] + gFlyingStart.ThetaAB[2] - 2 * gFlyingStart.ThetaAB[1];
@@ -518,7 +518,7 @@ void SynFlyingStartCalc(Ulong FullFreq01)
 	m_Cos = ((long)qsin(16384 - m_OmegaT) * 1000) >> 15;
 	m_X = -(((long)gMotorExtInfo.LQ * (1000 - m_Cos)) >> 10);
 	m_Y = -(((long)gMotorExtInfo.LD * m_Sin) >> 10);
-	m_ThetaDQ = atan(m_X,m_Y);				// 短路电流在dq轴系下的角度
+	m_ThetaDQ = user_atan(m_X,m_Y);				// 短路电流在dq轴系下的角度
 	gFlyingStart.Theta = gFlyingStart.ThetaAB[2] - m_ThetaDQ;
 	gFlyingStart.StartStop = 1;
 }
