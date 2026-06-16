@@ -317,26 +317,24 @@ void InitDspFunc(void)
 {
     EALLOW;
 #if DSP_2803X       // 2803x还是2808平台
-#ifdef TARGET_GS32
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_CANA);    // eCAN-A
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_EPWM4);   // ePWM4
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_EPWM5);   // ePWM5
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_EPWM6);   // ePWM6
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_ECAP1);   // eCAP1
-    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_LINA);    // LIN-A
-#else
     SysCtrlRegs.PCLKCR0.bit.ECANAENCLK = 1;    // eCAN-A
     SysCtrlRegs.PCLKCR1.bit.EPWM4ENCLK = 1;    // ePWM4
     SysCtrlRegs.PCLKCR1.bit.EPWM5ENCLK = 1;    // ePWM5
     SysCtrlRegs.PCLKCR1.bit.EPWM6ENCLK = 1;    // ePWM5
     SysCtrlRegs.PCLKCR1.bit.ECAP1ENCLK = 1;    // eCAP1
     SysCtrlRegs.PCLKCR0.bit.LINAENCLK = 1;     // LIN-A
-#endif
+#else
+#ifdef TARGET_GS32
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_ECAP3);   // eCAP3
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_ECAP4);   // eCAP4
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_EQEP2);   // eQEP2
+    SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_CANA);    // eCAN-A
 #else
     SysCtrlRegs.PCLKCR1.bit.ECAP3ENCLK = 1;     // eCAP3
     SysCtrlRegs.PCLKCR1.bit.ECAP4ENCLK = 1;     // eCAP4
     SysCtrlRegs.PCLKCR1.bit.EQEP2ENCLK = 1;     // eQEP2
     SysCtrlRegs.PCLKCR0.bit.ECANAENCLK = 1;     // eCAN-A
+#endif
 #endif
 
    
