@@ -51,6 +51,10 @@ void GetDataByteNum(void);
 //=====================================================================
 __interrupt void SCI_DP_RXD_isr(void)
 {
+#ifdef TARGET_GS32
+    SAVE_IRQ_CSR_CONTEXT();
+#endif
+
     Uint16 tmp;
     struct SCI_DATA_DP *p = &sciM380DpData;  
     tmp = p->pSciRegs->SCIRXBUF.all; 
@@ -130,6 +134,10 @@ __interrupt void SCI_DP_RXD_isr(void)
        }   
     } 
     PieCtrlRegs.PIEACK.bit.ACK9 = 1;                // Issue PIE ACK
+
+#ifdef TARGET_GS32
+    RESTORE_IRQ_CSR_CONTEXT();
+#endif
 }
 
 
@@ -142,6 +150,10 @@ __interrupt void SCI_DP_RXD_isr(void)
 //=====================================================================
 __interrupt void SCI_DP_TXD_isr(void)
 {    
+#ifdef TARGET_GS32
+    SAVE_IRQ_CSR_CONTEXT();
+#endif
+
     struct SCI_DATA_DP *p = &sciM380DpData;
     
 #if NO_FIFO    
@@ -170,6 +182,10 @@ __interrupt void SCI_DP_TXD_isr(void)
     }
 #endif
     PieCtrlRegs.PIEACK.bit.ACK9 = 1;            // Issue PIE ACK
+
+#ifdef TARGET_GS32
+    RESTORE_IRQ_CSR_CONTEXT();
+#endif
 }
 
 

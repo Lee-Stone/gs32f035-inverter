@@ -344,7 +344,15 @@ void InitPieCtrl(void)
 int gErrorIntCnt;
 __interrupt void rsvd_ISR(void)      
 {
+#ifdef TARGET_GS32
+    SAVE_IRQ_CSR_CONTEXT();
+#endif
+
 	gErrorIntCnt++;				//监控是否有错误进入中断的情况
+
+#ifdef TARGET_GS32
+    RESTORE_IRQ_CSR_CONTEXT();
+#endif
 }
 
 //--------------------------------------------------------------------------

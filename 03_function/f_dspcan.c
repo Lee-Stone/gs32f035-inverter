@@ -59,6 +59,10 @@ Uint32 eCanReEnFlag;// = 0;
 Uint32 recCanCout;
 __interrupt void eCanRxIsr(void)
 {
+#ifdef TARGET_GS32
+    SAVE_IRQ_CSR_CONTEXT();
+#endif
+
     Uint16 i, mbox, dataTy;
     Uint32 *pi;
     DspCanDataStru *data;
@@ -94,6 +98,10 @@ __interrupt void eCanRxIsr(void)
     ECANREGS.CANGIF1.all = 0xffffffff;    
 
     PieCtrlRegs.PIEACK.bit.ACK9 = 1;                        // Issue PIE ACK
+
+#ifdef TARGET_GS32
+    RESTORE_IRQ_CSR_CONTEXT();
+#endif
 }
 
 /*******************************************************************************

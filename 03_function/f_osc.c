@@ -467,6 +467,10 @@ void OscTxFifoTask(void)
 #if OSC_TX_INT_EN == 1
 __interrupt void sciaTxFifoIsr(void)
 {
+#ifdef TARGET_GS32
+    SAVE_IRQ_CSR_CONTEXT();
+#endif
+
 	uint8 *buf;												// 内部临时变量
 	uint8 len;
 
@@ -518,6 +522,10 @@ __interrupt void sciaTxFifoIsr(void)
 #endif	
     SCI_OSC_REGS.SCIFFTX.bit.TXFFINTCLR = 1;  				// Clear SCI Interrupt flag	
     PieCtrlRegs.PIEACK.all |= PIEACK_GROUP9;      			// Issue PIE ACK
+
+#ifdef TARGET_GS32
+    RESTORE_IRQ_CSR_CONTEXT();
+#endif
 }
 #endif
 
@@ -625,6 +633,10 @@ uint8 SciDataRx(uint8 *buf, uint8 len, uint8 timeout)
 ********************************************************************************/
 __interrupt void sciaRxFifoIsr(void)
 {
+#ifdef TARGET_GS32
+    SAVE_IRQ_CSR_CONTEXT();
+#endif
+
 	uint8 *buf;												// 内部临时变量
 	uint8 len;
 
@@ -662,6 +674,11 @@ __interrupt void sciaRxFifoIsr(void)
 	*/
 	}
     PieCtrlRegs.PIEACK.all |= PIEACK_GROUP9;       			// Issue PIE ack
+
+#ifdef TARGET_GS32
+    RESTORE_IRQ_CSR_CONTEXT();
+#endif
+
 }
 
 

@@ -43,6 +43,10 @@ extern void PrepareParForRun(void);
 *************************************************************/
 __interrupt void PG_Zero_isr(void)
 {
+#ifdef TARGET_GS32
+    SAVE_IRQ_CSR_CONTEXT();
+#endif
+
 	if((*EQepRegs).QFLG.bit.IEL == 1)
     {
         EALLOW;
@@ -66,6 +70,10 @@ __interrupt void PG_Zero_isr(void)
         gIPMPos.ZBakUVW         = 0;
 #endif
     }
+
+#ifdef TARGET_GS32
+    RESTORE_IRQ_CSR_CONTEXT();
+#endif
 }
 /*************************************************************
 计算Z信号发生时，与最近一次中断函数之间的位置偏差

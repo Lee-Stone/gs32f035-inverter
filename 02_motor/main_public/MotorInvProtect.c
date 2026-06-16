@@ -1082,6 +1082,10 @@ void BeforeRunOutputPhaseLoseDetect(void)
 
 __interrupt void ShortGnd_ADC_Over_isr(void)
 {
+#ifdef TARGET_GS32
+    SAVE_IRQ_CSR_CONTEXT();
+#endif
+
 	EALLOW;             //28035改为EALLOW保护
 	ADC_CLEAR_INT_FLAG;
 	EDIS;
@@ -1093,7 +1097,11 @@ __interrupt void ShortGnd_ADC_Over_isr(void)
 	ADC_RESET_SEQUENCE;
 	PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;	// Acknowledge this interrupt
 	EDIS;
-	
+
+#ifdef TARGET_GS32
+    RESTORE_IRQ_CSR_CONTEXT();
+#endif
+}
 }
 
 void ShortGnd_PhaseLoseICal(void)

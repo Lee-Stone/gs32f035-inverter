@@ -104,6 +104,10 @@ void main(void)
 ****************************************************************/
 __interrupt void ADC_Over_isr(void)
 {
+#ifdef TARGET_GS32
+	SAVE_IRQ_CSR_CONTEXT();
+#endif
+
     EALLOW;             //28035改为EALLOW保护
     ADC_CLEAR_INT_FLAG;
     EDIS;
@@ -117,26 +121,46 @@ __interrupt void ADC_Over_isr(void)
     ADC_RESET_SEQUENCE;
    	PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;	// Acknowledge this interrupt
     EDIS;
+
+#ifdef TARGET_GS32
+	RESTORE_IRQ_CSR_CONTEXT();
+#endif
 }
 /***************************************************************
 	EPWM的过流中断，对硬件过流信号处理
 ****************************************************************/
 __interrupt void EPWM1_TZ_isr(void)
 {
+#ifdef TARGET_GS32
+	SAVE_IRQ_CSR_CONTEXT();
+#endif
+
 	DisableDrive();								//首先封锁输出
 	HardWareErrorDeal();					    //处理硬件故障－电机控制模块处理
                 // 
    	PieCtrlRegs.PIEACK.all = PIEACK_GROUP2;	    // Acknowledge this interrupt
+
+#ifdef TARGET_GS32
+	RESTORE_IRQ_CSR_CONTEXT();
+#endif
 }
 
 /***************************************************************
 	CBC触发的TZ中断，中断中强制关闭驱动使能信号
 ****************************************************************/
 __interrupt void EPWM2_TZ_isr(void)
-{               
+{       
+#ifdef TARGET_GS32
+	SAVE_IRQ_CSR_CONTEXT();
+#endif
+
 	DisableDrive();								//首先封锁输出,周期中断中开启
     gCBCProtect.CBCIntFlag = 1;  
    	PieCtrlRegs.PIEACK.all = PIEACK_GROUP2;	    // Acknowledge this interrupt
+
+#ifdef TARGET_GS32
+	RESTORE_IRQ_CSR_CONTEXT();
+#endif
 }
 
 /*----------------------------END---------------------------------
