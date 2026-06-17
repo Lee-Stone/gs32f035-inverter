@@ -11,7 +11,7 @@
 ALPHABETA_STRUCT		gUAlphBeta;	    //定子两相坐标轴电压
 MT_STRUCT_Q24           gUMTQ24; 
 extern PMSM_FLUX_WEAK_STRUCT   gPmFluxWeak;
-int para0;
+s16 para0;
 //extern MT_STRUCT_Q24           gIMTQ24_obs;
 //extern MT_STRUCT_Q24           gIMTQ12_obs;
 /*******************************************************************
@@ -36,9 +36,9 @@ Date Type Q12 （q轴超d轴90度）
 	d= cos(theta)*alph + sin(theta)*beta;
 	q= -sin(theta)*alph + cos(theta)*beta;
 ********************************************************************/
-void AlphBetaToDQ(ALPHABETA_STRUCT * AlphBeta, int angle, MT_STRUCT_Q24 * MT)
+void AlphBetaToDQ(ALPHABETA_STRUCT * AlphBeta, s16 angle, MT_STRUCT_Q24 * MT)
 {
-	int m_sin,m_cos;
+	s16 m_sin,m_cos;
 
 	m_sin  = qsin(angle);
 	m_cos  = qsin(16384 - angle);
@@ -69,7 +69,7 @@ void DQToAmpTheta(MT_STRUCT * MT,AMPTHETA_STRUCT * AmpTheta)
 void ChangeCurrent(void)
 {
   //  Ulong   m_Long;    
-    int temp1,temp2;		// wg
+    s16 temp1,temp2;		// wg
 	Ulong   tmpAmp;
 
     // 获取三相电流瞬时值, 三相电流转换为定子两相坐标轴下的电流

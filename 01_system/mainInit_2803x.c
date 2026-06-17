@@ -358,7 +358,7 @@ void InitPieCtrl(void)
 /************************************************************
 所有误操作的中断处理
 ************************************************************/
-int gErrorIntCnt;
+s16 gErrorIntCnt;
 __interrupt void rsvd_ISR(void)      
 {
 #ifdef TARGET_GS32
@@ -464,7 +464,7 @@ void InitSetGpio(void)
 ************************************************************/
 void InitSetAdc(void)
 {
-    int waite;
+    s16 waite;
     
     EALLOW;
     AdcRegs.ADCCTL1.bit.ADCBGPWD  = 1;      // Power ADC BG

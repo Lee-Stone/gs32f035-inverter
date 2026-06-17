@@ -94,7 +94,7 @@ void SynTuneInitPos(void)
 				SetIPMPos((Uint)gIPMPos.InitPos);
 				SetIPMRefPos((Uint)gIPMPos.InitPos);
                 SvcSetRotorPos(gIPMPos.InitPos);
-                gPhase.IMPhase  = (int)gIPMPos.InitPos;
+                gPhase.IMPhase  = (s16)gIPMPos.InitPos;
                 gPhase.IMPhaseApply = ((long)gPhase.IMPhase << 16);					
 				gGetParVarable.IdSubStep++;
 			}
@@ -119,7 +119,7 @@ void SynTuneInitPos(void)
     			InitSetPWM(); 
     			gGetParVarable.IdSubStep = 1;
     		    gGetParVarable.ParEstMstep++;               //切换到下一辨识步骤
-				//gPhase.IMPhase  = (int)gIPMPos.RotorPos;
+				//gPhase.IMPhase  = (s16)gIPMPos.RotorPos;
                 //gPhase.IMPhaseApply = ((long)gPhase.IMPhase << 16);					
                 gMainStatus.PrgStatus.all = 0;
             }
@@ -140,11 +140,11 @@ void SynTuneInitPos(void)
 ************************************************************/
 void SynInitPosDetect(void)
 {
-	int  m_Cur;
-    int  m_Index;
+	s16  m_Cur;
+    s16  m_Index;
 	static Uint m_Wait = 0;
 	Uint Sec,Cur_Lim,i,temp0,temp1;
-	int m_Data;
+	s16 m_Data;
 	Ulong temp;
 
 	switch(gIPMInitPos.Step)
@@ -558,7 +558,7 @@ void SynCalLabAndLbc(void)
 ************************************************************/
 void SynInitPosDetCal(void)
 {
-	static int  m_X,m_Y;
+	static s16  m_X,m_Y;
 	Uint  m_Index;
 
 	for(m_Index = 6;m_Index<12;)
@@ -737,7 +737,7 @@ void SynTunePGZero_No_Load(void)
             gIPMPos.ZResetFlag = C_Z_DONT_RESET_POS;
     		InitSetPosTune();
 
-            gPhase.IMPhase = (int)gIPMPos.InitPos;
+            gPhase.IMPhase = (s16)gIPMPos.InitPos;
             gIMTSet.M = 0L <<12;
             gIMTSet.T = 0;
             gIPMZero.CurLimit = 3000UL * (Ulong)gMotorInfo.CurrentGet / gMotorInfo.Current;  //额定电流70%左右
@@ -1765,7 +1765,7 @@ void BeforeRunRsIdentifyICal(void)
 	    m_Data = 500; 
 	}
 
-	gRsIdentifyPID.Deta = (int)(gUVCoff.CurComperCoff - gUVCoff.Temper);
+	gRsIdentifyPID.Deta = (s16)(gUVCoff.CurComperCoff - gUVCoff.Temper);
 
     if((gRsIdentifyPID.Deta > 0)&&(gUVCoff.Flag == 0))		// 给定大于反馈
 	{

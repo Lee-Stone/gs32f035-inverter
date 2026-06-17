@@ -552,7 +552,7 @@ LOCALF int32 FrqAimUpDownDeal(void)
     
 #if 1
     if ((diFunc.f1.bit.clearUpDownFrq)           // DI端子有效：UP/DOWN设定清零（端子、键盘）
-//        || (frqSrcOld != frqSrc)                    // 切绞制噬瓒ǎ蛘咔谢坏絇LC/多段速
+//        || (frqSrcOld != frqSrc)                    // 切绞?字剖设定，或者切换到PLC/多段速
         )
     {
         upDownFrq = 0;
@@ -562,7 +562,7 @@ LOCALF int32 FrqAimUpDownDeal(void)
 
     bFrqDigitalOld = bFrqDigital;
 
-    // 主辅频始扑悖襓也为数字设定，预置频率(F0-08)不起作用
+    // 主辅频始扑悖?且Y也为数字设定，预置频率(F0-08)不起作用
     if ((frqFlag.bit.comp) && (funcCode.code.frqYSrc < FUNCCODE_frqXySrc_AI1))
     {
         // X(非数字) + Y(数字)
@@ -835,7 +835,7 @@ LOCALF int32 UpdateMultiSetFrq(Uint16 step)
 //=====================================================================
 //
 // 上下限频率，最大频率更新
-// 上限频率源选择为AI时，100.0%杂δ苈肷瓒?
+// 上限频率源选择为AI时，100.0%杂?功能码设??
 //
 //=====================================================================
 LOCALF void UpdateLimitFrq(void)
@@ -1295,8 +1295,8 @@ void ResetUpDownFrq(void)
 int32 GetFrq(void)
 {
     int32 frq;
-//    static int upperFrqBak;
-//    static int lowerFrqBak;
+//    static s16 upperFrqBak;
+//    static s16 lowerFrqBak;
 
     frqMax = upperFrq;         // 最大，默认为 上限频率
     frqMin = -(int32)upperFrq; // 最小，默认为 -上限频率

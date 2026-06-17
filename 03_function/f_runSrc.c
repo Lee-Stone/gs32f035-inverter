@@ -492,7 +492,8 @@ void UpdateRunCmd(void)
             else 
 #endif       
 
-#if DEBUG_F_MSC_CTRL
+#if DEBUG_F_MSC_CTRL
+
             if (MasterSlaveCtrl.MSCEnable        // 主从控制有效且为从机
                 && (!MasterSlaveCtrl.isMaster)
                 && (MasterSlaveCtrl.slaveFollowMasterCmd) // 允许跟随
@@ -1128,7 +1129,7 @@ void runTimeCal(void)
 //=====================================================================
 // 
 // 根据runCmd，
-// (1) 更鼻八彩备ㄆ德蔲rq
+// (1) 更鼻八彩备?定频率frq
 // (2) 更新传递给dspMainCmd的run, dspSubCmd.
 //
 // 备注：
@@ -1431,7 +1432,7 @@ void RunSrcUpdateFrq(void)
                 {
                     runStatus = RUN_STATUS_NORMAL;    
                 }
-                // 小于直流鹗计德?零速值)
+                // 小于直流?起始频??零速值)
                 else if (ABS_INT32(frqTmp) <= funcCode.code.stopBrakeFrq) 
                 {
                     // 进入端子直流制动
@@ -1786,8 +1787,8 @@ LOCALF void NormalRunCtrl(void)
 //    static int16 upperTorqueBak;
     if (!runCmd.bit.common) // 运行中有停机命令
     {
-        //+e if(function.f_code.torque_control&&(!(di_func[3]&0x20)))
-        //     frq_set=(int)speed_run*(long)(int)(function.f_code.maxfrq+2000)/0x7fff;
+        //+e if(functions16code.torque_control&&(!(di_func[3]&0x20)))
+        //     frq_set=(s16)speed_run*(long)(s16)(function.f_code.maxfrq+2000)/0x7fff;
         if (runMode == RUN_MODE_TORQUE_CTRL)
         {
             frq = frqRun;
@@ -1804,7 +1805,7 @@ LOCALF void NormalRunCtrl(void)
         && (funcCode.code.p2pEnable == 1)
         )
     { 
-       		// 不处理0转矩封锁PWM，因赝槐淦捣惫?时，就出现误停车 
+       		// 不处理0转矩封锁PWM，因?转矩突变频繁??时，就出现误停车 
 			// SVC 转矩低于10%无法启动
 			// 主从控制，从机无需此处理 add by 1513
     }
@@ -2608,7 +2609,7 @@ LOCALF void PowerOffNoStopDeal(void)
     }
 
     if (shuntFlag)          // 正在瞬停不停，减速以减缓母线电压的下降
-    {                       // 在电够厣卸鲜奔淠冢惨跛僖约趸耗赶叩缪沟南陆?
+    {                       // 在电够厣?判断时间内，也要减速以减缓母线电压的下??
         frqCurAim = 0;      // 减速的目标频率为0
 
         // 母线电压超过 瞬停判断电压+0.5*标准母线电压时，停止减速

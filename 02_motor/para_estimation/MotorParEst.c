@@ -136,7 +136,7 @@ void RunCaseGetPar(void)
 ************************************************************/
 void PrepareParForTune(void)
 {
-    int m_index;
+    s16 m_index;
     PAR_EST_MAIN_STEP *m_PIdentifyFlow;
     
     //所有参数辨识过程中返回的变量，都要预先赋值，否则会导致对应的功能码出错    

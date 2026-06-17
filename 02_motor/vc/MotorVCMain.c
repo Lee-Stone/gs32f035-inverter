@@ -29,7 +29,7 @@ MODIFYWS_STRUCT         gModifyws;   //异步机闭环矢量转差修正调节
 MT_STRUCT               gPWMVAlphBeta;//根据输出PWM波计算alfa－beta轴电压
 UDC_LIMIT_IT_STRUCT     gUdcLimitIt;
 extern PMSM_FLUX_WEAK_STRUCT   gPmFluxWeak;
-int gTorLimit_SVC = 0;
+s16 gTorLimit_SVC = 0;
 // // 文件内部函数声明 
 void PrepareAsrPar(void);
 void PrepareAsrPar1(void);
@@ -101,8 +101,8 @@ void ResetCsrPar(void)
 *************************************************************/
 void CalTorqueLimitPar(void)
 {
-	int m_TorLimit,m_MaxLimit,m_NegTorqueLimit;
-	int m_InvIM;
+	s16 m_TorLimit,m_MaxLimit,m_NegTorqueLimit;
+	s16 m_InvIM;
 	Ulong m_Long;
 
 	//m_InvIM = ((long)(gIMTSet.M>>12) * (long)gMotorInfo.Current)/gInvInfo.InvCurrForP; //使用用户设定机型对应的电流
@@ -150,9 +150,9 @@ void CalTorqueLimitPar(void)
 *************************************************************/
 void PrepareAsrPar(void)
 {
-    int	  m_AbsFreq, m_FreqUp;
-    int   m_DetaKP, m_DetaKI, m_DetaFreq;
-    //int   m_KpLimit;
+    s16	  m_AbsFreq, m_FreqUp;
+    s16   m_DetaKP, m_DetaKI, m_DetaFreq;
+    //s16   m_KpLimit;
     long  tempKp;
     long  tempKi;
 
@@ -539,14 +539,14 @@ void VCCsrControl(void)
     gImAcrQ24.Deta = gIMTSetApply.M - gIMTQ24.M;   
     
     PID32(&gImAcrQ24);
-    gUMTSet.M = (int)(gImAcrQ24.Out >> 12);
+    gUMTSet.M = (s16)(gImAcrQ24.Out >> 12);
 // Csr axis-T
     gItAcrQ24.Max = ((s32)m_MaxVolt << 12);
     gItAcrQ24.Min = - gItAcrQ24.Max;
     gItAcrQ24.Deta = gIMTSetApply.T - gIMTQ24.T;
     
     PID32(&gItAcrQ24);
-    gUMTSet.T = (int)(gItAcrQ24.Out >> 12);   
+    gUMTSet.T = (s16)(gItAcrQ24.Out >> 12);   
 
     // 同步机解耦控制
 	if(SYNC_FVC == gCtrMotorType)

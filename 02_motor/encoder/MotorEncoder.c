@@ -33,7 +33,7 @@ Uint const gUVWAngleTable[6] = {        // UVW 角度编码表格
 };
 
 // // 内部函数声明
-void SpeedSmoothDeal( ROTOR_SPEED_SMOOTH * pSpeedError,int iSpeed );
+void SpeedSmoothDeal( ROTOR_SPEED_SMOOTH * pSpeedError,s16 iSpeed );
 void RotorTransCalVel_old(void);
 u16 GetRotorTransPos();
 /*************************************************************
@@ -68,7 +68,7 @@ void InitRtInterface(void)
     #if 1                                       // 12位PG卡spi模式
     SpicRegs.SPICCR.bit.CLKPOLARITY = 1;        // falling edge receive
     SpicRegs.SPICTL.all =0x000E;                // Enable master mode, SPICLK signal delayed by one half-cycle
-                                                // enable talk, and SPI int disabled.
+                                                // enable talk, and SPI s16 disabled.
                                                 // CLOCK PHASE = 1
     #else                                       // 16位PG卡spi模式
 	SpicRegs.SPICCR.bit.CLKPOLARITY = 0;	    //16bit pg
@@ -271,10 +271,10 @@ s16 JudgeABDir(void)
 ************************************************************/
 s16 JudgeUVWDir(void)
 {
-    int m_Deta;
+    s16 m_Deta;
     
     GetUvwPhase(); 
-    m_Deta = (int)gUVWPG.UVWAngle - (int)gPGDir.UVWAngleBak;
+    m_Deta = (s16)gUVWPG.UVWAngle - (s16)gPGDir.UVWAngleBak;
     
     if(m_Deta > 1820)   // 10度，10/360  *65536(Q16格式)
     {

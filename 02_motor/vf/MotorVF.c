@@ -36,8 +36,8 @@ MT_STRUCT				gHVfCur;
 void CalTorqueUp(void);
 void ResDropComp(MT_STRUCT * );
 
-int VfOverCurDeal2(int step);
-int VfOverUdcDeal2(int step);
+s16 VfOverCurDeal2(s16 step);
+s16 VfOverUdcDeal2(s16 step);
 
 void VFOVUdcLimit(void);
 
@@ -92,7 +92,7 @@ void VfVarInitiate(void)  //VF运行变量初始化函数
 ************************************************************/
 void VFOVUdcLimit(void)
 {
-	int	m_Mid;
+	s16	m_Mid;
 
 	m_Mid = ((Ulong)gOvUdc.Limit * 3932L)>>12;			//0.96
 	
@@ -117,11 +117,11 @@ void VFOVUdcLimit(void)
 调用条件:
 函数功能:根据给定频率和VF曲线，计算输出电压
 ************************************************************/
-int CalOutVotInVFStatus(int freq)
+s16 CalOutVotInVFStatus(s16 freq)
 {
 	Uint m_Freq2,m_MotorFreq2;
-	int  m_AbsFreq;
-    int  mVolt;
+	s16  m_AbsFreq;
+    s16  mVolt;
 	long m_DetaFreq,m_LowFreq,m_HighFreq,m_LowVolt,m_HighVolt;
     long m_VFLineFreq1,m_VFLineFreq2,m_VFLineFreq3,m_Frequency;
     
@@ -227,7 +227,7 @@ int CalOutVotInVFStatus(int freq)
 *************************************************************/
 void CalTorqueUp(void)
 {
-	int m_DetaFreq, m_VoltUp, m_ZeroUp, m_MaxFreqUp;
+	s16 m_DetaFreq, m_VoltUp, m_ZeroUp, m_MaxFreqUp;
     
 // some case Vf_curve needn't torque up compensation
     if((gVFPar.VFLineType == 1) || (gVFPar.VFLineType >= 10) ||
@@ -249,7 +249,7 @@ void CalTorqueUp(void)
             if( gMainCmd.FreqDesiredReal > 40 )  //设定频率低于0.4HZ，转矩提升无效
 			{
                 gVFAutoVar.DestinationVolt = gOutVolt.Volt;
-    	    	m_VoltUp = (int)(gVFAutoVar.AutoTorquePID.Out >>16);  //电压补偿滞后0.5ms，是否会有影响澹?
+    	    	m_VoltUp = (s16)(gVFAutoVar.AutoTorquePID.Out >>16);  //电压补偿滞后0.5ms，是否会有影响澹?
 			}
             else
             {
@@ -272,10 +272,10 @@ void CalTorqueUp(void)
 ************************************************************/
 void VFWsTorqueBoostComm(void)
 {
-    int    m_CurrentPro,m_AngleCos,m_ResistanceVolt;
-    int    m_RVcos;
+    s16    m_CurrentPro,m_AngleCos,m_ResistanceVolt;
+    s16    m_RVcos;
     long   m_lTempVar;
-    int    m_iTempVar1,m_iTempVar2;
+    s16    m_iTempVar1,m_iTempVar2;
     MT_STRUCT_Q24  m_NewMT;
 
     m_CurrentPro = gLineCur.CurPer;//gIAmpTheta.Amp    
@@ -342,7 +342,7 @@ void VFWsTorqueBoostComm(void)
 void VFAutoTorqueBoost(void)
 {
     long  m_lTempVar1,m_lVoltDeta;
-    int   m_iEsVolt,m_iEsnVolt,m_LowerLimit,m_TempVolt;
+    s16   m_iEsVolt,m_iEsnVolt,m_LowerLimit,m_TempVolt;
     
     m_lTempVar1  = (long)gVFAutoVar.VfRIsSinFai * (long)gVFAutoVar.VfRIsSinFai;
     m_lTempVar1 += (long)gVFAutoVar.VfRVCosFai * (long)gVFAutoVar.VfRVCosFai;
@@ -412,8 +412,8 @@ void VFAutoTorqueBoost(void)
 ************************************************************/
 /*void OverShockControl(void)
 {
-    int m_DelayTime,m_DestCurrent;
-    int gainOsc;
+    s16 m_DelayTime,m_DestCurrent;
+    s16 gainOsc;
 
     gainOsc = gVFPar.VFOvShock;
     gVfOsc.IMFilter = gIMTQ12.M;
@@ -490,7 +490,7 @@ void VFAutoTorqueBoost(void)
 ************************************************************/
 void VFWSCompControl(void)
 {
-    int m_WsWindage, m_WsCurrentIm;
+    s16 m_WsWindage, m_WsCurrentIm;
 
     m_WsWindage = 0;
     if(( gMainCmd.FreqDesiredReal < 40  ) ||
@@ -607,8 +607,8 @@ VF 控制过程:
 ************************************************************/
 void VFSpeedControl()
 {
-    int slipComp;
-//    int mVolt;
+    s16 slipComp;
+//    s16 mVolt;
 
 //计算VF输出频率， 转差补偿
     slipComp = gWsComp.CompFreq >>16;
@@ -628,9 +628,9 @@ void VFSpeedControl()
 // 沿用280xp的失速控制
 void VfOverCurDeal()
 {
-	int  m_Cur,m_DetaCur,m_Coff;
-	int	 m_LimHigh,m_LimLow,m_MaxStep,m_AddStep;
-	int	 m_Data;
+	s16  m_Cur,m_DetaCur,m_Coff;
+	s16	 m_LimHigh,m_LimLow,m_MaxStep,m_AddStep;
+	s16	 m_Data;
 
 	//电流当前状态判断
 	m_Cur = gLineCur.CurBaseInv;
@@ -758,8 +758,8 @@ void VfOverCurDeal()
 
 /*void VfOverUdcDeal()
 {
-	int m_High,m_Mid,m_Low,m_Coff;
-	int	m_Udc,m_DetaU,m_Add1,m_Add2;
+	s16 m_High,m_Mid,m_Low,m_Coff;
+	s16	m_Udc,m_DetaU,m_Add1,m_Add2;
 
 	m_Udc = gUDC.uDC;
 	m_Coff = gOvUdc.CoffApply;
@@ -893,11 +893,11 @@ void VfOverCurDeal()
 
 void VfFreqDeal()
 {
-	int  m_Deta,m_Step,m_StepOI,m_StepOU,m_Freq,m_Dir;//m_Flag;
-	int VfStepSet;
+	s16  m_Deta,m_Step,m_StepOI,m_StepOU,m_Freq,m_Dir;//m_Flag;
+	s16 VfStepSet;
 
 	VFOVUdcLimit();
-	VfStepSet = abs((int)abs(gMainCmd.FreqSet) - (int)abs(gVFPar.FreqApply));    
+	VfStepSet = abs((s16)abs(gMainCmd.FreqSet) - (s16)abs(gVFPar.FreqApply));    
 	m_StepOI = gOvCur.StepApply;		
 	m_StepOU = gOvUdc.StepApply;	
     
@@ -994,7 +994,7 @@ HVF:
 ************************************************************/
 /*void VfOscIndexCalc()
 {
-    int curPhase;
+    s16 curPhase;
     
     if((gCtrMotorType != ASYNC_VF) ||
         (gMainCmd.Command.bit.Start == 0))
@@ -1028,17 +1028,17 @@ HVF:
 // 异步机 HVf 的死区补偿
 void HVfDeadBandComp()
 {
-	int   phase,m_Com;
+	s16   phase,m_Com;
 	long  tempL;
-    int   tempSect;
+    s16   tempSect;
 
-    int   phase_sect;
-    int   phase_sect_pre;
-    int   temp;
+    s16   phase_sect;
+    s16   phase_sect_pre;
+    s16   temp;
 
 // 确定补偿量
 	if(gMainCmd.FreqReal <= 40000)      m_Com = gDeadBand.Comp;
-	else    m_Com = (int)(((long)gDeadBand.Comp * (long)(gMainCmd.FreqReal - 40000))>>15); 
+	else    m_Com = (s16)(((long)gDeadBand.Comp * (long)(gMainCmd.FreqReal - 40000))>>15); 
 	if((gMainCmd.Command.bit.StartDC == 1) || (gMainCmd.Command.bit.StopDC == 1))	
 	{
         m_Com = 0;
@@ -1120,14 +1120,14 @@ void HVfDeadBandComp()
 
 void HVfOscDampDeal()
 {
-   // int  tempLg;
-    int  tempVolt;
+   // s16  tempLg;
+    s16  tempVolt;
 	long   VoltRs;
 	
     gHVfOscDamp.CurMagSet = gMotorExtPer.IoVsFreq;
     tempVolt = (long)gMotorExtPer.R1 * (gHVfOscDamp.CurMagSet - (gIMTQ24.M>>12)) >>15;
-    //gHVfOscDamp.VoltSmSet = (long)tempVolt * (int)gHVfOscDamp.OscDampGain /10L;
-    gHVfOscDamp.VoltSmSet = (long)tempVolt * (int)gVFPar.VFOvShock /10L;
+    //gHVfOscDamp.VoltSmSet = (long)tempVolt * (s16)gHVfOscDamp.OscDampGain /10L;
+    gHVfOscDamp.VoltSmSet = (long)tempVolt * (s16)gVFPar.VFOvShock /10L;
 
     gHVfOscDamp.VoltAmp = gOutVolt.Volt; // 已加转矩提升 
     gHVfOscDamp.VoltPhase = user_atan(gHVfOscDamp.VoltSmSet, gHVfOscDamp.VoltAmp);
@@ -1161,13 +1161,13 @@ Q-voltage:      Qxx
 **********************************************************************/
 void HVfCurReDecomp()
 {
-    int     m_CosPhi;     // Q15, angle phi is the angle of power factor
-    int     m_SinPhi;     // Q15,
+    s16     m_CosPhi;     // Q15, angle phi is the angle of power factor
+    s16     m_SinPhi;     // Q15,
     long    m_AntiVolt;
     long    m_ResVolt;
 
-    int m_phi2;
-    int mDir;
+    s16 m_phi2;
+    s16 mDir;
 
     long temp1;
     long temp2;
@@ -1192,11 +1192,11 @@ void HVfCurReDecomp()
 
     temp1 = ((long)gOutVolt.VoltApply * m_CosPhi >> 15) - m_ResVolt;
     temp2 = (long)gOutVolt.VoltApply * m_SinPhi >> 15;
-    m_phi2 = user_atan((int)temp1, (int)temp2);
+    m_phi2 = user_atan((s16)temp1, (s16)temp2);
 
     // *generate results
     mDir = (gMainCmd.FreqSyn >= 0) ? 1 : -1;
-    gHVfCur.M = (int)((long)gLineCur.CurPer * qsin(m_phi2) >> 15) * mDir;
-    gHVfCur.T = (int)((long)gLineCur.CurPer * qsin(16384-m_phi2) >> 15) * mDir;
+    gHVfCur.M = (s16)((long)gLineCur.CurPer * qsin(m_phi2) >> 15) * mDir;
+    gHVfCur.T = (s16)((long)gLineCur.CurPer * qsin(16384-m_phi2) >> 15) * mDir;
 
 }

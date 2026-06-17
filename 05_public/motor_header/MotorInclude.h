@@ -76,13 +76,13 @@ extern Uint  const gInvVoltageInfo480T[];
 extern Uint  const gInvVoltageInfo690T[]; 
 extern Uint  const gInvVoltageInfo1140T[];
 /**********************调试用变量*************************/
-extern int * pVD1;
-extern int * pVD2;
-extern int * pVD3;
-extern int * pVD4;
-extern int * pVD5;
-extern int * pVD6;
-extern int   startSave;
+extern s16 * pVD1;
+extern s16 * pVD2;
+extern s16 * pVD3;
+extern s16 * pVD4;
+extern s16 * pVD5;
+extern s16 * pVD6;
+extern s16   startSave;
 
 /**********************调试函数说明*************************/
 extern void SaveDebugData16(Uint);

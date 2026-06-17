@@ -12,7 +12,7 @@ PMSM_FLYING_START_STRUCT gFlyingStart;
 extern void TurnToStopStatus(void);
 extern void PrepareParForRun(void);
 extern void RunCaseRun2Ms(void);
-int gTest0,gTest1,gTest2,gTest3,gTest4,gTest5,gTest6;
+s16 gTest0,gTest1,gTest2,gTest3,gTest4,gTest5,gTest6;
 
 void RunCaseFlyingStart(void)
 {
@@ -512,8 +512,8 @@ void SynFlyingStartCalc(Ulong FullFreq01)
 	gFlyingStart.Freq01 = (gFlyingStart.Freq[0] >> 1) + (gFlyingStart.Freq[1] >> 1);
 	gFlyingStart.FreqPer = (long)(((llong)gFlyingStart.Freq01 << 15) / ((llong)FullFreq01));
 
-//	m_OmegaT = (int)(((llong)gFlyingStart.Freq01 * (llong)gFlyingStart.Tsc  * FLYING_START_TIME_BASE * (llong)733) >> 25);// 赋值过程自动把角度转换到-180到180度范围 65536 * 2 / 100 / 60000000 = 733 >> 25 
-	m_OmegaT = (int)((((llong)gFlyingStart.Freq01 * (llong)gFlyingStart.Tsc  * FLYING_START_TIME_BASE) << 9) / ((long)390625L * DSP_CLOCK));// 赋值过程自动把角度转换到-180到180度范围 65536 * 2 / 100 / 60000000 = 733 >> 25 
+//	m_OmegaT = (s16)(((llong)gFlyingStart.Freq01 * (llong)gFlyingStart.Tsc  * FLYING_START_TIME_BASE * (llong)733) >> 25);// 赋值过程自动把角度转换到-180到180度范围 65536 * 2 / 100 / 60000000 = 733 >> 25 
+	m_OmegaT = (s16)((((llong)gFlyingStart.Freq01 * (llong)gFlyingStart.Tsc  * FLYING_START_TIME_BASE) << 9) / ((long)390625L * DSP_CLOCK));// 赋值过程自动把角度转换到-180到180度范围 65536 * 2 / 100 / 60000000 = 733 >> 25 
 	m_Sin = ((long)qsin(m_OmegaT) * 1000) >> 15;
 	m_Cos = ((long)qsin(16384 - m_OmegaT) * 1000) >> 15;
 	m_X = -(((long)gMotorExtInfo.LQ * (1000 - m_Cos)) >> 10);
@@ -550,9 +550,9 @@ void FlyingStratPreparePar(void)
 	gPmsmRotorPosEst.SpeedEstValue = gFlyingStart.FreqPer;
 
 	gFlyingStart.DetaT = gFlyingStart.DetaT - GetTime() + (FLYING_START_TIME_BASE * 2) + 400 * DSP_CLOCK;
-	m_DetaTheta = (int)((llong)gFlyingStart.DetaT * gFlyingStart.Freq01 * 65536 / ((llong)100000000L * DSP_CLOCK));
+	m_DetaTheta = (s16)((llong)gFlyingStart.DetaT * gFlyingStart.Freq01 * 65536 / ((llong)100000000L * DSP_CLOCK));
 	gFlyingStart.Theta = gFlyingStart.Theta + m_DetaTheta;
-	gFlyingStart.ThetaEncoder = (int)gIPMPos.RotorPos;
+	gFlyingStart.ThetaEncoder = (s16)gIPMPos.RotorPos;
 	gPmsmRotorPosEst.SvcRotorPos = ((long)gFlyingStart.Theta) << 16;
 }
 

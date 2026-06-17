@@ -26,7 +26,7 @@ PM_FW		            gPMFwCtrl;
 PM_FW_OUT	            gPMFwOut;
 PMSM_FLUX_WEAK_STRUCT   gPmFluxWeak;
 PM_CSR2_DATA            gPmCsr2;
-int gOutVoltVoltPhaseApplyOld;
+s16 gOutVoltVoltPhaseApplyOld;
 
 s16  PmsmMaxTorqCtrl(void);
 //s16  PmsmFwcCalMethod(void);
@@ -216,7 +216,7 @@ void RunCaseIpmInitPos(void)
 				SetIPMRefPos((Uint)gIPMPos.InitPos);
                 SvcSetRotorPos(gIPMPos.InitPos);   
 
-        		if(abs((int)(gIPMPos.PowerOffPosDeg - gIPMPos.RotorPos)) < 3641)
+        		if(abs((s16)(gIPMPos.PowerOffPosDeg - gIPMPos.RotorPos)) < 3641)
         		{
         			SetIPMPos((Uint)gIPMPos.PowerOffPosDeg);	    //rt
 				    SetIPMRefPos((Uint)gIPMPos.PowerOffPosDeg);
@@ -267,7 +267,7 @@ void RunCaseIpmInitPos(void)
 ************************************************************/
 void SynCalLdAndLq(Uint m_Pos)
 {
-	int m_Cos1,m_Cos2,m_Cos3;
+	s16 m_Cos1,m_Cos2,m_Cos3;
 	s32 m_CoffA,m_CoffB;
 	Uint m_Angle;
 	s32 m_Deta1,m_Deta2,m_DetaCos;
@@ -275,11 +275,11 @@ void SynCalLdAndLq(Uint m_Pos)
 	u32 m_L1,m_L2;
 
 	m_Angle = ((m_Pos + 32768)<<1);
-	m_Cos1 = qsin(16384 - (int)m_Angle);        // cos(2*theta)
+	m_Cos1 = qsin(16384 - (s16)m_Angle);        // cos(2*theta)
 	m_Angle += 43691;
-	m_Cos2 = qsin(16384 - (int)m_Angle);        // cos(2*theta + 4*pi/3)
+	m_Cos2 = qsin(16384 - (s16)m_Angle);        // cos(2*theta + 4*pi/3)
 	m_Angle = (m_Pos<<1) - 43691;
-    m_Cos3 = qsin(16384 - (int)m_Angle);        // cos(2*theta - 4*pi/3)
+    m_Cos3 = qsin(16384 - (s16)m_Angle);        // cos(2*theta - 4*pi/3)
 
     m_Deta1 = labs((s32)m_Cos3 - (s32)m_Cos1);
 	m_Deta2 = labs((s32)m_Cos2 - (s32)m_Cos1);
@@ -395,7 +395,7 @@ void PrepPmsmCsrPrar()
 {     
     long    ImKp, ImKi, ItKp, ItKi;
     long    m_Long,m_Long1;
-   // int     sGain;  // 积分调整倍数
+   // s16     sGain;  // 积分调整倍数
     
 // 同步机根据载波调整电流环参数
     if(gBasePar.FcSetApply > C_DOUBLE_ACR_MAX_FC)    // 一次发波需要减弱PI
@@ -864,7 +864,7 @@ void IMFluxWeak2(void)
 }
 
 
-void CalUVWVoltSet(int Phase)
+void CalUVWVoltSet(s16 Phase)
 {
     s32  m_U,m_V,m_W;
     s32  m_Coff;

@@ -181,13 +181,13 @@ void CBCLimitCurPrepare(void)
 *************************************************************/
 Uint OcCurrentInfo(void)
 {
-    int   Int_Iu,Int_Iv,Int_Iw;
+    s16   Int_Iu,Int_Iv,Int_Iw;
 
     GetCurrentInfo();   
 
-    Int_Iu = (int)(gIUVWQ24.U >> 12);
-    Int_Iv = (int)(gIUVWQ24.V >> 12);
-    Int_Iw = (int)(gIUVWQ24.W >> 12);
+    Int_Iu = (s16)(gIUVWQ24.U >> 12);
+    Int_Iv = (s16)(gIUVWQ24.V >> 12);
+    Int_Iw = (s16)(gIUVWQ24.W >> 12);
 
     Int_Iu = (Int_Iu>0)?Int_Iu:(-Int_Iu);
     Int_Iv = (Int_Iv>0)?Int_Iv:(-Int_Iv);
@@ -223,9 +223,9 @@ Uint OcCurrentInfo(void)
 *************************************************************/
 void HardWareErrorDeal()
 {
-    int counter = 0;
+    s16 counter = 0;
 #if (SOFTSERIES == MD380SOFT)
-    int sum = 0, i;
+    s16 sum = 0, i;
 #endif
     	
     TurnOffBrake();    
@@ -355,7 +355,7 @@ void HardWareOverUDCDeal(void)
 ************************************************************/
 void RunCaseDcBrake(void)		
 {
-	int m_BrakeCur;
+	s16 m_BrakeCur;
 	Uint m_Udata,m_MaxCur;
 
     m_MaxCur = ((Ulong)gInvInfo.InvCurrent * 3277)>>12;     //80%变频器额定电流
@@ -383,7 +383,7 @@ void RunCaseDcBrake(void)
 	else						//通过PI调节器控制直流制动电流
 	{
 		gDCBrake.Time = 10;
-		gDCBrake.PID.Deta = m_BrakeCur - (int)gLineCur.CurPer;
+		gDCBrake.PID.Deta = m_BrakeCur - (s16)gLineCur.CurPer;
         gDCBrake.PID.KP   = 1600/16;
 		//gDCBrake.PID.KP   = 1600;
 		gDCBrake.PID.KI   = 300;

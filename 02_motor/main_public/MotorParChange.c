@@ -412,7 +412,7 @@ void SystemParChg2Ms()
 // // 运行中参数转换
 void RunStateParChg2Ms()	
 {
-    //int     temp;
+    //s16     temp;
     Uint    m_UData, tempU;
     Ulong   m_Long;    
     Uint    m_AbsFreq;
@@ -421,12 +421,12 @@ void RunStateParChg2Ms()
     Uint    m_FluxWeakDepth;
     Uint    m_LimitOutVolt;
     Uint    m_MaxOutVoltReal;
-	gIUVWQ12.U = (int)(gIUVWQ24.U>>12);				
-	gIUVWQ12.V = (int)(gIUVWQ24.V>>12);
-	gIUVWQ12.W = (int)(gIUVWQ24.W>>12);
+	gIUVWQ12.U = (s16)(gIUVWQ24.U>>12);				
+	gIUVWQ12.V = (s16)(gIUVWQ24.V>>12);
+	gIUVWQ12.W = (s16)(gIUVWQ24.W>>12);
 
-    gIMTSetQ12.M = (int)(gIMTSetApply.M >> 12);
-    gIMTSetQ12.T = (int)(gIMTSetApply.T >> 12);
+    gIMTSetQ12.M = (s16)(gIMTSetApply.M >> 12);
+    gIMTSetQ12.T = (s16)(gIMTSetApply.T >> 12);
 
 	m_AbsFreq = abs(gMainCmd.FreqSyn);
     tempU = ((Ulong)gMotorExtPer.I0 * gMotorInfo.FreqPer) / m_AbsFreq;
@@ -442,8 +442,8 @@ void RunStateParChg2Ms()
 	if(gLineCur.CurCnt >= 1024)
 	{
         DINT;
-	    gLineCur.ImAvr = (int)(gLineCur.ImTotal / (long)gLineCur.CurCnt);
-	    gLineCur.ItAvr = (int)(gLineCur.ItTotal / (long)gLineCur.CurCnt);
+	    gLineCur.ImAvr = (s16)(gLineCur.ImTotal / (long)gLineCur.CurCnt);
+	    gLineCur.ItAvr = (s16)(gLineCur.ItTotal / (long)gLineCur.CurCnt);
 		gLineCur.ImTotal = 0;
         gLineCur.ItTotal = 0;
         gLineCur.CurCnt = 0;
@@ -573,7 +573,7 @@ void RunStateParChg2Ms()
         gIPMPos.AbzErrPos_deg = (long)gIPMPos.AbzErrPos * 180L >>15;
         #if 0
         tempU = gUVWPG.UVWAngle + gUVWPG.UvwZeroPos;
-        gUVWPG.UvwRealErr_deg = (int)(gIPMPos.RotorPos - tempU) * 180L >>15;
+        gUVWPG.UvwRealErr_deg = (s16)(gIPMPos.RotorPos - tempU) * 180L >>15;
         #endif
         
         // 手动修改零点位置角时需要响应, 旋变会自动计算

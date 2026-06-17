@@ -245,7 +245,7 @@ Uint const gTempProtectTable[19] =
         100, 90, 90,95,90,             //26-30
         93, 97, 103 ,103,             //31-34
 };
-int const gFanSpeedCtrlTempreture[9]=
+s16 const gFanSpeedCtrlTempreture[9]=
 {
         -50,         // 132kw 25
         70,          // 160kw 26
@@ -494,7 +494,7 @@ void TemperatureCheck(void)
 	Uint    * m_pTable,*m_ErrTempTable;
 	long    m_TempAD,m_IndexLow,m_IndexHigh,m_Index,m_ErrTemp;
 	Uint    m_LimtCnt;
-    int    mType,m_TempMax,m_TempMin;
+    s16    mType,m_TempMax,m_TempMin;
 
     mType = gInvInfo.InvTypeApply;
 
@@ -1591,7 +1591,7 @@ void FanSpeedCtrl(void)
 {
     static u16 m_FanFlag = 0;
     static u16 m_FanStatus = 0;
-    int m_AdjSpeedTemp;
+    s16 m_AdjSpeedTemp;
     if((gInvInfo.InvTypeApply >= 25) && (gInvInfo.InvTypeApply <= 34))
     {
         m_AdjSpeedTemp = gFanSpeedCtrlTempreture[gInvInfo.InvTypeApply - 25];
@@ -1966,8 +1966,8 @@ void OverLoadProtect(void)
 ************************************************************/
 void CBCLimitCurProtect(void)
 {
-	int     m_CurU,m_CurV,m_CurW,m_Coff;
-	int	    m_Max,m_Add,m_Sub;
+	s16     m_CurU,m_CurV,m_CurW,m_Coff;
+	s16	    m_Max,m_Add,m_Sub;
     Uint    m_Limit;
     
 	if((gSubCommand.bit.CBCEnable == 1) && (gMainStatus.RunStep != STATUS_GET_PAR) && (gMainStatus.RunStep != STATUS_IPM_INIT_POS) && (gMainStatus.RunStep != STATUS_FLYING_START))   //DQ轴电感和初始位置辨识时不进入逐波限流
@@ -1981,11 +1981,11 @@ void CBCLimitCurProtect(void)
 		
 	//开始分别计算三相电流绝对值的积分
 	m_Coff = (((long)gMotorInfo.Current)<<10) / gInvInfo.InvCurrent;
-	m_CurU = (int)(((long)gIUVWQ12.U * (long)m_Coff)>>10);
+	m_CurU = (s16)(((long)gIUVWQ12.U * (long)m_Coff)>>10);
 	m_CurU = abs(m_CurU);
-	m_CurV = (int)(((long)gIUVWQ12.V * (long)m_Coff)>>10);
+	m_CurV = (s16)(((long)gIUVWQ12.V * (long)m_Coff)>>10);
 	m_CurV = abs(m_CurV);
-	m_CurW = (int)(((long)gIUVWQ12.W * (long)m_Coff)>>10);
+	m_CurW = (s16)(((long)gIUVWQ12.W * (long)m_Coff)>>10);
 	m_CurW = abs(m_CurW);
     
 	//开始判断是否有一相持续大电流超过5秒
@@ -2239,7 +2239,7 @@ void  BrakeOverloadProtect(void)
 {
     u16 m_CurrCoff;
 	Ulong	IBreakrsm,Duty;
-	int	m_Index,m_IndexData;
+	s16	m_Index,m_IndexData;
 
 	if(((gBrake.OnCounter == 0)&&(gBrake.TotalCounter > 1))||(gBrake.TotalCounter == 0))
 	{
@@ -2276,7 +2276,7 @@ void  BrakeOverloadProtect(void)
 		}
 		else if (m_Index >= 90)    
 		{
-            m_Index = ((int)m_Index - (int)gBrake.minPercent)/gBrake.OverLoadInterval;
+            m_Index = ((s16)m_Index - (s16)gBrake.minPercent)/gBrake.OverLoadInterval;
             m_Index = __IQsat(m_Index,4,-1);
 			
 			m_Index = (6 - m_Index);

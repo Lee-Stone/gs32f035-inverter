@@ -35,18 +35,31 @@ far pointers 		22 bits 	Binary 				0 				0x3FFFFF
 /************************************************************
 	工程使用的新定义变量类型
 ************************************************************/
-typedef	long long 				llong;
-typedef	unsigned int			Uint;
-typedef	unsigned long			Ulong;
-typedef	unsigned long long 		Ullong;
+//typedef	long long 				llong;
+//typedef	unsigned int			Uint;
+//typedef	unsigned long			Ulong;
+//typedef	unsigned long long 		Ullong;
+//
+//typedef long long		    s64;
+//typedef long                s32;
+//typedef int                 s16;
+//
+//typedef unsigned long long	u64;
+//typedef unsigned long       u32;
+//typedef unsigned int        u16;
 
-typedef long long		    s64;
-typedef long                s32;
-typedef int                 s16;
+typedef	int64_t 			llong;
+typedef	uint16_t			Uint;
+typedef	uint32_t			Ulong;
+typedef	uint64_t 			Ullong;
 
-typedef unsigned long long	u64;
-typedef unsigned long       u32;
-typedef unsigned int        u16;
+typedef int64_t		    	s64;
+typedef int32_t             s32;
+typedef int16_t             s16;
+
+typedef uint64_t			u64;
+typedef uint32_t       		u32;
+typedef uint16_t        	u16;
 
 typedef struct BIT32_REG_DEF {
    Uint16  LSW;

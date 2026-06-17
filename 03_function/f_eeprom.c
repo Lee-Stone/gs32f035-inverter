@@ -906,7 +906,7 @@ void EepromDeal(void)
         {
             UpdateIndexForEepromDeal();
         }
-        else    // 需
+        else    // 需??
         {
             funcCodeWrite.index = index4EepromDeal;
             funcCodeWrite.number = number4EepromDeal;
@@ -1206,7 +1206,7 @@ void I2CStop(void)
 
 void I2CRcvByte(void)
 {
-    int i;
+    s16 i;
     
 // SDA为输入    
     SdaIoAsInput();

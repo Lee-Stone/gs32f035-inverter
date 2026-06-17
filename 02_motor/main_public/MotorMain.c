@@ -190,7 +190,8 @@ void Main05msMotor(void)
         gMainCmd.FreqToFunc = gRotorSpeed.SpeedApply;
         
         gPmsmRotorPosEst.CurFreqSetReal = (((s32)gMainCmd.FreqSyn * (s32)gBasePar.FullFreq01)>>15) * 100;  //记录进入低频运行之前的频率
-    }  
+    }  
+
     else if((SYNC_FVC == gCtrMotorType)||(gPmParEst.SynTunePGLoad == 1))
     {       
         GetFeedRotorSpeed();               //编码器测速，确保间隔均匀
@@ -274,7 +275,7 @@ void Main2msMotorB(void)
             gMainCmd.FreqToFunc = 0;		    
             break;
 
-        case RUN_SYNC_TUNE:  //机参数辨?
+        case RUN_SYNC_TUNE:  //?交?参数辨?
 		    IPMPosAdjustZIndex();
             // 参数辨识后，电流环参数需要调用辨识得到的pi参数, 得到pi参数前的辨识过程不会使用电流环
             if(gBasePar.FcSetApply > C_DOUBLE_ACR_MAX_FC)
@@ -381,8 +382,8 @@ void Main2msMotorD(void)
 *************************************************************/
 void SendDataPrepare(void)		
 {
-    Uint tempU;
-    int   mAiCounter;
+    s16t tempU;
+    s16   mAiCounter;
 	long  m_Long;
     Ulong mTotal1;
     Ulong mTotal2;
@@ -417,17 +418,17 @@ void SendDataPrepare(void)
 		}
         //if(((long)gRotorSpeed.SpeedApply * gIMTSetQ12.T) < 0)
 		if(((long)gRotorSpeed.SpeedApply * gLineCur.Temp) < 0)       // 之前的做法在过零时会存在突变，wyk
-        {
-        	gLineCur.CurTorque = -(int)abs(gLineCur.Temp);
+        {s16
+        	gLineCur.CurTorque = -(s16)abs(gLineCur.Temp);
         }
         else
-        {
-        	gLineCur.CurTorque = (int)abs(gLineCur.Temp);
+        {s16
+        	gLineCur.CurTorque = (s16)abs(gLineCur.Temp);
         }
 	}
     
-	//同步机角度转换
-	tempU = (Uint)((int)gRotorTrans.RTPos + gRotorTrans.PosComp);
+	//同步机角度转换s16
+	tempU = (Uint)((s16)gRotorTrans.RTPos + gRotorTrans.PosComp);
     gRotorTrans.RtRealPos = ((Ulong)tempU * 3600L + 10) >> 16;
 	if(gMotorInfo.MotorType == MOTOR_TYPE_PM)
     {   
@@ -525,10 +526,10 @@ void RunCaseRun2Ms(void)
     
     switch(gCtrMotorType)
     {            
-        case ASYNC_VF:  //异步机和同步机VF控制,暂辈磺?
+        case ASYNC_VF:  //异步机和同步机VF控制,暂辈磺???
         case SYNC_VF:  
             //gIPMInitPos.Flag = 0;               // VF运行后下次再运行矢量需要辨识初始位置
-            VFWsTorqueBoostComm();				//转差补偿靥嵘脖淞考扑恪?
+            VFWsTorqueBoostComm();				//转差补偿?矩提升公共变量计算??
             VFWSCompControl();					//转差补偿处理(调整F)
             VFAutoTorqueBoost();        
             #if 1                           // 减速限制功能频率增加给定，这样导致错误
@@ -899,7 +900,7 @@ void CalRatioFromVot(void)
 /*************************************************************
     周期中断：完成模拟量采样、电流计算、VC电流环控制等操作
 
-注意:该函数在参数辨识中也有使用运男薷模枰觳槭欠裼跋炜赵乇媸?
+注意:该函数在参数辨识中也有使用?对它的修改，需要检查是否影响空载辨??
 *************************************************************/
 void ADCEndIsr()
 {  

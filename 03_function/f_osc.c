@@ -124,7 +124,7 @@ static uint8 OscConFrameAPPBuf[132];						// APP电子标签返回数据buff
 #endif
 
 #if DEBUG_MD290_SEARIS
-/*const unsigned int APPIDDataBuff[8]={
+/*const u16 APPIDDataBuff[8]={
 0x0001,//P0 1 厂商代码
 0x000B,//P2 3 产品系列
 0x010E,//P4 5 产品型号
@@ -134,7 +134,7 @@ static uint8 OscConFrameAPPBuf[132];						// APP电子标签返回数据buff
 0x0015,//P12 13 芯片型号
 0xffff//P14 --P15保留
 };*/
-const unsigned int APPIDDataBuff[8]={
+const u16 APPIDDataBuff[8]={
 0x0001,//P0 1 厂商代码
 0x000B,//P2 3 产品系列
 0x0110,//P4 5 产品型号
@@ -146,7 +146,7 @@ SOFTWARE_VERSION*100+SOFTWARE_VERSION_TEMP,//P6 7 产品版本
 0xffff//P14 --P15保留
 };
 #elif DEBUG_MD500_SEARIS
-const unsigned int APPIDDataBuff[8]={
+const u16 APPIDDataBuff[8]={
 0x0001,//P0 1 厂商代码
 0x000B,//P2 3 产品系列
 0x0111,//P4 5 产品型号
@@ -158,7 +158,7 @@ SOFTWARE_VERSION*100+SOFTWARE_VERSION_TEMP,//P6 7 产品版本
 0xffff//P14 --P15保留
 };
 #elif DEBUG_MD380E_SEARIS
-const unsigned int APPIDDataBuff[8]={
+const u16 APPIDDataBuff[8]={
 0x0001,//P0 1 厂商代码
 0x000B,//P2 3 产品系列
 0x010F,//P4 5 产品型号
@@ -170,7 +170,7 @@ SOFTWARE_VERSION*100+SOFTWARE_VERSION_TEMP,//P6 7 产品版本
 0xffff//P14 --P15保留
 };
 #else
-const unsigned int APPIDDataBuff[8]={
+const u16 APPIDDataBuff[8]={
 0x0001,//P0 1 厂商代码
 0x000B,//P2 3 产品系列
 0x0107,//P4 5 产品型号
