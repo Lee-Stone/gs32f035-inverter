@@ -26,15 +26,21 @@ void 	copy_prg(COPY_TABLE *tp);
 #endif
 
 
-void   	DisableDog(void);   
+void   	DisableDog(void);
+
+#ifdef TARGET_GS32
+#else
 void 	InitPll(Uint val);
 void	InitFlash(void);
 void	InitPeripheralClocks(void);
+#endif
 
 void 	InitPieCtrl(void);
 void 	InitPieVectTable(void);
 
 void 	InitSetGpio(void);
+void 	InitCpuTimers(void);
+
 extern __interrupt void SCI_RXD_isr(void);
 extern __interrupt void SCI_TXD_isr(void);
 
@@ -47,8 +53,7 @@ void InitSysCtrl()
 #ifdef TARGET_GS32
 	DisableDog();
 	Device_init();
-#endif
-
+#else
     DisableDog();			// Disable the watchdog
 
     // *IMPORTANT*
@@ -76,6 +81,7 @@ void InitSysCtrl()
     InitFlash();				// Initializes the Flash Control registers
 
     InitPeripheralClocks();	// Initialize the peripheral clocks
+#endif
 }
 
 /************************************************************
@@ -146,6 +152,33 @@ void InitPeripherals(void)
    	StartCpuTimer1();				     //作为主程序的时间基准
 }
 
+void InitCpuTimers(void)
+{
+	CPUTimer_setPreScaler(CPUTIMER0_BASE, 0);
+	CPUTimer_setPreScaler(CPUTIMER1_BASE, 0);
+
+	CPUTimer_setTimerSize(CPUTIMER0_BASE, CPUTIMER_TIMERSIZE_32BIT);
+	CPUTimer_setTimerSize(CPUTIMER1_BASE, CPUTIMER_TIMERSIZE_32BIT);
+
+	CPUTimer_setTimerMode(CPUTIMER0_BASE, CPUTIMER_TIMERMODE_PERIODIC);
+	CPUTimer_setTimerMode(CPUTIMER1_BASE, CPUTIMER_TIMERMODE_PERIODIC);
+
+	CPUTimer_setPeriod(CPUTIMER0_BASE, 0xFFFFFFFF);
+	CPUTimer_setPeriod(CPUTIMER1_BASE, 0xFFFFFFFF);
+
+	CPUTimer_stopTimer(CPUTIMER0_BASE);
+	CPUTimer_stopTimer(CPUTIMER1_BASE);
+
+	CPUTimer_reloadTimerCounter(CPUTIMER0_BASE);
+	CPUTimer_reloadTimerCounter(CPUTIMER1_BASE);
+
+	CPUTimer_clearOverflowFlag(CPUTIMER0_BASE);
+	CPUTimer_clearOverflowFlag(CPUTIMER1_BASE);
+}
+
+#ifdef TARGET_GS32
+
+#else
 //---------------------------------------------------------------------------
 // Move program from FLASH to RAM size < 65535 words
 //---------------------------------------------------------------------------
@@ -185,6 +218,7 @@ void InitFlash(void)
    EDIS;
    asm(" RPT #7 || NOP");	
 }	
+#endif
 
 //---------------------------------------------------------------------------
 // This function resets the watchdog timer.
@@ -238,6 +272,9 @@ void EnableDog(void)
     EDIS;
 }
 
+#ifdef TARGET_GS32
+
+#else
 //---------------------------------------------------------------------------
 // This function initializes the PLLCR register.
 //---------------------------------------------------------------------------
@@ -308,7 +345,11 @@ void InitPll(Uint16 val)
         EDIS;
     }
 }
+#endif
 
+#ifdef TARGET_GS32
+
+#else
 //--------------------------------------------------------------------------
 // This function initializes the clocks to the peripheral modules.
 //---------------------------------------------------------------------------
@@ -359,7 +400,11 @@ void InitPeripheralClocks(void)
 
    EDIS;
 }
+#endif
 
+#ifdef TARGET_GS32
+
+#else
 //--------------------------------------------------------------------------
 // 
 //---------------------------------------------------------------------------
@@ -380,6 +425,7 @@ void InitPieCtrl(void)
 		*(m_Point2++) = 0;
 	}
 }	
+#endif
 
 /************************************************************
 所有误操作的中断处理
@@ -398,6 +444,9 @@ __interrupt void rsvd_ISR(void)
 #endif
 }
 
+#ifdef TARGET_GS32
+
+#else
 //--------------------------------------------------------------------------
 //初始化的时候首先把所有的中断服务程序 都初始化为默认服务程序
 //---------------------------------------------------------------------------
@@ -417,6 +466,7 @@ void InitPieVectTable(void)
 	PieCtrlRegs.PIECTRL.bit.ENPIE = 1;	
 			
 }
+#endif
 
 //---------------------------------------------------------------------------
 // Set GPIO 口的复用、上拉下拉、同步
@@ -524,8 +574,14 @@ void InitSetAdc(void)
     EALLOW;
 
 #ifdef TARGET_GS32
+    ADC_clearInterruptStatus(ADCA_BASE, ADC_INT_NUMBER1);
+	ADC_setInterruptSource(ADCA_BASE, ADC_INT_NUMBER1, ADC_INT_TRIGGER_EOC5);
+	ADC_enableContinuousMode(ADCA_BASE);
+	ADC_enableInterrupt(ADCA_BASE);
+
     // 中断脉冲在ADC结果锁存后产生（对应TI INTPULSEPOS=1）
     ADC_setInterruptPulseMode(ADCA_BASE, ADC_PULSE_END_OF_CONV);
+    ADC_setInterruptPulseMode(ADCC_BASE, ADC_PULSE_END_OF_CONV);
 
     // 中断源：SOCx转换完成触发ADCINT1（对应TI INTSEL1N2）
     // GS32F035有ADCA和ADCC两个ADC模块，分别配置
@@ -562,18 +618,18 @@ void InitSetAdc(void)
     ADC_setupSOC(ADCA_BASE, ADC_SOC_NUMBER1,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN0,  8); // ADCINA0-IU
     ADC_setupSOC(ADCA_BASE, ADC_SOC_NUMBER2,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN3,  8); // ADCINA3-IW
     ADC_setupSOC(ADCA_BASE, ADC_SOC_NUMBER3,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN5,  8); // ADCINA5-UDC
-    ADC_setupSOC(ADCC_BASE, ADC_SOC_NUMBER0,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN0,  8); // ADCINB0-IV
-    ADC_setupSOC(ADCA_BASE, ADC_SOC_NUMBER4,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN2,  8); // ADCINA2-IB
-    ADC_setupSOC(ADCC_BASE, ADC_SOC_NUMBER1,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN5,  8); // ADCINB5-AI1
-    ADC_setupSOC(ADCA_BASE, ADC_SOC_NUMBER5,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN7,  8); // ADCINA7-AI2
-    ADC_setupSOC(ADCA_BASE, ADC_SOC_NUMBER6,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN1,  8); // ADCINA1-AI3
-    ADC_setupSOC(ADCA_BASE, ADC_SOC_NUMBER7,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN6,  8); // ADCINA6-UU4(uvw-U)
-    ADC_setupSOC(ADCC_BASE, ADC_SOC_NUMBER2,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN2,  8); // ADCINB2-UU5(uvw-V)
-    ADC_setupSOC(ADCC_BASE, ADC_SOC_NUMBER3,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN4,  8); // ADCINB4-UU6(uvw-W)
-    ADC_setupSOC(ADCC_BASE, ADC_SOC_NUMBER4,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN6,  8); // ADCINB6-UU7
-    ADC_setupSOC(ADCC_BASE, ADC_SOC_NUMBER5,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN3,  8); // ADCINB3-PL
-    ADC_setupSOC(ADCC_BASE, ADC_SOC_NUMBER6,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN7,  8); // ADCINB7 -1.25V
-    ADC_setupSOC(ADCC_BASE, ADC_SOC_NUMBER7,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN1,  8); // ADCINB1-TEMP
+    ADC_setupSOC(ADCC_BASE, ADC_SOC_NUMBER4,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN0,  8); // ADCINB0-IV
+    ADC_setupSOC(ADCA_BASE, ADC_SOC_NUMBER5,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN2,  8); // ADCINA2-IB
+    ADC_setupSOC(ADCC_BASE, ADC_SOC_NUMBER6,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN5,  8); // ADCINB5-AI1
+    ADC_setupSOC(ADCA_BASE, ADC_SOC_NUMBER7,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN7,  8); // ADCINA7-AI2
+    ADC_setupSOC(ADCA_BASE, ADC_SOC_NUMBER8,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN1,  8); // ADCINA1-AI3
+    ADC_setupSOC(ADCA_BASE, ADC_SOC_NUMBER9,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN6,  8); // ADCINA6-UU4(uvw-U)
+    ADC_setupSOC(ADCC_BASE, ADC_SOC_NUMBER10,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN2,  8); // ADCINB2-UU5(uvw-V)
+    ADC_setupSOC(ADCC_BASE, ADC_SOC_NUMBER11,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN4,  8); // ADCINB4-UU6(uvw-W)
+    ADC_setupSOC(ADCC_BASE, ADC_SOC_NUMBER12,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN6,  8); // ADCINB6-UU7
+    ADC_setupSOC(ADCC_BASE, ADC_SOC_NUMBER13,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN3,  8); // ADCINB3-PL
+    ADC_setupSOC(ADCC_BASE, ADC_SOC_NUMBER14,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN7,  8); // ADCINB7 -1.25V
+    ADC_setupSOC(ADCC_BASE, ADC_SOC_NUMBER15,  ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN1,  8); // ADCINB1-TEMP
     // 清除ADC中断标志
     ADC_clearInterruptStatus(ADCA_BASE, ADC_INT_NUMBER1);
     ADC_clearInterruptStatus(ADCC_BASE, ADC_INT_NUMBER1);
