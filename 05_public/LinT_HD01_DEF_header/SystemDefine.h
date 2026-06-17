@@ -102,58 +102,58 @@ extern "C" {
 与芯片相关的寄存器定�?
 ************************************************************/
 #if (SOFTSERIES == MD500SOFT)
-    #define ADC_IU               (AdcResult.ADCRESULT1<<4)
-    #define ADC_IW               (AdcResult.ADCRESULT2<<4)
-    #define ADC_UDC              (AdcResult.ADCRESULT3<<4)
-    #define ADC_IV               (AdcResult.ADCRESULT4<<4)
-    #define ADC_IBREAK           (AdcResult.ADCRESULT5<<4)
-    #define ADC_AI1              (AdcResult.ADCRESULT6<<4)
-    #define ADC_AI2              (AdcResult.ADCRESULT7<<4)
-    #define ADC_AI3              (AdcResult.ADCRESULT8<<4)
+    #define ADC_IU               (AdcaResultRegs.ADCRESULT1<<4)
+    #define ADC_IW               (AdcaResultRegs.ADCRESULT2<<4)
+    #define ADC_UDC              (AdcaResultRegs.ADCRESULT3<<4)
+    #define ADC_IV               (AdcaResultRegs.ADCRESULT4<<4)
+    #define ADC_IBREAK           (AdccResultRegs.ADCRESULT5<<4)
+    #define ADC_AI1              (AdcaResultRegs.ADCRESULT6<<4)
+    #define ADC_AI2              (AdccResultRegs.ADCRESULT7<<4)
+    #define ADC_AI3              (AdcaResultRegs.ADCRESULT8<<4)
 #if(AIRCOMPRESSOR == 0)
-    #define UVW_PG_W             (AdcResult.ADCRESULT9<<4)          //PG-SinCos/UVW共用端子
-    #define UVW_PG_V             (AdcResult.ADCRESULT10<<4)         //PG-SinCos/UVW共用端子
+    #define UVW_PG_W             (AdcaResultRegs.ADCRESULT9<<4)          //PG-SinCos/UVW共用端子
+    #define UVW_PG_V             (AdccResultRegs.ADCRESULT10<<4)         //PG-SinCos/UVW共用端子
 #else
-    #define ADC_AI4              (AdcResult.ADCRESULT9<<4)          //PG-SinCos/UVW共用端子
-    #define ADC_AI5              (AdcResult.ADCRESULT10<<4)         //PG-SinCos/UVW共用端子
+    #define ADC_AI4              (AdcaResultRegs.ADCRESULT9<<4)          //PG-SinCos/UVW共用端子
+    #define ADC_AI5              (AdccResultRegs.ADCRESULT10<<4)         //PG-SinCos/UVW共用端子
 #endif
-    #define UVW_PG_U             (AdcResult.ADCRESULT11<<4)         //PG-SinCos/UVW共用端子
-    #define ADC_UU7              (AdcResult.ADCRESULT12<<4)         //PG-SinCos用端�?
-    #define PL_VOE_PROTECT       (AdcResult.ADCRESULT13<<4)
-    #define ADC_1250             (AdcResult.ADCRESULT14<<4)
-    #define ADC_TEMP             (AdcResult.ADCRESULT15<<4)
+    #define UVW_PG_U             (AdccResultRegs.ADCRESULT11<<4)         //PG-SinCos/UVW共用端子
+    #define ADC_UU7              (AdccResultRegs.ADCRESULT12<<4)         //PG-SinCos用端�?
+    #define PL_VOE_PROTECT       (AdccResultRegs.ADCRESULT13<<4)
+    #define ADC_1250             (AdccResultRegs.ADCRESULT14<<4)
+    #define ADC_TEMP             (AdccResultRegs.ADCRESULT15<<4)
 #else
-    #define ADC_GND              (AdcResult.ADCRESULT0<<4)          //28035采样结果右对齐，为了�?2808兼容，左�?4�?
-    #define ADC_IU               (AdcResult.ADCRESULT1<<4)
-    #define ADC_IW               (AdcResult.ADCRESULT2<<4)
-    #define ADC_UDC              (AdcResult.ADCRESULT3<<4)
+    #define ADC_GND              (AdccResultRegs.ADCRESULT0<<4)          //28035采样结果右对齐，为了�?2808兼容，左�?4�?
+    #define ADC_IU               (AdcaResultRegs.ADCRESULT1<<4)
+    #define ADC_IW               (AdcaResultRegs.ADCRESULT2<<4)
+    #define ADC_UDC              (AdcaResultRegs.ADCRESULT3<<4)
 
-    #define ADC_TEMP             (AdcResult.ADCRESULT4<<4)
-    #define ADC_IV               (AdcResult.ADCRESULT5<<4)          // 这个地方是由于硬件驱动板到DSP版时接口反掉�?
-    #define ADC_AI1              (AdcResult.ADCRESULT6<<4)
-    #define ADC_VREFLO           (AdcResult.ADCRESULT6<<4)          //选择ADCINB5与参考地连接，矫正零�?
-    #define ADC_AI2              (AdcResult.ADCRESULT7<<4)
+    #define ADC_TEMP             (AdccResultRegs.ADCRESULT4<<4)
+    #define ADC_IV               (AdccResultRegs.ADCRESULT5<<4)          // 这个地方是由于硬件驱动板到DSP版时接口反掉�?
+    #define ADC_AI1              (AdccResultRegs.ADCRESULT6<<4)
+    #define ADC_VREFLO           (AdcaResultRegs.ADCRESULT6<<4)          //选择ADCINB5与参考地连接，矫正零�?
+    #define ADC_AI2              (AdcaResultRegs.ADCRESULT7<<4)
 
-    #define ADC_AI3              (AdcResult.ADCRESULT8<<4)
-    #define ADC_UU4              (AdcResult.ADCRESULT9<<4)          //PG-SinCos/UVW共用端子
-    #define ADC_UU5              (AdcResult.ADCRESULT10<<4)         //PG-SinCos/UVW共用端子
-    #define ADC_UU6              (AdcResult.ADCRESULT11<<4)         //PG-SinCos/UVW共用端子
-    #define ADC_UU7              (AdcResult.ADCRESULT12<<4)         //PG-SinCos用端�?
-    #define PL_VOE_PROTECT       (AdcResult.ADCRESULT13<<4)
+    #define ADC_AI3              (AdcaResultRegs.ADCRESULT8<<4)
+    #define ADC_UU4              (AdcaResultRegs.ADCRESULT9<<4)          //PG-SinCos/UVW共用端子
+    #define ADC_UU5              (AdccResultRegs.ADCRESULT10<<4)         //PG-SinCos/UVW共用端子
+    #define ADC_UU6              (AdccResultRegs.ADCRESULT11<<4)         //PG-SinCos/UVW共用端子
+    #define ADC_UU7              (AdccResultRegs.ADCRESULT12<<4)         //PG-SinCos用端�?
+    #define PL_VOE_PROTECT       (AdccResultRegs.ADCRESULT13<<4)
 
-    #define UVW_PG_U                (AdcResult.ADCRESULT11<<4)         //PG-SinCos/UVW共用端子
-    #define UVW_PG_V                (AdcResult.ADCRESULT10<<4)         //PG-SinCos/UVW共用端子
-    #define UVW_PG_W                (AdcResult.ADCRESULT9 <<4)         //PG-SinCos/UVW共用端子
+    #define UVW_PG_U                (AdccResultRegs.ADCRESULT11<<4)         //PG-SinCos/UVW共用端子
+    #define UVW_PG_V                (AdccResultRegs.ADCRESULT10<<4)         //PG-SinCos/UVW共用端子
+    #define UVW_PG_W                (AdccResultRegs.ADCRESULT9 <<4)         //PG-SinCos/UVW共用端子
 #endif    
 //#define INVUPUDC_380V 52547 //对应820V/1022.7*65536
 #define INVUPUDC_380V 55174 //对应820V*1.05/1022.7*65536 =861V
 
 // // 与芯片相关的寄存器定�?
-#define PIE_VECTTABLE_ADCINT    PieVectTable.ADCINT1                    //ADC中断向量
-#define ADC_CLEAR_INT_FLAG      AdcRegs.ADCINTFLGCLR.bit.ADCINT1 = 1    //清除ADC模块的中断标�?
-#define ADC_RESET_SEQUENCE      AdcRegs.SOCPRICTL.bit.RRPOINTER = 0x20  //reset the sequence
-#define ADC_START_CONVERSION    AdcRegs.ADCSOCFRC1.all = 0xFFFF         //软件启动AD
-#define ADC_END_CONVERSIN       AdcRegs.ADCINTFLG.bit.ADCINT1           //AD转换完成标志�?
+//#define PIE_VECTTABLE_ADCINT    PieVectTable.ADCINT1                    //ADC中断向量
+//#define ADC_CLEAR_INT_FLAG      AdcRegs.ADCINTFLGCLR.bit.ADCINT1 = 1    //清除ADC模块的中断标�?
+//#define ADC_RESET_SEQUENCE      AdcRegs.SOCPRICTL.bit.RRPOINTER = 0x20  //reset the sequence
+//#define ADC_START_CONVERSION    AdcRegs.ADCSOCFRC1.all = 0xFFFF         //软件启动AD
+//#define ADC_END_CONVERSIN       AdcRegs.ADCINTFLG.bit.ADCINT1           //AD转换完成标志�?
 
 #define  ADC_VOLTAGE_08         ( 8L*65535/33)  // AD输入0.8V对应的采样�??   28035AD范围�?0-3.3V
 #define  ADC_VOLTAGE_10         (10L*65535/33)  // AD输入1.0V对应的采样�??
