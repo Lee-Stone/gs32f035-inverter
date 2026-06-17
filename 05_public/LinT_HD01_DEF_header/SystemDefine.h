@@ -11,14 +11,11 @@ extern "C" {
 
 #if defined(DSP2803X)
 //#include "DSP28x_Project.h"
-#include "DSP2803x_Device.h"     // DSP2803x Headerfile Include File
-#include "DSP2803x_Examples.h"   // DSP2803x Examples Include File
-#else
 #ifdef TARGET_GS32
 #include "DSP_GS32_Device.h"
 #else
-#include "DSP2803x_Device.h"
-#include "DSP2803x_Examples.h"
+#include "DSP2803x_Device.h"     // DSP2803x Headerfile Include File
+#include "DSP2803x_Examples.h"   // DSP2803x Examples Include File
 #endif
 #endif
 

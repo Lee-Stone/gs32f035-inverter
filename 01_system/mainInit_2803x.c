@@ -30,8 +30,8 @@ void 	InitPieCtrl(void);
 void 	InitPieVectTable(void);
 
 void 	InitSetGpio(void);
-extern __Interrupt void SCI_RXD_isr(void);
-extern __Interrupt void SCI_TXD_isr(void);
+extern __interrupt void SCI_RXD_isr(void);
+extern __interrupt void SCI_TXD_isr(void);
 
 
 /************************************************************
@@ -359,7 +359,7 @@ void InitPieCtrl(void)
 所有误操作的中断处理
 ************************************************************/
 int gErrorIntCnt;
-__Interrupt void rsvd_ISR(void)      
+__interrupt void rsvd_ISR(void)      
 {
 #ifdef TARGET_GS32
     SAVE_IRQ_CSR_CONTEXT();

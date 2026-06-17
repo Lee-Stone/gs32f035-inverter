@@ -92,9 +92,9 @@ static void InitSciOSC(uint8);								// 初始化示波器串口
 static uint8 SciDataTX(uint8 *buf, uint8 len);				// 数据发送函数
 
 #if OSC_TX_INT_EN == 1
-static __Interrupt void sciaTxFifoIsr(void);					// 发送中断
+static __interrupt void sciaTxFifoIsr(void);					// 发送中断
 #endif
-static __Interrupt void sciaRxFifoIsr(void);					// 接收中断
+static __interrupt void sciaRxFifoIsr(void);					// 接收中断
 static uint8 SciDataRx(uint8 *buf, uint8 len, uint8 timeout);		// 数据接收函数
 static void SciDataRxDeal(void);							// 命令处理
 static void OscDataQcq(void);								// 数据采样
@@ -507,7 +507,7 @@ void OscTxFifoTask(void)
 * 					  该函数非加速模式状态不允许单步调试
 ********************************************************************************/
 #if OSC_TX_INT_EN == 1
-__Interrupt void sciaTxFifoIsr(void)
+__interrupt void sciaTxFifoIsr(void)
 {
 #ifdef TARGET_GS32
     SAVE_IRQ_CSR_CONTEXT();
@@ -677,7 +677,7 @@ uint8 SciDataRx(uint8 *buf, uint8 len, uint8 timeout)
 * 说明				: SCI FIFO模式数据接收中断
 * 
 ********************************************************************************/
-__Interrupt void sciaRxFifoIsr(void)
+__interrupt void sciaRxFifoIsr(void)
 {
 #ifdef TARGET_GS32
     SAVE_IRQ_CSR_CONTEXT();
