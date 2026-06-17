@@ -323,7 +323,7 @@ void OutputPhaseLoseAndShortGndDetect(void);
 void ShortGnd_PhaseLoseICal(void);
 void    BrakeResShortProtect(void);
 void  BrakeOverloadProtect(void);
-__interrupt void ShortGnd_ADC_Over_isr(void);
+__Interrupt void ShortGnd_ADC_Over_isr(void);
 /************************************************************
 	变频器保护处理
 ************************************************************/
@@ -1088,7 +1088,7 @@ void BeforeRunOutputPhaseLoseDetect(void)
 	}
 }
 
-__interrupt void ShortGnd_ADC_Over_isr(void)
+__Interrupt void ShortGnd_ADC_Over_isr(void)
 {
 #ifdef TARGET_GS32
     SAVE_IRQ_CSR_CONTEXT();

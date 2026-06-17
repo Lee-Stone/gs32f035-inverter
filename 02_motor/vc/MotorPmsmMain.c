@@ -41,7 +41,7 @@ extern void PrepareParForRun(void);
 /*************************************************************
 	同步机下编码器的基准中断到达的处理程序(调用程序)
 *************************************************************/
-__interrupt void PG_Zero_isr(void)
+__Interrupt void PG_Zero_isr(void)
 {
 #ifdef TARGET_GS32
     SAVE_IRQ_CSR_CONTEXT();

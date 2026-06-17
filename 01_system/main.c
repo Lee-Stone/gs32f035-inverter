@@ -102,7 +102,7 @@ void main(void)
 /***************************************************************
 	EPWM的周期中断，约30us
 ****************************************************************/
-__interrupt void ADC_Over_isr(void)
+__Interrupt void ADC_Over_isr(void)
 {
 #ifdef TARGET_GS32
 	SAVE_IRQ_CSR_CONTEXT();
@@ -134,7 +134,7 @@ __interrupt void ADC_Over_isr(void)
 /***************************************************************
 	EPWM的过流中断，对硬件过流信号处理
 ****************************************************************/
-__interrupt void EPWM1_TZ_isr(void)
+__Interrupt void EPWM1_TZ_isr(void)
 {
 #ifdef TARGET_GS32
 	SAVE_IRQ_CSR_CONTEXT();
@@ -157,7 +157,7 @@ __interrupt void EPWM1_TZ_isr(void)
 /***************************************************************
 	CBC触发的TZ中断，中断中强制关闭驱动使能信号
 ****************************************************************/
-__interrupt void EPWM2_TZ_isr(void)
+__Interrupt void EPWM2_TZ_isr(void)
 {       
 #ifdef TARGET_GS32
 	SAVE_IRQ_CSR_CONTEXT();

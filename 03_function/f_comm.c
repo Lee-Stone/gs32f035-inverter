@@ -149,11 +149,11 @@ LOCALD void inline CommStartSend(void);
 #if DSP_2803X
 void SCI_RXD_isr(void);
 void SCI_TXD_isr(void);
-__interrupt void Lina_Level0_ISR(void);    // LIN-SCI 中断
-__interrupt void Lina_Level1_ISR(void);    // LIN-SCI 中断
+__Interrupt void Lina_Level0_ISR(void);    // LIN-SCI 中断
+__Interrupt void Lina_Level1_ISR(void);    // LIN-SCI 中断
 #else
-__interrupt void SCI_RXD_isr(void);       // SCI中断
-__interrupt void SCI_TXD_isr(void);       // SCI中断
+__Interrupt void SCI_RXD_isr(void);       // SCI中断
+__Interrupt void SCI_TXD_isr(void);       // SCI中断
 #endif
 
 extern Uint16 ValidateInvType(void);
@@ -230,9 +230,9 @@ void SciDeal(void)
 //
 //=====================================================================
 #if DSP_2803X
-void SCI_RXD_isr(void)
+__Interrupt void SCI_RXD_isr(void)
 #else
-__interrupt void SCI_RXD_isr(void)
+__Interrupt void SCI_RXD_isr(void)
 #endif
 {
     Uint16 tmp;
@@ -271,9 +271,9 @@ __interrupt void SCI_RXD_isr(void)
 //
 //=====================================================================
 #if DSP_2803X
-void SCI_TXD_isr(void)
+__Interrupt void SCI_TXD_isr(void)
 #else
-__interrupt void SCI_TXD_isr(void)
+__Interrupt void SCI_TXD_isr(void)
 #endif
 {
 	// 通讯发送数据
@@ -289,7 +289,7 @@ __interrupt void SCI_TXD_isr(void)
 
 #if DSP_2803X
 // 高优先级中断
-__interrupt void Lina_Level0_ISR(void)
+__Interrupt void Lina_Level0_ISR(void)
 {
 	Uint32 LinL0IntVect;  
 
@@ -316,7 +316,7 @@ __interrupt void Lina_Level0_ISR(void)
 }
 
 //Low priority BLIN ISR.  Just a placeholder.
-__interrupt void Lina_Level1_ISR(void)
+__Interrupt void Lina_Level1_ISR(void)
 {
 #ifdef TARGET_GS32
 #else
@@ -1891,8 +1891,8 @@ void InitSetScia(void){}
 void InitSciaGpio(void){}
 void SciDeal(void){}
 void UpdateSciFormat(void){}
-__interrupt void SCI_RXD_isr(void){}
-__interrupt void SCI_TXD_isr(void){}
+__Interrupt void SCI_RXD_isr(void){}
+__Interrupt void SCI_TXD_isr(void){}
 Uint16 CommWrite(Uint16 addr, Uint16 data){}
 Uint16 CommRead(Uint16 addr, Uint16 data){}
 #endif
