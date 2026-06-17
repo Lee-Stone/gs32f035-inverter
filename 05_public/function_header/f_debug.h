@@ -56,7 +56,7 @@
 //=====================================================================
 
 #define DEBUG_F_PLC_CTRL          1    // 可编程卡
-#define DEBUG_F_MSC_CTRL          1    // 主从控制
+#define DEBUG_F_MSC_CTRL          0    // 主从控制（暂不启用，依赖CANlink）
 
 //#define DEBUG_F_MSC_CTRL_AUTOADDR          1    // 主从控制
 //#if F_DEBUG_RAM && (!defined(_lint))

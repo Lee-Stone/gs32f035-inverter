@@ -15,7 +15,7 @@
 #if F_DEBUG_RAM                     // 仅调试功能，在CCS的build option中定义的宏
 #define DEBUG_F_MODBUS          0   // 是否使用通讯部分
 #elif 1
-#define DEBUG_F_MODBUS          1
+#define DEBUG_F_MODBUS          0
 #endif
 
 enum COMM_STATUS commStatus;    // 串口初始化为等待接收状态

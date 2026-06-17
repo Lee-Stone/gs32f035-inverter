@@ -9,7 +9,7 @@
 #include "f_comm_DP.h"
 #include "f_main.h"
 
-#define DEBUG_F_DP             1
+#define DEBUG_F_DP             0
 
 
 #if DEBUG_F_DP
