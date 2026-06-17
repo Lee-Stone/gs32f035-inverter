@@ -15,12 +15,17 @@
 #include "MotorDefine.h"
 #include "MotorInclude.h"
 
+#ifdef TARGET_GS32
 
+#else
 /**修改FLASH寄存器的程序需要搬移到FLASH中执行**/
 #pragma CODE_SECTION(InitFlash, "ramfuncs");
 extern COPY_TABLE prginRAM;
 
 void 	copy_prg(COPY_TABLE *tp);
+#endif
+
+
 void   	DisableDog(void);   
 void 	InitPll(Uint val);
 void	InitFlash(void);
@@ -39,6 +44,11 @@ extern __interrupt void SCI_TXD_isr(void);
 ************************************************************/
 void InitSysCtrl()
 {   
+#ifdef TARGET_GS32
+	DisableDog();
+	Device_init();
+#endif
+
     DisableDog();			// Disable the watchdog
 
     // *IMPORTANT*
@@ -187,8 +197,12 @@ void InitFlash(void)
 void KickDog(void)
 {
     EALLOW;
+#ifdef TARGET_GS32
+    SysCtl_serviceWatchdog(WD1_BASE);
+#else
     SysCtrlRegs.WDKEY = 0x0055;
     SysCtrlRegs.WDKEY = 0x00AA;
+#endif
     EDIS;
 }
 
@@ -198,7 +212,11 @@ void KickDog(void)
 void DisableDog(void)
 {
     EALLOW;
+#ifdef TARGET_GS32
+    SysCtl_disableWatchdog(WD1_BASE);
+#else
     SysCtrlRegs.WDCR= 0x0068;//WDDIS位位1，禁止看门狗模块；WDCHK位只要写就一定的写101，写入其它值会复位单片机
+#endif
     EDIS;                                        //WDPS  看门狗预分频，相对于OSCCLK/512
 }
 
@@ -208,7 +226,15 @@ void DisableDog(void)
 void EnableDog(void)
 {
     EALLOW;
+#ifdef TARGET_GS32
+    SysCtl_disableWatchdog(WD1_BASE);
+    SysCtl_initWatchdog(WD1_BASE, 0xFF);
+    SysCtl_setWatchdogMode(WD1_BASE, WD_MODE_RESET);
+    SysCtl_enableWatchdogDebugMode(WD1_BASE);
+    SysCtl_enableWatchdog(WD1_BASE);
+#else
     SysCtrlRegs.WDCR= 0x002A;//使能看门狗，WDCLK = OSCCLK/512/2
+#endif
     EDIS;
 }
 
