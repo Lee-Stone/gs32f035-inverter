@@ -339,12 +339,21 @@ void SystemParChg2Ms()
 #endif
 //	gDeadBand.MaxComp  = gDeadBand.DeadBand>>1; 
 	EALLOW;									//设置死区时间
+#ifdef TARGET_GS32
+	EPwm1Regs.DBFED.bit.DBFED = gDeadBand.DeadBand;
+	EPwm1Regs.DBRED.bit.DBRED = gDeadBand.DeadBand;
+	EPwm2Regs.DBFED.bit.DBFED = gDeadBand.DeadBand;
+	EPwm2Regs.DBRED.bit.DBRED = gDeadBand.DeadBand;
+	EPwm3Regs.DBFED.bit.DBFED = gDeadBand.DeadBand;
+	EPwm3Regs.DBRED.bit.DBRED = gDeadBand.DeadBand;
+#else
 	EPwm1Regs.DBFED = gDeadBand.DeadBand;
 	EPwm1Regs.DBRED = gDeadBand.DeadBand;
 	EPwm2Regs.DBFED = gDeadBand.DeadBand;
 	EPwm2Regs.DBRED = gDeadBand.DeadBand;
 	EPwm3Regs.DBFED = gDeadBand.DeadBand;
 	EPwm3Regs.DBRED = gDeadBand.DeadBand;
+#endif
 	EDIS;
         
 //启动ADC采样延迟时间
