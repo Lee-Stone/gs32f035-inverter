@@ -32,12 +32,22 @@ Uint 	iTrig3_Dpwm[12] = {2,0,1,2,0,1,2,0,1,2,0,1};
 ************************************************************/
 void InitSetPWM(void)
 {
+#ifdef TARGET_GS32
+	SysCtl_disablePeripheral(SYSCTL_PERIPH_CLK_TBCLKSYNC);
+#else
+
+#endif
+
     gCBCProtect.EnableFlag = 1;				//默认启动,防止参数辨识再次开启逐波限流使关闭无效zbz1812
 	EALLOW;
 	/////////////PWM1//////////////
 //Set the Time-Base (TB) Module
 	EPwm1Regs.TBPRD = C_INIT_PRD; 
+#ifdef TARGET_GS32
+	EPwm1Regs.CMPB.bit.CMPB = EPwm1Regs.TBPRD - gADC.DelayApply;
+#else
 	EPwm1Regs.CMPB = EPwm1Regs.TBPRD - gADC.DelayApply;
+#endif
 	EPwm1Regs.TBPHS.all = 0;
 	EPwm1Regs.TBCTL.all = 0xE012;
     //EPwm1Regs.TBCTL.bit.FREE_SOFT = 3;
@@ -64,8 +74,13 @@ void InitSetPWM(void)
 	EPwm1Regs.DBCTL.all = 0x0007;
 	//EPwm1Regs.DBCTL.bit.OUT_MODE = DB_FULL_ENABLE;
 	//EPwm1Regs.DBCTL.bit.POLSEL = DB_ACTV_HIC; 
+#ifdef TARGET_GS32
+	EPwm1Regs.DBFED.bit.DBFED = gDeadBand.DeadBand;//C_MAX_DB;
+	EPwm1Regs.DBRED.bit.DBRED = gDeadBand.DeadBand;//C_MAX_DB;
+#else
 	EPwm1Regs.DBFED = gDeadBand.DeadBand;//C_MAX_DB;
 	EPwm1Regs.DBRED = gDeadBand.DeadBand;//C_MAX_DB;
+#endif
 //Set the PWM-chopper (PC) Module
 //Set the Trip-zone (TZ) Module
 #ifdef TMS320F2808
@@ -127,8 +142,13 @@ void InitSetPWM(void)
 	EPwm2Regs.DBCTL.all = 0x0007;
 	//EPwm2Regs.DBCTL.bit.OUT_MODE = DB_FULL_ENABLE;
 	//EPwm2Regs.DBCTL.bit.POLSEL = DB_ACTV_HIC; 
+#ifdef TARGET_GS32
+	EPwm2Regs.DBFED.bit.DBFED = gDeadBand.DeadBand;//C_MAX_DB;
+	EPwm2Regs.DBRED.bit.DBRED = gDeadBand.DeadBand;//C_MAX_DB;
+#else
 	EPwm2Regs.DBFED = gDeadBand.DeadBand;//C_MAX_DB;
 	EPwm2Regs.DBRED = gDeadBand.DeadBand;//C_MAX_DB;
+#endif
 //Set the PWM-chopper (PC) Module
 //Set the Trip-zone (TZ) Module
 #ifdef TMS320F2808
@@ -181,8 +201,13 @@ void InitSetPWM(void)
 	EPwm3Regs.DBCTL.all = 0x0007;
 	//EPwm3Regs.DBCTL.bit.OUT_MODE = DB_FULL_ENABLE;
 	//EPwm3Regs.DBCTL.bit.POLSEL = DB_ACTV_HIC; 
+#ifdef TARGET_GS32
+	EPwm3Regs.DBFED.bit.DBFED = gDeadBand.DeadBand;//C_MAX_DB;
+	EPwm3Regs.DBRED.bit.DBRED = gDeadBand.DeadBand;//C_MAX_DB;
+#else
 	EPwm3Regs.DBFED = gDeadBand.DeadBand;//C_MAX_DB;
 	EPwm3Regs.DBRED = gDeadBand.DeadBand;//C_MAX_DB;
+#endif
 //Set the PWM-chopper (PC) Module
 //Set the Trip-zone (TZ) Module
 #ifdef TMS320F2808
@@ -204,7 +229,10 @@ void InitSetPWM(void)
 //Set the Event-trigger (ET) Module	
 	EDIS;
 	gCBCProtect.EnableFlag = 1;  //避免参数辨识后，CBC设置与功能码配置不符
- 
+
+#ifdef TARGET_GS32
+	SysCtl_enablePeripheral(SYSCTL_PERIPH_CLK_TBCLKSYNC);
+#endif
 }
 
 /*************************************************************

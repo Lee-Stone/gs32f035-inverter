@@ -2979,7 +2979,12 @@ void InitSetEPWM5(void)
     EPwm5Regs.TBCTL.bit.CTRMODE = TB_COUNT_UP;  // UP_Count Mode
     EPwm5Regs.TBCTL.bit.PHSEN = TB_DISABLE;     // Phase loading disabled
     EPwm5Regs.TBCTL.bit.PRDLD = TB_IMMEDIATE;
+    EPWM_disableSyncOutPulseSource();
+#ifdef TARGET_GS32
+    EPWM_disableSyncOutPulseSource(EPWM4_BASE, EPWM_SYNC_OUT_PULSE_ON_ALL);
+#else
     EPwm5Regs.TBCTL.bit.SYNCOSEL = TB_SYNC_DISABLE;
+#endif
     EPwm5Regs.TBCTL.bit.HSPCLKDIV = TB_DIV1;    // TBCLK = SYSCLK
     EPwm5Regs.TBCTL.bit.CLKDIV = TB_DIV1;
     EPwm5Regs.CMPCTL.bit.SHDWAMODE = CC_IMMEDIATE;

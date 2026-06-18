@@ -382,7 +382,7 @@ void Main2msMotorD(void)
 *************************************************************/
 void SendDataPrepare(void)		
 {
-    s16t tempU;
+    s16 tempU;
     s16   mAiCounter;
 	long  m_Long;
     Ulong mTotal1;
