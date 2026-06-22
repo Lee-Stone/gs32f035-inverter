@@ -767,7 +767,7 @@ void TemperatureCheck(void)
 			m_Index = (m_IndexLow + m_IndexHigh)>>1;
 		}
 	}
-	if(mType - gTemperature.TempBak >= 8)			//温度变化超过0.5度才赋值
+	if((u16)(mType - gTemperature.TempBak) >= 8)			//温度变化超过0.5度才赋值
 	{
 		gTemperature.TempBak = mType;
 		gTemperature.Temp = mType>>4;
