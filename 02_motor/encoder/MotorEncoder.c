@@ -126,6 +126,7 @@ void InitRtInterface(void)
 *************************************************************/
 void InitSetQEP(void)
 {  
+	EQepRegs = &EQep1Regs;
 	/****************新测速修改，wyk******************/
 	EALLOW;
 	(*EQepRegs).QEPCTL.all = 0;

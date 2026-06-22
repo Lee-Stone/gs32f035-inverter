@@ -144,7 +144,7 @@ void InitPeripherals(void)
    	InitSetGpio();  
    	InitSetPWM();
    	InitSetAdc();
-	//InitSetQEP();			                //初始化QEP(默认是ABZ编码器，所以在此初始化)
+	InitSetQEP();			                //初始化QEP(默认是ABZ编码器，所以在此初始化)
 
    	InitCpuTimers();
    	//ConfigCpuTimer(&CpuTimer0, DSP_CLOCK, 1000000L);//100MHz CPU, 1 millisecond Period
