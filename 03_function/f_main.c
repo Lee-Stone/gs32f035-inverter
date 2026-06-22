@@ -1038,7 +1038,7 @@ void Main05msFunctionB(void)
     MasterSlaveDeal();
 #endif
 #if DSP_2803X
-    CanlinkFun();
+//    CanlinkFun();
 
     #if 0   // 串口操作长期打开
     if ( (funcCode.code.commProtocolSec < CANLINK) && (funcCode.code.plcEnable != 1) )
