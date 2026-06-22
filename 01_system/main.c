@@ -42,7 +42,7 @@ void main(void)
    	InitForMotorApp();					// Step 4. User specific code
    	InitForFunctionApp();
 
-	EnableDog();                  // d
+	DisableDog();                  		// d
 	SetInterruptEnable();				// Step 5. enable interrupts:
    	EINT;   							    
    	ERTM;   							    
