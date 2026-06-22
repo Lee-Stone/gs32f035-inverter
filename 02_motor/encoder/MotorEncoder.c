@@ -376,116 +376,252 @@ u16 GetRotorTransPos()
 	ROTOR_TRANS_RD=0;		//begin to transmit data  	  
 // 1st Fall-edge
 	ROTOR_TRANS_SCLK  = 0;	//Set SCLK
+#ifdef TARGET_GS32
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+#else
     asm(" RPT #5 || NOP ");
+#endif
 	mBit   = (ROTOR_TRANS_SO) << 15;     //MSB-bit15	    
 	mData  = mData | mBit;	
 	ROTOR_TRANS_SCLK = 1;
+#ifdef TARGET_GS32
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+#else
     asm(" RPT #5 || NOP ");
+#endif
 // 2nd Fall-edge
     ROTOR_TRANS_SCLK  = 0;
     //asm(" RPT #5 || NOP ");
 	mBit   = (ROTOR_TRANS_SO) << 14;     // bit14
 	mData  = mData | mBit;	
 	ROTOR_TRANS_SCLK = 1;
+#ifdef TARGET_GS32
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+#else
     asm(" RPT #5 || NOP ");
+#endif
 // 3rd Fall-edge
     ROTOR_TRANS_SCLK  = 0;
     //asm(" RPT #5 || NOP ");
 	mBit   = (ROTOR_TRANS_SO) << 13;     // bit13
 	mData  = mData | mBit;	
 	ROTOR_TRANS_SCLK = 1;
+#ifdef TARGET_GS32
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+#else
     asm(" RPT #5 || NOP ");
+#endif
 // 4th Fall-edge
     ROTOR_TRANS_SCLK  = 0;
     //asm(" RPT #5 || NOP ");
 	mBit   = (ROTOR_TRANS_SO) << 12;     // bit12
 	mData  = mData | mBit;	
 	ROTOR_TRANS_SCLK = 1;
+#ifdef TARGET_GS32
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+#else
     asm(" RPT #5 || NOP ");
+#endif
 // 5th Fall-edge
     ROTOR_TRANS_SCLK  = 0;
     //asm(" RPT #5 || NOP ");
 	mBit   = (ROTOR_TRANS_SO) << 11;     // bit11
 	mData  = mData | mBit;	
 	ROTOR_TRANS_SCLK = 1;
+#ifdef TARGET_GS32
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+#else
     asm(" RPT #5 || NOP ");
+#endif
 // 6th Fall-edge
     ROTOR_TRANS_SCLK  = 0;
     //asm(" RPT #5 || NOP ");
 	mBit   = (ROTOR_TRANS_SO) << 10;     // bit10
 	mData  = mData | mBit;	
 	ROTOR_TRANS_SCLK = 1;
+#ifdef TARGET_GS32
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+#else
     asm(" RPT #5 || NOP ");
+#endif
 // 7th Fall-edge
     ROTOR_TRANS_SCLK  = 0;
     //asm(" RPT #5 || NOP ");
 	mBit   = (ROTOR_TRANS_SO) << 9;     // bit9
 	mData  = mData | mBit;	
 	ROTOR_TRANS_SCLK = 1;
+#ifdef TARGET_GS32
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+#else
     asm(" RPT #5 || NOP ");
+#endif
 // 8th Fall-edge
     ROTOR_TRANS_SCLK  = 0;
     //asm(" RPT #5 || NOP ");
 	mBit   = (ROTOR_TRANS_SO) << 8;     // bit8
 	mData  = mData | mBit;	
 	ROTOR_TRANS_SCLK = 1;
+#ifdef TARGET_GS32
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+#else
     asm(" RPT #5 || NOP ");
+#endif
 // 9th Fall-edge
     ROTOR_TRANS_SCLK  = 0;
     //asm(" RPT #5 || NOP ");
 	mBit   = (ROTOR_TRANS_SO) << 7;     // bit7
 	mData  = mData | mBit;	
 	ROTOR_TRANS_SCLK = 1;
+#ifdef TARGET_GS32
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+#else
     asm(" RPT #5 || NOP ");
+#endif
 // 10th Fall-edge
     ROTOR_TRANS_SCLK  = 0;
     //asm(" RPT #5 || NOP ");
 	mBit   = (ROTOR_TRANS_SO) << 6;     // bit6
 	mData  = mData | mBit;	
 	ROTOR_TRANS_SCLK = 1;
+#ifdef TARGET_GS32
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+#else
     asm(" RPT #5 || NOP ");
+#endif
 // 11th Fall-edge
     ROTOR_TRANS_SCLK  = 0;
     //asm(" RPT #5 || NOP ");
 	mBit   = (ROTOR_TRANS_SO) << 5;     // bit5
 	mData  = mData | mBit;	
 	ROTOR_TRANS_SCLK = 1;
+#ifdef TARGET_GS32
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+#else
     asm(" RPT #5 || NOP ");
+#endif
 // 12th Fall-edge
     ROTOR_TRANS_SCLK  = 0;
     //asm(" RPT #5 || NOP ");
 	mBit   = (ROTOR_TRANS_SO) << 4;     // bit4
 	mData  = mData | mBit;	
 	ROTOR_TRANS_SCLK = 1;
+#ifdef TARGET_GS32
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+#else
     asm(" RPT #5 || NOP ");
+#endif
 // 12th Fall-edge
     ROTOR_TRANS_SCLK  = 0;
     //asm(" RPT #5 || NOP ");
 	mBit   = (ROTOR_TRANS_SO) << 3;     // bit3
 	mData  = mData | mBit;	
 	ROTOR_TRANS_SCLK = 1;
+#ifdef TARGET_GS32
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+#else
     asm(" RPT #5 || NOP ");
+#endif
 // 12th Fall-edge
     ROTOR_TRANS_SCLK  = 0;
     //asm(" RPT #5 || NOP ");
 	mBit   = (ROTOR_TRANS_SO) << 2;     // bit2
 	mData  = mData | mBit;	
 	ROTOR_TRANS_SCLK = 1;
+#ifdef TARGET_GS32
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+#else
     asm(" RPT #5 || NOP ");
+#endif
 // 12th Fall-edge
     ROTOR_TRANS_SCLK  = 0;
     //asm(" RPT #5 || NOP ");
 	mBit   = (ROTOR_TRANS_SO) << 1;     // bit1
 	mData  = mData | mBit;	
 	ROTOR_TRANS_SCLK = 1;
+#ifdef TARGET_GS32
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+#else
     asm(" RPT #5 || NOP ");
+#endif
 // 12th Fall-edge
     ROTOR_TRANS_SCLK  = 0;
     //asm(" RPT #5 || NOP ");
 	mBit   = (ROTOR_TRANS_SO) << 0;     // bit0
 	mData  = mData | mBit;	
 	ROTOR_TRANS_SCLK = 1;
+#ifdef TARGET_GS32
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+	NOP;
+#else
     asm(" RPT #5 || NOP ");
+#endif
 // 12th Fall-edge
     ROTOR_TRANS_SCLK  = 0;
     //asm(" RPT #5 || NOP ");
