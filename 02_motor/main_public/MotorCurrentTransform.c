@@ -103,7 +103,7 @@ void ChangeCurrent(void)
 */
 	temp1 = gOutVolt.VoltPhaseApply1 - gIAmpTheta.ThetaOld;
     temp2 = temp1 + ((gOutVolt.VoltPhaseApply2 - gOutVolt.VoltPhaseApply1)>>1);
-    temp2 = __IQsat(temp2,32767,-32767);
+    temp2 = _IQsat(temp2,32767,-32767);
     gIAmpTheta.PowerAngle = Filter8(temp2, gIAmpTheta.PowerAngle);
 	
     if(gMainCmd.Command.bit.ControlMode == IDC_SVC_CTL)

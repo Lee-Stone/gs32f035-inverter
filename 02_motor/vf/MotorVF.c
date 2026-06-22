@@ -382,7 +382,7 @@ void VFAutoTorqueBoost(void)
         m_TempVolt = m_iEsVolt;
     }
     m_lVoltDeta = ((long)(gVFAutoVar.DestinationVolt - m_TempVolt))<<5; 	// 避免精度损失，用Q5表示偏差
-    m_TempVolt = __IQsat(m_lVoltDeta,32767,-32767);
+    m_TempVolt = _IQsat(m_lVoltDeta,32767,-32767);
     gVFAutoVar.VfReverseVolt = Filter32(m_TempVolt, gVFAutoVar.VfReverseVolt);
     
     if(19 < gInvInfo.InvTypeApply)
@@ -481,7 +481,7 @@ void VFAutoTorqueBoost(void)
     {
         gOutVolt.Volt  = 0;         // disabel torque-up part and osc-damp part
     }
-	gOutVolt.Volt = __IQsat(gOutVolt.Volt, 32767, 0);
+	gOutVolt.Volt = _IQsat(gOutVolt.Volt, 32767, 0);
     
 }
 */
@@ -593,7 +593,7 @@ void VFOverMagneticControl()
 		//gVarAvr.UDCFilter = Filter4(m_UDCDesired, gVarAvr.UDCFilter) + 10;
 	}
 	gVarAvr.UDCFilter = (gVarAvr.UDCFilter < gInvInfo.BaseUdc)?gInvInfo.BaseUdc:gVarAvr.UDCFilter;
-    //gVarAvr.UDCFilter = __IQsat(gVarAvr.UDCFilter, 32767, gInvInfo.BaseUdc);
+    //gVarAvr.UDCFilter = _IQsat(gVarAvr.UDCFilter, 32767, gInvInfo.BaseUdc);
     
 	m_AVR = (((long)gVarAvr.UDCFilter)<<12)/gInvInfo.BaseUdc - 4096;
 	m_AVR = ((long)m_AVR * (long)gVarAvr.CoffApply)>>6;
@@ -1061,7 +1061,7 @@ void HVfDeadBandComp()
 
     if(gMainCmd.FreqReal <= 150 || gMainCmd.FreqReal >= gHVfDeadBandCompOpt.DbOptActHFreq) // 1.50Hz, 12.00Hz
     {
-        gHVfDeadBandCompOpt.PhaseFwdFedCoeff = 0;    //__IQsat(gTestDataReceive.TestData6, 128, 0);           // filter coeff
+        gHVfDeadBandCompOpt.PhaseFwdFedCoeff = 0;    //_IQsat(gTestDataReceive.TestData6, 128, 0);           // filter coeff
     }
     else if(gMainCmd.FreqReal < 800)    // 8.00Hz
     {
@@ -1082,11 +1082,11 @@ void HVfDeadBandComp()
     gHVfDeadBandCompOpt.CurPhaseStepPredict = tempL >> 7;
     
     tempSect = gHVfDeadBandCompOpt.CurPhaseFeed / 10922;        // 60deg
-    tempSect = __IQsat(tempSect, 5, 0);
+    tempSect = _IQsat(tempSect, 5, 0);
     phase_sect = gHVfDeadBandCompOpt.CurPhaseFeed - tempSect * 10922;           // present pos
 
     tempSect = gHVfDeadBandCompOpt.CurPhaseFeed_pre / 10922;
-    tempSect = __IQsat(tempSect, 5, 0);
+    tempSect = _IQsat(tempSect, 5, 0);
     phase_sect_pre = gHVfDeadBandCompOpt.CurPhaseFeed_pre - tempSect * 10922;   // previous pos
 
     if((phase_sect_pre <= 5461 && phase_sect >= 5461) ||            // sample point

@@ -204,7 +204,7 @@ void PmsmSvcCtrl(void)
     gPmsmRotorPosEst.SpeedEstValueLpf = gPmsmRotorPosEst.SpeedEstValueLpf + (gPmsmRotorPosEst.SpeedEstValue/gPmsmRotorPosEst.SvcSpeedLpfCoef) 
                                         -(gPmsmRotorPosEst.SpeedEstValueLpf /gPmsmRotorPosEst.SvcSpeedLpfCoef);
     
-    gPmsmRotorPosEst.SvcRotorSpeed = __IQsat(gPmsmRotorPosEst.SpeedEstValueLpf,32767,-32767);      // 对速度上限增加限幅
+    gPmsmRotorPosEst.SvcRotorSpeed = _IQsat(gPmsmRotorPosEst.SpeedEstValueLpf,32767,-32767);      // 对速度上限增加限幅
     //gPmsmRotorPosEst.SvcRotorSpeed  = gPmsmRotorPosEst.SpeedEstValueLpf;
     
     gPmsmRotorPosEst.SvcRotorPos    = gPmsmRotorPosEst.SvcRotorPos + (((s64)gPmsmRotorPosEst.SpeedEstValue * (s64)m_TsPer)>>3);
@@ -261,7 +261,7 @@ void PmsmSvcCalFc(void)
 	{
 		Fc = gFcCal.FcBak;
 	}
-	gFcCal.FcBak = __IQsat(Fc,100,10);
+	gFcCal.FcBak = _IQsat(Fc,100,10);
 /*
 #if (SOFTSERIES == MD500SOFT)
 	m_FcLow = gPmsmRotorPosEst.FcLow * 100;

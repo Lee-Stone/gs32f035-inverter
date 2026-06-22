@@ -572,8 +572,8 @@ void FlyingStartParaAdjust(void)
 	{
 	    gAsr.Asr.KP = gAsr.Asr.KP >> 2;
 	    gAsr.Asr.KI = gAsr.Asr.KI >> 2;
-	    gAsr.Asr.KP = __IQsat(gAsr.Asr.KP, 32767, 1);        // 考虑会溢出
-	    gAsr.Asr.KI = __IQsat(gAsr.Asr.KI, 32767, 1);
+	    gAsr.Asr.KP = _IQsat(gAsr.Asr.KP, 32767, 1);        // 考虑会溢出
+	    gAsr.Asr.KI = _IQsat(gAsr.Asr.KI, 32767, 1);
 	}
 
 	if(gFlyingStart.FcChgFlag != 0)

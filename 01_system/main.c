@@ -87,7 +87,7 @@ void main(void)
             }
 
             // 计算cpu忙碌系数1
-           // gCpuTime.Det05msClk = __IQsat(m_DetaTime, 65535, C_TIME_05MS);
+           // gCpuTime.Det05msClk = _IQsat(m_DetaTime, 65535, C_TIME_05MS);
         }
 
 		Main0msFunction();				//不等待循环－执行功能部分程序

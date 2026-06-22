@@ -140,10 +140,10 @@ void GetFeedRotorSpeed(void)
     } 
 	gRotorSpeed.SpeedFeedFilter = FilterL(gRotorSpeed.SpeedFeedFilter,gRotorSpeed.SpeedFeed,m_Data);  
     m_SpeedFeed = gRotorSpeed.SpeedFeedFilter>>9;
-	gRotorSpeed.SpeedFeedQ12 = (s16)__IQsat(m_SpeedFeed,32767,-32767);
+	gRotorSpeed.SpeedFeedQ12 = (s16)_IQsat(m_SpeedFeed,32767,-32767);
 	m_tempLong = (long)gRotorSpeed.SpeedFeedQ12 * gRotorSpeed.TransRatio;
     m_SpeedFeed= (llong)m_tempLong * 16777 >> 24;
-	gRotorSpeed.SpeedEncoder = (s16)__IQsat(m_SpeedFeed,32767,-32767); 	  
+	gRotorSpeed.SpeedEncoder = (s16)_IQsat(m_SpeedFeed,32767,-32767); 	  
 }
 /*******************************************************************************
 * Function Name  : 捕获方式测速，修正了整数脉冲数的准确时间

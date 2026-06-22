@@ -242,7 +242,7 @@ void GetCurrentInfo(void)
     gExcursionInfo.IuValue = m_Iu;                                  //用于参数辨识，参数辨识优化后将不再使用该变量                       
 	gShortGnd.ShortCur = Filter32(m_Iu, gShortGnd.ShortCur);
 	m_Iu = (m_Iu * gCurSamp.Coff) >> 3;
-	m_Iu = __IQsat(m_Iu, C_MAX_PER, -C_MAX_PER);   
+	m_Iu = _IQsat(m_Iu, C_MAX_PER, -C_MAX_PER);   
 
     
 	gExcursionInfo.Iv = (s16)(ADC_IV - (Uint)32768);		
@@ -250,7 +250,7 @@ void GetCurrentInfo(void)
     gExcursionInfo.IvValue = m_Iv;    
 	//m_Iv = (m_Iv * gUVCoff.UDivV) >> 12;						    //纠正增益偏差
 	m_Iv = (m_Iv * gCurSamp.Coff) >> 3;	
-	m_Iv = __IQsat(m_Iv, C_MAX_PER, -C_MAX_PER);
+	m_Iv = _IQsat(m_Iv, C_MAX_PER, -C_MAX_PER);
 
     gIUVWQ24.U = m_Iu;                      /*不使用剔除毛刺滤波函数2011.05.07 L1082*/
     gIUVWQ24.V = m_Iv;
@@ -259,7 +259,7 @@ void GetCurrentInfo(void)
 	gExcursionInfo.Iw = (s16)(ADC_IW - (Uint)32768);		
 	m_Iw = (long)gExcursionInfo.Iw - (long)gExcursionInfo.ErrIw;	//去除零漂
 	m_Iw = (m_Iw * gCurSamp.Coff) >> 3;
-	m_Iw = __IQsat(m_Iw, C_MAX_PER, -C_MAX_PER); 
+	m_Iw = _IQsat(m_Iw, C_MAX_PER, -C_MAX_PER); 
 	gIUVWQ24.W = m_Iw;
 	
 	//Q16->2*InvBreakMaxCurrent
@@ -284,7 +284,7 @@ void GetCurrentInfo(void)
 	}
 #else
 	gIUVWQ24.W = - (gIUVWQ24.U + gIUVWQ24.V);
-	gIUVWQ24.W = __IQsat(gIUVWQ24.W,C_MAX_PER,-C_MAX_PER);  
+	gIUVWQ24.W = _IQsat(gIUVWQ24.W,C_MAX_PER,-C_MAX_PER);  
 #endif	
 
 #if (SOFTSERIES == MD500SOFT)

@@ -784,7 +784,7 @@ void InvCalcPower(void)
 
     gPowerTrq.InvPower_si = (gMainStatus.StatusWord.bit.StartStop) ? gPowerTrq.InvPower_si : 0;
 	//gPowerTrq.InvPower_E  = (gMainStatus.StatusWord.bit.StartStop) ? gPowerTrq.InvPower_E  : 0;
-//    gPowerTrq.InvPower_si =  __IQsat(gPowerTrq.InvPower_si,(s16)gMotorInfo.Power,-((s16)gMotorInfo.Power));    
+//    gPowerTrq.InvPower_si =  _IQsat(gPowerTrq.InvPower_si,(s16)gMotorInfo.Power,-((s16)gMotorInfo.Power));    
     
     gPowerTrq.TrqOut_pu = (long)gLineCur.CurTorque * gPowerTrq.rpItRated >> 12;
     //gPowerTrq.TrqOutHoAndFo_pu = (gIMTSetApply.T>>12) * (long)gMotorInfo.Current /(long)gInvInfo.InvCurrForP * 1000L >> 12;	//用于主从控制的转矩电流
@@ -802,7 +802,7 @@ void InvCalcPower(void)
 		{
             gEstBemf.BemfVoltFilter = (Uint)((Ulong)gMotorInfo.Power*60600UL/gMotorInfo.Current);
 		}
-		gEstBemf.BemfVoltFilter = __IQsat(gEstBemf.BemfVoltFilter,3600,3000);
+		gEstBemf.BemfVoltFilter = _IQsat(gEstBemf.BemfVoltFilter,3600,3000);
     }
 	else if(gPowerTrq.InvPower_si > ((gMotorInfo.Power * 5)>>4)&&((gIMTSet.M>>12)>-500L))  //大于额定功率1/3且没有很深的弱磁
 	{			
@@ -810,7 +810,7 @@ void InvCalcPower(void)
         m_s32 = m_s32 * qsin(16384 - gPowerTrq.anglePF) >> 15;
 		gEstBemf.BemfVoltOnline = abs(m_s32 * gMotorInfo.FreqPer / gRotorSpeed.SpeedBigFilter);
 	    gEstBemf.BemfVoltFilter = Filter32(gEstBemf.BemfVoltOnline , gEstBemf.BemfVoltFilter);
-        gEstBemf.BemfVoltFilter = __IQsat(gEstBemf.BemfVoltFilter,4000,2500);	
+        gEstBemf.BemfVoltFilter = _IQsat(gEstBemf.BemfVoltFilter,4000,2500);	
 	}
     m_CntTime++;
 	if(m_CntTime > 4096)   // 每8s调节一次

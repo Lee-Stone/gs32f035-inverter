@@ -100,11 +100,11 @@ void PID(PID_STRUCT * pid)
 	m_Min = ((long)pid->Min)<<16;						// 最小值
 	
 	m_OutKp = (long)pid->KP * (long)pid->Deta;			// 比例
-	m_OutKp = __IQsat(m_OutKp, (vMax>> (4+ pid->QP)), -(vMax>> (4+ pid->QP))); //保证使用算术右移
+	m_OutKp = _IQsat(m_OutKp, (vMax>> (4+ pid->QP)), -(vMax>> (4+ pid->QP))); //保证使用算术右移
     m_OutKp = m_OutKp << (4+ pid->QP);
     
  	m_OutKi = (long)pid->KI * (long)pid->Deta;// 积分
-    m_OutKi = __IQsat(m_OutKi, (vMax >> pid->QI), -(vMax >> pid->QI));
+    m_OutKi = _IQsat(m_OutKi, (vMax >> pid->QI), -(vMax >> pid->QI));
     m_OutKi = m_OutKi << pid->QI;
     
     // 饱和情况下的去饱和处理
@@ -120,8 +120,8 @@ void PID(PID_STRUCT * pid)
     }
 	pid->Total += m_OutKi;	 
 	m_Out       = pid->Total + m_OutKp;
- 	pid->Out    = __IQsat(m_Out,m_Max,m_Min);
-    pid->Total  = __IQsat(pid->Total,m_Max,m_Min);
+ 	pid->Out    = _IQsat(m_Out,m_Max,m_Min);
+    pid->Total  = _IQsat(pid->Total,m_Max,m_Min);
 #ifdef TARGET_GS32
 #else
     CLROVM;
@@ -203,11 +203,11 @@ void PID32(PID32_STRUCT * pid)
     //计算积分作用
 	m_OutKi = ((llong)pid->KI * (llong)pid->Deta)>>16;
 	pid->Total = pid->Total + m_OutKi;
-	pid->Total = __IQsat(pid->Total, mTotalMax, mTotalMin);
+	pid->Total = _IQsat(pid->Total, mTotalMax, mTotalMin);
 
 	//计算PID的输出
 	pid->Out = pid->Total + m_OutKp;
-	pid->Out = __IQsat(pid->Out, pid->Max, pid->Min);
+	pid->Out = _IQsat(pid->Out, pid->Max, pid->Min);
 }
 
 /****************************************************************

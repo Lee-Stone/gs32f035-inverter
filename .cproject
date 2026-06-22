@@ -57,6 +57,7 @@
 									<listOptionValue builtIn="false" value="GS32_PIN_COUNT=80"/>
 									<listOptionValue builtIn="false" value="GS32F00xx=0x3000"/>
 									<listOptionValue builtIn="false" value="USING_VECTOR_INTERRUPT=1"/>
+									<listOptionValue builtIn="false" value="MATH_TYPE=IQ_MATH"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="com.hpec.toolchains.riscv.option.assembler.include.paths.2087190882" name="Include paths (-I)" superClass="com.hpec.toolchains.riscv.option.assembler.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${GS32_DRIVER_PATH}/driverlib/dsp/NMSIS_core&quot;"/>

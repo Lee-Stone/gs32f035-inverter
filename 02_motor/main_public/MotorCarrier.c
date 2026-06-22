@@ -153,13 +153,13 @@ void CalCarrierWaveFreq(void)
 		m_MinFc = 20;							    //VC运行2KHz最小载波频率限制
 	}
 
-	gFcCal.FcBak = __IQsat(gFcCal.FcBak,m_MaxFc,m_MinFc);
+	gFcCal.FcBak = _IQsat(gFcCal.FcBak,m_MaxFc,m_MinFc);
     if((SYNC_SVC == gCtrMotorType)&&(INV_VOLTAGE_1140V != gInvInfo.InvVoltageType))
     {
         PmsmSvcCalFc();                     
         m_MinFc = Min(gPmsmRotorPosEst.FcLow,m_MinFc);   // 增加了零速载频处理
         m_MinFc = Max(m_MinFc,10);
-		gFcCal.FcBak = __IQsat(gFcCal.FcBak,m_MaxFc,m_MinFc);
+		gFcCal.FcBak = _IQsat(gFcCal.FcBak,m_MaxFc,m_MinFc);
     }//同步机SVC控制低速下的载波频率会自动调整（减小）
 
     m_FcApply = gFcCal.FcBak;
@@ -367,13 +367,13 @@ void CalCarrierWaveFreq(void)
 
 
 
-	gFcCal.FcBak = __IQsat(gFcCal.FcBak,m_MaxFc,m_MinFc);
+	gFcCal.FcBak = _IQsat(gFcCal.FcBak,m_MaxFc,m_MinFc);
     if((SYNC_SVC == gCtrMotorType)&&(INV_VOLTAGE_1140V != gInvInfo.InvVoltageType))
     {
         PmsmSvcCalFc();                     
         m_MinFc = Min(gPmsmRotorPosEst.FcLow,m_MinFc);   // 增加了零速载频处理
         m_MinFc = Max(m_MinFc,10);
-		gFcCal.FcBak = __IQsat(gFcCal.FcBak,m_MaxFc,m_MinFc);
+		gFcCal.FcBak = _IQsat(gFcCal.FcBak,m_MaxFc,m_MinFc);
     }//同步机SVC控制低速下的载波频率会自动调整（减小）
 
     m_FcApply = gFcCal.FcBak;

@@ -1856,11 +1856,11 @@ void OverLoadProtect(void)
 	        {
 	            m_MaxCurLimit = m_Long;
 	        }
-	        m_MaxCurLimit = __IQsat(m_MaxCurLimit,m_Limit,950);
+	        m_MaxCurLimit = _IQsat(m_MaxCurLimit,m_Limit,950);
 	    }
 	    //gLineCur.OverLoadMargin = m_OverLoadMargin; //测试用
 	    gLineCur.MaxCurLimit = m_MaxCurLimit;
-	    gLineCur.MaxCurLimit =  __IQsat(gLineCur.MaxCurLimit,1800,250);
+	    gLineCur.MaxCurLimit =  _IQsat(gLineCur.MaxCurLimit,1800,250);
 	}
 	else
 	{
@@ -1903,7 +1903,7 @@ void OverLoadProtect(void)
 	}
     
 
-	m_MotorOvLoad = __IQsat(gComPar.MotorOvLoad,150,100);
+	m_MotorOvLoad = _IQsat(gComPar.MotorOvLoad,150,100);
 
 
 	if(m_Cur < (u16)((u32)m_MotorOvLoad*C_MOTOR_OV_MIN_CUR/100UL))
@@ -2097,9 +2097,9 @@ void CBCLimitCurProtect(void)
     	gCBCProtect.Flag.all = 0;
 
     	//电流积分值限幅
-    	gCBCProtect.TotalU = __IQsat(gCBCProtect.TotalU, m_Limit, 0);
-    	gCBCProtect.TotalV = __IQsat(gCBCProtect.TotalV, m_Limit, 0);
-    	gCBCProtect.TotalW = __IQsat(gCBCProtect.TotalW, m_Limit, 0);
+    	gCBCProtect.TotalU = _IQsat(gCBCProtect.TotalU, m_Limit, 0);
+    	gCBCProtect.TotalV = _IQsat(gCBCProtect.TotalV, m_Limit, 0);
+    	gCBCProtect.TotalW = _IQsat(gCBCProtect.TotalW, m_Limit, 0);
 
     	m_Max = (gCBCProtect.TotalU > gCBCProtect.TotalV) ? gCBCProtect.TotalU : gCBCProtect.TotalV;
     	m_Max = (m_Max > gCBCProtect.TotalW) ? m_Max : gCBCProtect.TotalW;
@@ -2179,7 +2179,7 @@ void BufferResProtect(void)
 		gError.ErrorCode.all |= ERROR_RESISTER_HOT;
 	}
 	gBuffResCnt--;	
-	gBuffResCnt = __IQsat(gBuffResCnt,200000L,0);					
+	gBuffResCnt = _IQsat(gBuffResCnt,200000L,0);					
 }
 
 #if (SOFTSERIES == MD500SOFT)	
@@ -2263,7 +2263,7 @@ void  BrakeOverloadProtect(void)
 		if (m_Index >= 100)     
 		{
 			m_IndexData= (m_Index - 100)/10;
-            m_IndexData= __IQsat(m_IndexData,1,0);
+            m_IndexData= _IQsat(m_IndexData,1,0);
             if(m_Index < 120)
             {
     			m_CurrCoff = *(gBrake.pBreakOverLoad+(1 - m_IndexData));
@@ -2276,7 +2276,7 @@ void  BrakeOverloadProtect(void)
 		else if (m_Index >= 90)    
 		{
             m_Index = ((s16)m_Index - (s16)gBrake.minPercent)/gBrake.OverLoadInterval;
-            m_Index = __IQsat(m_Index,4,-1);
+            m_Index = _IQsat(m_Index,4,-1);
 			
 			m_Index = (6 - m_Index);
             
@@ -2285,7 +2285,7 @@ void  BrakeOverloadProtect(void)
 		else
 		{
 			m_Index = (m_Index - 70)/5;
-            m_Index = __IQsat(m_Index,3,1);
+            m_Index = _IQsat(m_Index,3,1);
             
 			m_CurrCoff = *(gBrake.pBreakOverLoad+(10 - m_Index));
 		}

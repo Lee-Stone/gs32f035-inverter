@@ -215,8 +215,8 @@ void PrepareAsrPar(void)
 	tempKp = ( (long)gAsr.Asr.KP * (long)gBasePar.FullFreq01 / 10L)>>12;
     tempKi = ( (long)gAsr.Asr.KI * (long)gBasePar.FullFreq01 / 10L)>>12;
 
-    gAsr.Asr.KP = __IQsat(tempKp, 32767, 1);        // 考虑会溢出
-    gAsr.Asr.KI = __IQsat(tempKi, 32767, 1);
+    gAsr.Asr.KP = _IQsat(tempKp, 32767, 1);        // 考虑会溢出
+    gAsr.Asr.KI = _IQsat(tempKi, 32767, 1);
     
 // 积分分离的处理
    /* m_KpLimit = ((long)abs(gMainCmd.FreqDesired - gRotorSpeed.SpeedApply) *(long)gAsr.Asr.KP) >>16;
@@ -396,7 +396,7 @@ void VcAsrControl(void)
 	}
 
 	m_Long = (s32)gMainCmd.FreqSetApply - (s32)gRotorSpeed.SpeedApply;
-    gAsr.Asr.Deta = __IQsat(m_Long, 16383, -16383);
+    gAsr.Asr.Deta = _IQsat(m_Long, 16383, -16383);
 
 	if((gSubCommand.bit.VCFolFlag == 1)&&(1 == gMainCmd.Command.bit.TorqueCtl))
     {                                                   //从机转矩控制
@@ -423,7 +423,7 @@ void VcAsrControl(void)
     {
         m_Deta = ((long)gVCPar.TorMasToFol<<12)/1000;// 1位小数点，以电机额定电流为基值的百分比
         m_Deta = (gVCPar.AsrOut>>12) + m_Deta;
-        m_Deta = __IQsat(m_Deta,gAsr.Asr.Max,gAsr.Asr.Min);
+        m_Deta = _IQsat(m_Deta,gAsr.Asr.Max,gAsr.Asr.Min);
         gIMTSet.T = m_Deta<<12;     
         //gIMTSet.T = FilterL(gIMTSet.T,(m_Deta<<12),((32-gVCPar.VCTorqFilter)<<10)) ;
     }
@@ -562,8 +562,8 @@ void VCCsrControl(void)
 		}
 	}
 
-	gUMTSet.M = __IQsat(gUMTSet.M, m_MaxVolt, -m_MaxVolt);
-    gUMTSet.T = __IQsat(gUMTSet.T, m_MaxVolt, -m_MaxVolt);
+	gUMTSet.M = _IQsat(gUMTSet.M, m_MaxVolt, -m_MaxVolt);
+    gUMTSet.T = _IQsat(gUMTSet.T, m_MaxVolt, -m_MaxVolt);
    
 	//计算输出电压幅值
 	m_Long = (((long)gUMTSet.M * (long)gUMTSet.M) + 

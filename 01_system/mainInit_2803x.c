@@ -35,8 +35,8 @@ void	InitFlash(void);
 void	InitPeripheralClocks(void);
 #endif
 
-void 	InitPieCtrl(void);
-void 	InitPieVectTable(void);
+//void 	InitPieCtrl(void);
+//void 	InitPieVectTable(void);
 
 void 	InitSetGpio(void);
 void 	InitCpuTimers(void);
@@ -90,11 +90,11 @@ void InitSysCtrl()
 void InitInterrupt()
 {
    DINT;							//Clear all interrupts and initialize PIE vector table:
-   InitPieCtrl();  					//Disable PIE
+//   InitPieCtrl();  					//Disable PIE
 //   IER = 0x0000;
 //   IFR = 0x0000;
 
-   InitPieVectTable();				//Enable PIE
+//   InitPieVectTable();				//Enable PIE
 
    EALLOW;  						//设置用户服务程序
 

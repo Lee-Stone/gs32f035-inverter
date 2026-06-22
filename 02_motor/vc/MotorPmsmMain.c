@@ -520,7 +520,7 @@ s32 PmsmFwcAdjMethod(void)
     if(gFluxWeak.CoefFlux != 0)
     {
     	m_Deta = gOutVolt.LimitOutVoltPer - gPmFluxWeak.VoltLpf;
-        m_Deta = __IQsat(m_Deta,200,-1000);
+        m_Deta = _IQsat(m_Deta,200,-1000);
         m_DetaAbs = abs(m_Deta);
         m_Ki =  gFluxWeak.CoefFlux * m_DetaAbs;                       //提高调整快速性
         m_Ki = (m_Ki > 20000)?20000:m_Ki;
@@ -557,7 +557,7 @@ s16 PmsmFreqAdjMethod(void)
     if(gFluxWeak.CoefFlux != 0)
     {
     	m_Deta = gOutVolt.LimitOutVoltPer - gPmFluxWeak.VoltLpf;
-        m_Deta = __IQsat(m_Deta,200,-1000);
+        m_Deta = _IQsat(m_Deta,200,-1000);
         m_DetaAbs = abs(m_Deta);
         m_Ki = gFluxWeak.CoefFlux * m_DetaAbs;                       //提高调整快速性
         m_Ki = (m_Ki > 20000)?20000:m_Ki;
@@ -733,7 +733,7 @@ void PMFluxWeak05Ms(void)
 		data = data/10;
 	}*/
 	data = 340000000L/data;
-	data = __IQsat(data,3000,600);
+	data = _IQsat(data,3000,600);
 	gPmCsr2.DeltTMax = data;
 	gPmCsr2.DeltTMin = -data;
 	if(gPmCsr2.FreqSyn > 0)
@@ -761,12 +761,12 @@ void FluxWeak05Ms(void)
 	{
 		data1 = data - 1024;
 		data1 =	gOutVolt.LimitOutVoltPer - data;
-		data1 = __IQsat(data1,gPmCsr2.VoltMax,gOutVolt.MaxOutVoltPer);
+		data1 = _IQsat(data1,gPmCsr2.VoltMax,gOutVolt.MaxOutVoltPer);
 		gPmCsr2.VoltMax = data1;
 	}
 	gPmCsr2.ITSet = (gIMTSetApply.T>>12);
 	gPmCsr2.VoltMax = gPmCsr2.VoltMax - (gPmCsr2.VoltMax>>5) + (gOutVolt.LimitOutVoltPer>>5);
-	gPmCsr2.VoltMax = __IQsat(gPmCsr2.VoltMax,gOutVolt.LimitOutVoltPer,gOutVolt.MaxOutVoltPer);
+	gPmCsr2.VoltMax = _IQsat(gPmCsr2.VoltMax,gOutVolt.LimitOutVoltPer,gOutVolt.MaxOutVoltPer);
 
 	//gPmCsr2.VoltMax = gOutVolt.LimitOutVoltPer;
 	gPmCsr2.MaxOutVoltPer = gOutVolt.MaxOutVoltPer;
@@ -774,7 +774,7 @@ void FluxWeak05Ms(void)
 	gPmCsr2.FreqSyn = gMainCmd.FreqSyn;
 	data = abs(gPmCsr2.FreqSyn);
 	data = 1024L * (u32)data/gMotorInfo.FreqPer;
-	data = __IQsat(data,2048,1024);
+	data = _IQsat(data,2048,1024);
 	gPmCsr2.KFreq = data;
 
 	Umax = gOutVolt.MaxOutVoltPer - 1000;
@@ -817,7 +817,7 @@ void IMFluxWeak2(void)
 
 	gPmCsr2.DeltM = (gIMTSetApply.M - gIMTQ24.M)>>12;
 	gPmCsr2.DeltT = (gIMTSetApply.T - gIMTQ24.T)>>12;
-    gPmCsr2.DeltT = __IQsat(gPmCsr2.DeltT,4096,-4096);
+    gPmCsr2.DeltT = _IQsat(gPmCsr2.DeltT,4096,-4096);
         
 	gPmCsr2.Im = gIMTQ24.M>>12;
 	gPmCsr2.It = gIMTQ24.T>>12;

@@ -311,7 +311,7 @@ void SquarePWMAngleCal(void)
 
 	phase = gPhase.OutPhase;// + 32768;		//确保gPhase.OutPhase=0对应U相电压最大值
 	phase = (phase > 65531)?65531:phase;	//避免后面计算出现溢出
-	//phase = __IQsat((Uint)gPhase.OutPhase, 65531, 0);
+	//phase = _IQsat((Uint)gPhase.OutPhase, 65531, 0);
     
 //...计算30度范围的扇区等
 	m_iSec30 = phase/5461;
@@ -444,16 +444,16 @@ void DeadBandComp(void)
     }
 
     /* 取消窄脉冲2011.05.07 L1082*/
-    gPWM.U = __IQsat(gPWM.U, gPWM.gPWMPrdApply, 0);
-    gPWM.V = __IQsat(gPWM.V, gPWM.gPWMPrdApply, 0);
-    gPWM.W = __IQsat(gPWM.W, gPWM.gPWMPrdApply, 0);
+    gPWM.U = _IQsat(gPWM.U, gPWM.gPWMPrdApply, 0);
+    gPWM.V = _IQsat(gPWM.V, gPWM.gPWMPrdApply, 0);
+    gPWM.W = _IQsat(gPWM.W, gPWM.gPWMPrdApply, 0);
     
 #if 0               
     if(gSubCommand.bit.CancelNarrorP == 0)      //不加窄脉冲控制
     {
-        gPWM.U = __IQsat(gPWM.U, gPWM.gPWMPrdApply, 0);
-        gPWM.V = __IQsat(gPWM.V, gPWM.gPWMPrdApply, 0);
-        gPWM.W = __IQsat(gPWM.W, gPWM.gPWMPrdApply, 0);
+        gPWM.U = _IQsat(gPWM.U, gPWM.gPWMPrdApply, 0);
+        gPWM.V = _IQsat(gPWM.V, gPWM.gPWMPrdApply, 0);
+        gPWM.W = _IQsat(gPWM.W, gPWM.gPWMPrdApply, 0);
     }
     else                                        // 去掉窄脉冲
     {                                            

@@ -489,7 +489,7 @@ void SendDataPrepare(void)
 	{
 	    mRatio = gOutVolt.VoltApply;                              // FVC和VF使用计算的输出电压计算
 	}
-    mRatio = __IQsat(mRatio, 8192, 0);                              // 有过调制
+    mRatio = _IQsat(mRatio, 8192, 0);                              // 有过调制
 	//gOutVolt.VoltDisplay = VFFilter1st(mRatio, &gVoltFilt);
 	//gOutVolt.VoltDisplay = Min(gOutVolt.VoltDisplay,4915);       //输出电压最大限制在1.2倍
 	gOutVolt.VoltDisplay = Filter(gOutVolt.VoltDisplay,mRatio,32);		// 1s滤波

@@ -2,6 +2,8 @@
 #define __DSP_GS32_DEVICE_H__
 
 #include "device.h"
+#include "IQMathLib.h"
+#include "gs32_math.h"
 
 #define DSP_CLOCK	60
 

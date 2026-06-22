@@ -39,21 +39,21 @@ void PMCsr2()
 		gPmCsr2.UTTotal += data;
 	}
 
-	gPmCsr2.UTTotal = __IQsat(gPmCsr2.UTTotal,1966080000L,-1966080000L);
+	gPmCsr2.UTTotal = _IQsat(gPmCsr2.UTTotal,1966080000L,-1966080000L);
 
 	if(gPmCsr2.FreqSyn > 0)
 	{
-		data = __IQsat(gPmCsr2.DeltT,gPmCsr2.DeltTMax,-gPmCsr2.DeltTMin);
+		data = _IQsat(gPmCsr2.DeltT,gPmCsr2.DeltTMax,-gPmCsr2.DeltTMin);
 	}
 	else
 	{
-		data = __IQsat(gPmCsr2.DeltT,gPmCsr2.DeltTMin,-gPmCsr2.DeltTMax);
+		data = _IQsat(gPmCsr2.DeltT,gPmCsr2.DeltTMin,-gPmCsr2.DeltTMax);
 	}
 	data = gPmCsr2.Kp * data>>12;
-	data = __IQsat(data,4000,-4000);
+	data = _IQsat(data,4000,-4000);
 	gPmCsr2.UTOut =  data + (gPmCsr2.UTTotal>>12) + gPmCsr2.UTComp;
 
-	data = __IQsat(gPmCsr2.DeltT,gPmCsr2.DeltTMin,-gPmCsr2.DeltTMin);
+	data = _IQsat(gPmCsr2.DeltT,gPmCsr2.DeltTMin,-gPmCsr2.DeltTMin);
 	data = data * gPmCsr2.Ki;
 	if(gPmCsr2.FreqSyn > 0)
 	{
@@ -75,7 +75,7 @@ void PMCsr2()
 	}
 	gPmCsr2.UMTotal = gPmCsr2.UMTotal + data;
 
-	gPmCsr2.UMTotal = __IQsat(gPmCsr2.UMTotal,1966080000L,-1966080000L);
+	gPmCsr2.UMTotal = _IQsat(gPmCsr2.UMTotal,1966080000L,-1966080000L);
 	data = gPmCsr2.DeltM * gPmCsr2.KFreq>>10;
 	data = gPmCsr2.Kp * data>>12;
 	gPmCsr2.UMOut = data + (gPmCsr2.UMTotal>>12) + gPmCsr2.UMComp;
@@ -111,7 +111,7 @@ void PMCsr2()
 	gPmCsr2.UTTotal = gPmCsr2.UTTotal - data;
 
 
-	gPmCsr2.VoltOut = __IQsat(gPmCsr2.VoltOut,gPmCsr2.MaxOutVoltPer*2L,100);
+	gPmCsr2.VoltOut = _IQsat(gPmCsr2.VoltOut,gPmCsr2.MaxOutVoltPer*2L,100);
 	gPmCsr2.PhaseOut = user_atan(gPmCsr2.UTOut,gPmCsr2.UMOut) * 10430.378;
 }
 
