@@ -1028,7 +1028,7 @@ void Main05msFunctionB(void)
     PcMiscDeal();               // 位置控制的一些杂项处理
 #endif
 
-    getMomeryValue();
+//    getMomeryValue();
     
     DisplayScan();              // 显示扫描。与DisplayScanPrepare()之间的程序，同时起了延时的作用。
 
