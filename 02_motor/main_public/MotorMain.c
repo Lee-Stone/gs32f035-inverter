@@ -418,11 +418,11 @@ void SendDataPrepare(void)
 		}
         //if(((long)gRotorSpeed.SpeedApply * gIMTSetQ12.T) < 0)
 		if(((long)gRotorSpeed.SpeedApply * gLineCur.Temp) < 0)       // 之前的做法在过零时会存在突变，wyk
-        {s16
-        	gLineCur.CurTorque = -(s16)abs(gLineCur.Temp);
+        {
+			gLineCur.CurTorque = -(s16)abs(gLineCur.Temp);
         }
         else
-        {s16
+        {
         	gLineCur.CurTorque = (s16)abs(gLineCur.Temp);
         }
 	}
