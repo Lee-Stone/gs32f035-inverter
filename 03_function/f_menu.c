@@ -1137,7 +1137,7 @@ LOCALF void Menu3OnUpDown(Uint16 flag)
             Uint16 group;
             Uint16 funcCodeGrade[FUNCCODE_GROUP_NUM];   // 堆栈够用
             
-            memcpy(funcCodeGrade, funcCodeGradeAll, (FUNCCODE_GROUP_NUM));          
+            memcpy(funcCodeGrade, funcCodeGradeAll, (FUNCCODE_GROUP_NUM)*2);
             funcCodeGrade[FC_GROUP_FACTORY] = 0;   // 用户定制菜单不可设置FF组
             funcCodeGrade[USER_MENU_GROUP] = 0;  // 用户定制菜单不可设置CC组
 
@@ -3134,7 +3134,7 @@ void UpdataFuncCodeGrade(Uint16 funcCodeGrade[])
     int16 i;
     Uint16 digit[5];
 
-    memcpy(funcCodeGrade, funcCodeGradeAll, FUNCCODE_GROUP_NUM);
+    memcpy(funcCodeGrade, funcCodeGradeAll, FUNCCODE_GROUP_NUM*2);
     
     GetNumberDigit(digit, funcCode.code.funcParaView, DECIMAL);  // 得到每位的值，0 or 1
 
