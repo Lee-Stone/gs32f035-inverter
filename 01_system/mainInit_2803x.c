@@ -576,8 +576,8 @@ void InitSetAdc(void)
 #ifdef TARGET_GS32
     ADC_clearInterruptStatus(ADCA_BASE, ADC_INT_NUMBER1);
 	ADC_setInterruptSource(ADCA_BASE, ADC_INT_NUMBER1, ADC_INT_TRIGGER_EOC5);
-	ADC_enableContinuousMode(ADCA_BASE);
-	ADC_enableInterrupt(ADCA_BASE);
+	ADC_enableContinuousMode(ADCA_BASE, ADC_INT_NUMBER1);
+	ADC_enableInterrupt(ADCA_BASE, ADC_INT_NUMBER1);
 
     // 中断脉冲在ADC结果锁存后产生（对应TI INTPULSEPOS=1）
     ADC_setInterruptPulseMode(ADCA_BASE, ADC_PULSE_END_OF_CONV);
