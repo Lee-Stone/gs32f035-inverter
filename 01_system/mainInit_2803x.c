@@ -579,7 +579,7 @@ void InitSetAdc(void)
 
 #ifdef TARGET_GS32
     ADC_clearInterruptStatus(ADCA_BASE, ADC_INT_NUMBER1);
-	ADC_setInterruptSource(ADCA_BASE, ADC_INT_NUMBER1, ADC_INT_TRIGGER_EOC5);
+	ADC_setInterruptSource(ADCA_BASE, ADC_INT_NUMBER1, ADC_INT_TRIGGER_EOC3);
 	ADC_enableContinuousMode(ADCA_BASE, ADC_INT_NUMBER1);
 	ADC_enableInterrupt(ADCA_BASE, ADC_INT_NUMBER1);
 
