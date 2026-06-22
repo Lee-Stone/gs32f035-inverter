@@ -567,7 +567,11 @@ void InitSetAdc(void)
     
     for(waite = 0;waite<5000;waite++)
     {
+#if TARGET_GS32
+    	NOP;
+#else
         asm(" RPT #1 || NOP");
+#endif
     }  //延时1s
     
 	//以下开始设置ADC的SOC通道、触发源、中断源
