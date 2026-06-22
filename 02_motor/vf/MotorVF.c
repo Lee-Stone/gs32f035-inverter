@@ -300,7 +300,7 @@ void VFWsTorqueBoostComm(void)
         gVFAutoVar.VfRVCosFai = 0;
     }
 
-    m_iTempVar2 = atuser_atanan(gVFAutoVar.VfRVCosFai,gVFAutoVar.VfRIsSinFai);    
+    m_iTempVar2 = user_atan(gVFAutoVar.VfRVCosFai,gVFAutoVar.VfRIsSinFai);
     gVFAutoVar.VfReverseAngle = Filter128(m_iTempVar2,gVFAutoVar.VfReverseAngle);//¼ÆËãµçÑ¹ÐÞÕý½Ç
     m_iTempVar2 = user_atan( abs(gIMTQ12.M), abs(gIMTQ12.T) );
     if( gVFAutoVar.VfReverseAngle > m_iTempVar2 )

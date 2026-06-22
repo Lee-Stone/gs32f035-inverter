@@ -112,7 +112,7 @@ void PMCsr2()
 
 
 	gPmCsr2.VoltOut = __IQsat(gPmCsr2.VoltOut,gPmCsr2.MaxOutVoltPer*2L,100);
-	gPmCsr2.PhaseOut = atan(gPmCsr2.UTOut,gPmCsr2.UMOut) * 10430.378;
+	gPmCsr2.PhaseOut = user_atan(gPmCsr2.UTOut,gPmCsr2.UMOut) * 10430.378;
 }
 
 

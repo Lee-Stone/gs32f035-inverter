@@ -1114,7 +1114,6 @@ __interrupt void ShortGnd_ADC_Over_isr(void)
     RESTORE_IRQ_CSR_CONTEXT();
 #endif
 }
-}
 
 void ShortGnd_PhaseLoseICal(void)
 {

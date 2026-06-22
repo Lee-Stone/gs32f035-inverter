@@ -15,7 +15,7 @@
 #include "f_plc.h"
 
 
-#define DEBUG_F_PLC              1
+#define DEBUG_F_PLC              0
 
 
 #if DEBUG_F_PLC
@@ -328,6 +328,8 @@ void PlcDataFramDeal(CANlinkDataBuf *dataPi)
 
 #else
 
+#if DEBUG_F_CANLINK
+
 Uint16 InvTranTabCfg(CANlinkDataBuf *dataPi)
 {
     dataPi = dataPi;
@@ -342,6 +344,8 @@ void PlcDataFramDeal(CANlinkDataBuf *dataPi)
 {
     dataPi = dataPi;
 }
+
+#endif
 
 #endif
 
