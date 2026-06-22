@@ -109,6 +109,7 @@ extern void KickDog(void);
 extern void ResetADCEndIsr(void);
 extern  void SetADCEndIsr(void (*p_mADCIsr)());
 extern void InitSetAdc(void);
+extern void AsynPWMAngleCal(Ulong FcApply);
 
 /************************************************************
 º¯ÊýÒýÓÃ END

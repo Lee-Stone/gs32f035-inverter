@@ -529,7 +529,7 @@ void InitEPwm4Gpio(void);
 void InitEPwm5Gpio(void);
 void InitEPwm6Gpio(void);
 
-
+void InitECap1Gpio();
 
 #endif // __F_IO_H__
 

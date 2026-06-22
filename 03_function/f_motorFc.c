@@ -72,7 +72,7 @@ void UpdateMotorPara(void)
     }
     else    // 第2电机
     {
-		 memcpy(&motorFc, &funcCode.all[GetCodeIndex(funcCode.code.motorFcM2.motorPara.elem.motorType)], sizeof(struct MOTOR_FC)*2);
+		 memcpy(&motorFc, &funcCode.all[GetCodeIndex(funcCode.code.motorFcM2.motorPara.elem.motorType)], sizeof(struct MOTOR_FC));
     }
 
     // 强制VF运行

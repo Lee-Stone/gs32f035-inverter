@@ -198,6 +198,9 @@ void Main2msFunction(void);             // 功能处理函数, 2ms
 extern int32 curABZPulseNum;
 extern Uint16 motorRs;   // 电机运转圈数
 
+void InitSpiaGpio();
+void InitI2CGpio();
+void InitSciaGpio();
 
 #endif // __F_MAIN_H__
 
