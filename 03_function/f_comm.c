@@ -1958,7 +1958,12 @@ void InitSciaGpio(void)
     GpioCtrlRegs.GPAPUD.bit.GPIO15 = 0;		// Enable pull-up for GPIO15 (LIN RX)
     GpioCtrlRegs.GPAQSEL1.bit.GPIO15 = 3;  // Asynch input GPIO15 (LINRXA)
     GpioCtrlRegs.GPAQSEL1.bit.GPIO15 = 0x01;  // No qualification for all group A GPIO 0-15
+#ifdef TARGET_GS32
+    GpioCtrlRegs.GPACTRL.all &= ~(0xFF << 8);
+    GpioCtrlRegs.GPACTRL.all |= (0x03 << 8);
+#else
     GpioCtrlRegs.GPACTRL.bit.QUALPRD1 = 0x03;
+#endif
     GpioCtrlRegs.GPAMUX1.bit.GPIO14 = 2;   // Configure GPIO14 for LIN TX operation (2-Enable,0-Disable)
     GpioCtrlRegs.GPAMUX1.bit.GPIO15 = 2;   // Configure GPIO15 for LIN RX operation (2-Enable,0-Disable)
     GpioCtrlRegs.GPBPUD.bit.GPIO39 = 0;    
