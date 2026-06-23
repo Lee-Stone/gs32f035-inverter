@@ -1981,7 +1981,9 @@ void InitSciaGpio(void)
     PieVectTable.LIN1INTA = &Lina_Level1_ISR;
 #endif
     EDIS;
+#ifndef TARGET_GS32
 	IER |= M_INT9;   	                 // Enable interrupts:
+#endif
 #ifdef TARGET_GS32
     Interrupt_enable(INT_LINA);
     Interrupt_enable(INT_LINB);
@@ -2011,7 +2013,9 @@ void InitSciaGpio(void)
 	PieVectTable.SCITXINTA = SCI_TXD_isr;
 #endif
     EDIS;
+#ifndef TARGET_GS32
 	IER |= M_INT9;   	            //  Enable interrupts:
+#endif
 #ifdef TARGET_GS32
     Interrupt_enable(INT_SCIA_RX);
     Interrupt_enable(INT_SCIA_TX);
