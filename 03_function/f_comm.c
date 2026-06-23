@@ -15,7 +15,7 @@
 #if F_DEBUG_RAM                     // 仅调试功能，在CCS的build option中定义的宏
 #define DEBUG_F_MODBUS          0   // 是否使用通讯部分
 #elif 1
-#define DEBUG_F_MODBUS          0
+#define DEBUG_F_MODBUS          1
 #endif
 
 enum COMM_STATUS commStatus;    // 串口初始化为等待接收状态
@@ -238,7 +238,11 @@ __interrupt void SCI_RXD_isr(void)
     Uint16 tmp;
 
 #if DSP_2803X
+#ifdef TARGET_GS32
+    LIN_UartGetCharData(LINA_BASE, &tmp);
+#else
     tmp = LinaRegs.SCIRD;
+#endif
 #else
     tmp = SciaRegs.SCIRXBUF.all;
 #endif
@@ -293,6 +297,20 @@ __interrupt void Lina_Level0_ISR(void)
 {
 	Uint32 LinL0IntVect;  
 
+#ifdef TARGET_GS32
+	LIN_getStatus(LINA_BASE, &LinL0IntVect);
+
+	/* RXRDY 中断 */
+	if(LinL0IntVect & LIN_USART_CHANNEL_RXRDY)
+	{
+		SCI_RXD_isr();
+	}
+	/* TXRDY 中断 */
+	if(LinL0IntVect & LIN_USART_CHANNEL_TXRDY)
+	{
+		SCI_TXD_isr();
+	}
+#else
 	LinL0IntVect = LinaRegs.SCIINTVECT0.all;
 
 	// 接收中断
@@ -305,6 +323,7 @@ __interrupt void Lina_Level0_ISR(void)
 	{
 		SCI_TXD_isr();
 	}
+#endif
     // other
     else
     {
@@ -1433,7 +1452,11 @@ void CommGetFuncCodeGroupGrade(Uint16 addr, Uint16 *group, Uint16 *grade)
 LOCALF void inline CommStartSend(void)
 {
 #if DSP_2803X
+#ifdef TARGET_GS32
+	LIN_UartPutCharData(LINA_BASE, sendFrame[0]);	// 发送第一个数据
+#else
     LinaRegs.SCITD = sendFrame[0];     // 发送第一个数据
+#endif
 #else
     SciaRegs.SCITXBUF = sendFrame[0];     // 发送第一个数据
 #endif
@@ -1448,30 +1471,49 @@ LOCALF void inline CommStartSend(void)
 #if DSP_2803X
 void resetLinSci(void)
 {
+#ifdef TARGET_GS32
+    LIN_resetModule(LINA_BASE);
+#else
     LinaRegs.SCIGCR0.bit.RESET = 0;
     LinaRegs.SCIGCR0.bit.RESET = 1;
     LinaRegs.SCIGCR1.bit.SWnRST = 0; 
+#endif
 }
 
 
 void closeRTX(void)
 {
+#ifdef TARGET_GS32
+    LIN_enableReceiver(LINA_BASE, false);
+    LIN_enableTransmitter(LINA_BASE, false);
+#else
     LinaRegs.SCIGCR1.bit.RXENA = 0;
     LinaRegs.SCIGCR1.bit.TXENA = 0;
+#endif
 }
 
 
 void setRxConfig(void)
 {
+#ifdef TARGET_GS32
+    LIN_enableReceiver(LINA_BASE, true);
+    LIN_enableTransmitter(LINA_BASE, false);
+#else
     LinaRegs.SCIGCR1.bit.RXENA = 1;
     LinaRegs.SCIGCR1.bit.TXENA = 0;
+#endif
 }
 
 
 void setTxConfig(void)
 { 
+#ifdef TARGET_GS32
+    LIN_enableTransmitter(LINA_BASE, true);
+    LIN_enableReceiver(LINA_BASE, false);
+#else
     LinaRegs.SCIGCR1.bit.TXENA = 1;
     LinaRegs.SCIGCR1.bit.RXENA = 0;
+#endif
 }
 #endif
 
@@ -1577,7 +1619,13 @@ void commStatusDeal(void)
         // 发送数据OK
         case SCI_SEND_OK:
             #if DSP_2803X
+#ifdef TARGET_GS32
+			uint32_t status;
+			LIN_getStatus(LINA_BASE, &status);
+			if (status & LIN_USART_CHANNEL_TXEMPTY)
+#else
 			if (LinaRegs.SCIFLR.bit.TXEMPTY)
+#endif
             #else
             if (SciaRegs.SCICTL2.bit.TXEMPTY)   // Transmitter empty flag, 真正发送完毕
             #endif
@@ -1680,7 +1728,11 @@ void CommDataSend(void)
     if (commSendData.sendNum< commSendData.sendNumMax)          
     {
 #if DSP_2803X
-        LinaRegs.SCITD = sendFrame[commSendData.sendNum++];
+#ifdef TARGET_GS32
+	LIN_UartPutCharData(LINA_BASE, sendFrame[commSendData.sendNum++]);
+#else
+	LinaRegs.SCITD = sendFrame[commSendData.sendNum++];
+#endif
 #else
         SciaRegs.SCITXBUF = sendFrame[commSendData.sendNum++];
 #endif
@@ -1709,6 +1761,42 @@ void InitSetScia(void)
     // reset
 	resetLinSci();
 
+#ifdef TARGET_GS32
+	LIN_initParam_t initParam = {0};
+	initParam.opmode = LIN_UART_MODE;               // UART模式（非LIN协议）
+	initParam.char_length = LIN_CHAR_LENGTH_8BITS;   // 8数据位
+	initParam.sync_mode = LIN_OP_ASYNC_MODE;         // 异步通信
+	initParam.chl_mode = LIN_CHAL_NORMAL_MODE;       // 普通模式（非回环/回声）
+	if (funcCode.code.commProtocolSec == EXTEND_COM_CAR)
+	{
+		initParam.parity = LIN_PARITY_NONE;
+		initParam.stopbit = LIN_STOP_BIT_1;
+	}
+	else
+	{
+		switch (commParitys[funcCode.code.commParity])
+		{
+			case 0x10:
+				initParam.parity = LIN_PARITY_NONE;
+				initParam.stopbit = LIN_STOP_BIT_2;
+				break;
+			case 0x0c:
+				initParam.parity = LIN_PARITY_ODD;
+				initParam.stopbit = LIN_STOP_BIT_1;
+				break;
+			case 0x04:
+				initParam.parity = LIN_PARITY_EVEN;
+				initParam.stopbit = LIN_STOP_BIT_1;
+				break;
+			case 0x00:
+			    initParam.parity = LIN_PARITY_NONE;
+			    initParam.stopbit = LIN_STOP_BIT_1;
+			    break;
+		}
+	}
+	LIN_initModule(LINA_BASE, &initParam);
+	LIN_InterruptEnable(LINA_BASE, LIN_USART_MODULE_INTR_RXRDY | LIN_USART_MODULE_INTR_TXRDY);
+#else
 	LinaRegs.SCIGCR1.bit.SLEEP = 0;
     LinaRegs.SCIFLR.bit.TXWAKE = 0;  
     LinaRegs.SCIFLR.bit.TXEMPTY = 1;
@@ -1727,6 +1815,7 @@ void InitSetScia(void)
     LinaRegs.SCISETINT.bit.SETTXINT = 1;
     LinaRegs.SCIFORMAT.bit.CHAR = 0x7;
     LinaRegs.SCIGCR1.bit.SWnRST = 1; 
+#endif
        
 EDIS;
 #else
@@ -1775,10 +1864,17 @@ void UpdateSciFormat(void)
     
  // 出现接收故障时处理    
 #if DSP_2803X
+#ifdef TARGET_GS32
+	uint32_t errStatus;
+	LIN_getStatus(LINA_BASE, &errStatus);
+	if (errStatus & (LIN_USART_CHANNEL_RXBRK | LIN_USART_CHANNEL_PARE
+						| LIN_USART_CHANNEL_OVRE | LIN_USART_CHANNEL_FRAME_ERR))
+#else
 	if ( LinaRegs.SCIFLR.bit.BRKDT
         || LinaRegs.SCIFLR.bit.PE 
         || LinaRegs.SCIFLR.bit.OE
         || LinaRegs.SCIFLR.bit.FE)
+#endif
 #else
     if (SciaRegs.SCIRXST.bit.RXERROR)      
 #endif
@@ -1788,6 +1884,42 @@ void UpdateSciFormat(void)
 #if DSP_2803X
 
 EALLOW;
+#if TARGET_GS32
+	LIN_initParam_t initParam = {0};
+	initParam.opmode = LIN_UART_MODE;                // UART模式（非LIN协议）
+	initParam.char_length = LIN_CHAR_LENGTH_8BITS;   // 8数据位
+	initParam.sync_mode = LIN_OP_ASYNC_MODE;         // 异步通信
+	initParam.chl_mode = LIN_CHAL_NORMAL_MODE;       // 普通模式（非回环/回声）
+	if (funcCode.code.commProtocolSec == EXTEND_COM_CAR)
+	{
+			initParam.parity = LIN_PARITY_NONE;
+			initParam.stopbit = LIN_STOP_BIT_1;
+	}
+	else
+	{
+			switch (commParitys[funcCode.code.commParity])
+			{
+					case 0x10:
+							initParam.parity = LIN_PARITY_NONE;
+							initParam.stopbit = LIN_STOP_BIT_2;
+							break;
+					case 0x0c:
+							initParam.parity = LIN_PARITY_ODD;
+							initParam.stopbit = LIN_STOP_BIT_1;
+							break;
+					case 0x04:
+							initParam.parity = LIN_PARITY_EVEN;
+							initParam.stopbit = LIN_STOP_BIT_1;
+							break;
+					case 0x00:
+						initParam.parity = LIN_PARITY_NONE;
+						initParam.stopbit = LIN_STOP_BIT_1;
+						break;
+			}
+	}
+	LIN_initModule(LINA_BASE, &initParam);
+	LIN_setBaudRate(LINA_BASE, DEVICE_APBCLK_FREQ, dspBaudRegData[tmp].baudRate * 100U, LIN_OP_ASYNC_MODE, LIN_OVERSAMP_16);
+#else
     if (funcCode.code.commProtocolSec == EXTEND_COM_CAR)          // 无校验(8-N-1)
         LinaRegs.SCIGCR1.all = (LinaRegs.SCIGCR1.all&0xFFFFFFE3)^commParitys[3];
     else
@@ -1796,6 +1928,7 @@ EALLOW;
     LinaRegs.BRSR.bit.SCI_LIN_PSH = dspBaudRegData[tmp].high;
     LinaRegs.BRSR.bit.SCI_LIN_PSL = dspBaudRegData[tmp].low;
     LinaRegs.BRSR.bit.M = dspBaudRegData[tmp].M;
+#endif
 EDIS;
     if(commParityBak != funcCode.code.commParity ) // 数据格式发生改变需要初始化，否则 8-N-1 切换到8-E/O-1将出错
     {
